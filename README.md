@@ -2,11 +2,13 @@
 
 ## Members
 
-Francisco Renato Barbosa Pires - up201908044
-José Pedro Peixoto Ferreira - up201904515
-Lucas Jorge Calvet de Magalhães Fernandes Santos - up201904517
-Sérgio Rodrigues da Gama - up201906690
-Tomás Gonçalves dos Santos Fidalgo - up201906743
+| Nome  | Nº    | 
+|-----|------|
+| Francisco Renato Barbosa Pires  | up201908044 |
+| José Pedro Peixoto Ferreira  | up201904515 | 
+| Lucas Jorge Calvet de Magalhães Fernandes Santos  | up201904517 | 
+| Sérgio Rodrigues da Gama  | up201906690 | 
+| Tomás Gonçalves dos Santos Fidalgo | up201906743 |
 
 # Product Name
 
