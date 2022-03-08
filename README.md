@@ -10,15 +10,17 @@
 | Sérgio Rodrigues da Gama  | up201906690 | 
 | Tomás Gonçalves dos Santos Fidalgo | up201906743 |
 
-# Product Name
+# UNI WORKFLOW
 
 ## Vision Stament
+
 To do (see the Product vision template here: https://uxstudioteam.com/ux-blog/product-vision/)
 
+Empower Students with the tools for a simpler, faster and better workflow.
+
 ## Main Features
- - Feature 1 - Short description
- - Feature 2 - Short description
-...
+
+ - Feature 1 - Intersect schedules from a specified group of students in order to find shared free time slots. 
 
 ## Required API's
 
