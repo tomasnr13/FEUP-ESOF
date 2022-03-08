@@ -21,4 +21,6 @@ To do (see the Product vision template here: https://uxstudioteam.com/ux-blog/pr
 ...
 
 ## Required API's
+
 - Student timetable from sigarra
+- Classes of courses from sigarra
