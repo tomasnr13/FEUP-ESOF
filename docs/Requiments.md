@@ -17,7 +17,7 @@
 
 | Code | Name | Priority | Description |
 |------|------|----------|-------------|
-| US01 |      |          |             |
+| US01 | Set Availability | high | A User wants to be able to set himself as available to form a group in a given UC |
 | US02 |      |          |             |
 | US03 |      |          |             |
 | US04 |      |          |             |
