@@ -11,7 +11,7 @@
 
 ## Use Cases Diagram
 
-## Use Cases
+## Use Cases Descriptions
 
 ## User Stories
 
