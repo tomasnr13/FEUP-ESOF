@@ -13,9 +13,9 @@
 
 ## User Stories
 
-| Code | Priority | Description |
-|------|----------|-------------|
-| US01 |          |             |
-| US02 |          |             |
-| US03 |          |             |
-| US04 |          |             |
+| Code | Name | Priority | Description |
+|------|------|----------|-------------|
+| US01 |      |          |             |
+| US02 |      |          |             |
+| US03 |      |          |             |
+| US04 |      |          |             |
