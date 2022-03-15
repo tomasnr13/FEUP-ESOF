@@ -13,13 +13,15 @@
 
 ## Use Case Tables
 
-| Name                             | Show their availability                                                                                                                                                                                |
+|                                  |                                                                                                                                                                                                        |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name                             | View student's availability                                                                                                                                                                            |
 | Actor                            | Student                                                                                                                                                                                                |
 | Description                      | The student shows that he's available to create a group for a certain course.                                                                                                                          |
 | Preconditions                    | The student is registered in the course.<br>The student is willing to create a group in that course.                                                                                                   |
 | Postconditions                   | The student availability becomes visible to other users of the app, which are registered in the same course.                                                                                           |
 | Normal flow                      | 1. The student accesses the app.  <br>2. From all of the courses on which he is registered, the student chooses the desired one to show is availability.  <br>3. His availability is shown on the app. |
-| Alternative flows and exceptions |                                                                                                                                                                                                        |
+| Alternative flows and exceptions |                                                                                                                                                                                                        |                                                                                                                                                                                                     |
 
 ## User Stories
 
