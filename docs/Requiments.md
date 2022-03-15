@@ -14,7 +14,6 @@
 ## Use Case Tables
 
 | Name                             | Show their availability                                                                                                                                                                                |
-|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Actor                            | Student                                                                                                                                                                                                |
 | Description                      | The student shows that he's available to create a group for a certain course.                                                                                                                          |
 | Preconditions                    | The student is registered in the course.<br>The student is willing to create a group in that course.                                                                                                   |
