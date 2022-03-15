@@ -9,6 +9,8 @@
 | R5        | A Discord/Slack group is created when a new group is formed.                                       |
 | R6        | Students can see how their schedules overlap to determine time slots where they can work together. |
 
+## Use Cases Diagram
+
 ## Use Cases
 
 ## User Stories
