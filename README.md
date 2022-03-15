@@ -18,7 +18,7 @@ To do (see the Product vision template here: https://uxstudioteam.com/ux-blog/pr
 
 ### Product Vision
 
-For UP students who need to plan group schedules,  
+For UP students who need to plan groups,  
 The Uni Workluster is a mobile app  
 That allows the easy creation of groups and overlapping of schedules between students.  
 Unlike SIGARRA, our product is user and mobile friendly.  
