@@ -38,3 +38,4 @@ Empower Students with the tools for a simpler, faster and better workflow.
 
 - Student timetable from sigarra
 - Classes of courses from sigarra
+- Possible discord/slack API
