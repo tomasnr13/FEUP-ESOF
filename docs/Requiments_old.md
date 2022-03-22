@@ -43,6 +43,15 @@
 | Normal flow                      | 1. A student accepts a group request in the app.<br>2. The group is created and the person who sent the first request becomes the manager.<br>3. The group and its members appear in the app together.<br>4. A discord/slack group chat is created. |
 | Alternative flows and exceptions | If the group is still available, the manager can continue to accept group requests and adding members to it, in the same way he accepted the first one.                                                                                             |
 
+|                                  |                                                                                                                                                      |
+|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name                             | Schedule overlap                                                                                                                                     |
+| Actor                            | Students belonging in a group                                                                                                                        |
+| Description                      | Students beloging in a group can see how all of their schedules overlap, in order to determine time slots where they can work together.              |
+| Preconditions                    | All of the students belong to the same group.                                                                                                        |
+| Postconditions                   | A timetable is created from the overlapping of all the student's schedules, showing and distinguishing available time slots from non-available ones. |
+| Normal flow                      | 1. The group is created<br>2. In the group area, the overlapped timetable is shown.                                                                  |
+| Alternative flows and exceptions |                                                                                                                                                      |
 
 
 ## User Stories
