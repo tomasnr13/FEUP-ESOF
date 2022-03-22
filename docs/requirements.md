@@ -3,19 +3,37 @@
 
 In this section are described all the module functional and non-functional requirements.
 
+## Requirements
+
+| Req. Code | Description                                                                                        |
+|-----------|----------------------------------------------------------------------------------------------------|
+| R1        | Students can show that they are available to make groups with other students.                      |
+| R2        | Students may cancel their previous availability statements.                                        |
+| R3        | Students can make requests to group with other specific students.                                  |
+| R4        | An email is created whenever a group request is made.                                              |
+| R5        | A Discord/Slack group is created when a new group is formed.                                       |
+| R6        | Students can see how their schedules overlap to determine time slots where they can work together. |
+
 ### Use cases models 
 
 |||
 | --- | --- |
-| *Name* | Purchase tickets online |
-| *Actor* |  Customer | 
-| *Description* | The customer purchases one or more tickets for an event, using an electronic payment method, having the option to choose places. |
-| *Preconditions* | - The customer has electronic payment means. <br> - The event has tickets available on-sale. |
-| *Postconditions* | - The customer gets the electronic tickets with a QR code. <br> - The customer is charged of the tickets’ cost, and the seller credited. <br> - Information of tickets sold & seats available for the event is updated. |
-| *Normal flow* | 1. The customer accesses the web page of the ticketing system.<br> 2. The system shows the list of events with tickets on-sale.<br> 3. The customer selects the event and the number of tickets.<br> 4. If wanted, the costumer may Choose Places.<br> 5. The system shows the total price to pay.<br> 6. The system redirects the customer to Electronic Payment.<br> 7. The system delivers the electronic tickets to the customer with a unique identifier and QR code. |
-| *Alternative flows and exceptions* | 1. [Payment failure] If, in step 6 of the normal flow the payment fails, the system gives the user the possibility to cancel or retry. |
+| *Name* | View student's availability |
+| *Actor* |  Student | 
+| *Description* | The student shows that he's available to create a group for a certain course. |
+| *Preconditions* | - The student is registered in the course.<br>The student is willing to create a group in that course. |
+| *Postconditions* | - The student availability becomes visible to other users of the app, which are registered in the same course. |
+| *Normal flow* | 1. The student accesses the app.  <br>2. From all of the courses on which he is registered, the student chooses the desired one to show is availability.  <br>3. His availability is shown on the app. |
+| *Alternative flows and exceptions* |  |
 
 ### User stories 
+
+| Code | Name | Priority | Description |
+|------|------|----------|-------------|
+| US01 | Set Availability | high | A User wants to be able to set himself as available to form a group in a given UC |
+| US02 |      |          |             |
+| US03 |      |          |             |
+| US04 |      |          |             |
 
 **User interface mockups**.
 After the user story text, you should add a draft of the corresponding user interfaces, a simple mockup or draft, if applicable.
