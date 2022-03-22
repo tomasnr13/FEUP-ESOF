@@ -33,6 +33,16 @@
 | Normal flow                      | 1. The student accesses the app. <br>2. The student chooses the course on which he wants to create a group.  <br>3. He then checks the availability of other students. <br>4. After that, he chooses the student who he wants to create a group with. <br>5. The student sends a group request to the desired student. <br>6. The targeted student is notified via app (and/or via email). |
 | Alternative flows and exceptions | If a certain group is still available, the student can send them a group request too, which gets sent to the group manager                                                                                   |
 
+|                                  |                                                                                                                                                                                                                                                     |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name                             | Create group                                                                                                                                                                                                                                        |
+| Actor                            | Group manager/student                                                                                                                                                                                                                               |
+| Description                      | Upon accepting the group request from other student, a group is created.                                                                                                                                                                            |
+| Preconditions                    | At least one student accepted a group request from another one.                                                                                                                                                                                     |
+| Postconditions                   | A group flag is created on the app, showing how many people are in the group.<br>The manager of the group is given a button which lets him close the groups availability.<br>#A discord/slack group chat is created?                                |
+| Normal flow                      | 1. A student accepts a group request in the app.<br>2. The group is created and the person who sent the first request becomes the manager.<br>3. The group and its members appear in the app together.<br>4. A discord/slack group chat is created. |
+| Alternative flows and exceptions | If the group is still available, the manager can continue to accept group requests and adding members to it, in the same way he accepted the first one.                                                                                             |
+
 
 
 ## User Stories
