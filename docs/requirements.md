@@ -52,11 +52,7 @@ In this section are described all the module functional and non-functional requi
 User stories are located in the [GitHub Issues](https://github.com/LEIC-ES-2021-22/3LEIC07T5/issues).
 
 ### Domain model
-
-To better understand the context of the software system, it is very useful to have a simple UML class diagram with all the key concepts (names, attributes) and relationships involved of the problem domain addressed by your module.
-Also provide a short textual description of each class.
-
-Example:
+  
  <p align="center" justify="center">
-  <img src="https://github.com/LEIC-ES-2021-22/templates/blob/main/images/DomainModel.png"/>
+  <img src="./uml.png"/>
 </p>
