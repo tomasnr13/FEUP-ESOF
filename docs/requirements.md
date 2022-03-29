@@ -49,37 +49,7 @@ In this section are described all the module functional and non-functional requi
 
 ### User stories
 
-#### User
-
-| Code | Name | Priority | Description |
-|------|------|----------|-------------|
-| US01 | Set Availability | high | As a User, I want to be able to ensure that I am available to form a group in a given UC, so hat other students can create a group with me. |
-| US02 | Unset Availability | high | As a User, I want to be able to garantee other students I am no longer available to form a group. |
-| US03 | Select Multiple Students | high | As a User, I want to select multiple students that are available to form a group, so that I can send group requests. |
-| US04 | Compare Student's Schedules | high | As a User, I want to compare the schedules of a group of students, so that I can optimize the group requests I send. |
-| US05 | Send Group Requests | high | As a User, I want to be able to send a request to the selected available students, or to a group already created, so that I can invite them to form a group. |
-| US06 | Accept Group Requests | high | As a User, I want to be able to accept a request sent to me (making me automatically unavailable), so that I can become part of a group and stop receiving other requests for that UC. |
-| US07 | Decline Group Requests | high | As a User, I want to be able to decline a request sent to me, so that I can let the other colleagues know that I'm not interested in being a part of their group. |
-| US08 | Create Invitation Email | medium | As a User, I want to be able to create an email with a predefined text, to the selected available students so that I can invite them to form group. |
-
-#### Group Owner
-
-| Code | Name | Priority | Description |
-|------|------|----------|-------------|
-| US11 | Send Group Invite | high | As a Group Owner, I want to be able to send an invite to the selected available students, so that I can fulfill my group needs. |
-| US12 | Accept Join Request | high | As a Group Owner, I want to be able to accept an invite sent to join the group, so that the User becames part of the group.  |
-| US13 | Decline Join Request | high | As a Group Owner, I want to be able to decline an invite sent to join the group, so that the User doesn't can keep searching for a group for the UC in question. |
-| US14 | Send Group Merge Request | high | As a Group Owner, I want to be able to send a Group Merge Request to another Group Owner, so that I can show them I'm interested in merging our groups together. |
-| US15 | Accept Group Merge Request | high | As a Group Owner, I want to be able to accept a Group Merge Request, so that our groups are merged together. |
-| US16 | Decline Group Merge Request | high | As a Group Owner, I want to be able to decline a Group Merge Request, so that our groups aren't merged together and we  can continue our search to complete the group. |
-| US17 | Expel Group Member | high | As a Group Owner, I want to be able to expel a Group Member, so that said Member isn't a part of my group anymore and he can restart searching for a group for the UC in question. |
-
-#### Group Member
-
-| Code | Name | Priority | Description |
-|------|------|----------|-------------|
-| US21 | Leave Group | high | As a Group Member, I want to be able to leave my current group, so that I can search for a new one. |
-
+User stories are located in the [GitHub Issues](https://github.com/LEIC-ES-2021-22/3LEIC07T5/issues).
 
 ### **User interface mockups**.
 After the user story text, you should add a draft of the corresponding user interfaces, a simple mockup or draft, if applicable.
