@@ -16,7 +16,7 @@ In this section are described all the module functional and non-functional requi
 
 ## Use Cases
 
-![Use Case Diagram](/docs/use_case_model.png)
+![Use Case Diagram](/images/UseCaseView.png)
 
 |                 |                                                                                                                                                                                                        |
 |----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
