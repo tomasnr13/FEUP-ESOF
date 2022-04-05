@@ -1,0 +1,47 @@
+<mxfile host="65bd71144e">
+    <diagram id="Wl1pykvxas4ZJPK3ME9j" name="Page-1">
+        <mxGraphModel dx="1246" dy="793" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="149" value="UNI Workluster" style="shape=folder;fontStyle=1;tabWidth=140;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="1" vertex="1">
+                    <mxGeometry y="120" width="480" height="540" as="geometry"/>
+                </mxCell>
+                <mxCell id="146" value="Grouping Business Logic" style="shape=folder;fontStyle=1;tabWidth=170;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="149" vertex="1">
+                    <mxGeometry x="30" y="230" width="200" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="151" style="edgeStyle=none;html=1;dashed=1;endArrow=open;endFill=0;entryX=0;entryY=0;entryDx=85;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="149" source="142" target="146" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="156" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0;entryDx=85;entryDy=0;entryPerimeter=0;dashed=1;endArrow=open;endFill=0;" parent="149" source="142" target="154" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="142" value="UNI Workluster Application" style="shape=folder;fontStyle=1;tabWidth=170;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="149" vertex="1">
+                    <mxGeometry x="140" y="60" width="200" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="154" value="Schedule Business Logic" style="shape=folder;fontStyle=1;tabWidth=170;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="149" vertex="1">
+                    <mxGeometry x="260" y="230" width="200" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="148" value="External Services" style="shape=folder;fontStyle=1;tabWidth=140;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="120" width="260" height="540" as="geometry"/>
+                </mxCell>
+                <mxCell id="147" value="SIGARRA API" style="shape=folder;fontStyle=1;tabWidth=140;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="148" vertex="1">
+                    <mxGeometry x="30" y="230" width="200" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="144" value="Groups' Database API" style="shape=folder;fontStyle=1;tabWidth=170;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="148" vertex="1">
+                    <mxGeometry x="30" y="390" width="200" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="153" style="edgeStyle=none;html=1;exitX=0;exitY=0;exitDx=200;exitDy=70;exitPerimeter=0;entryX=0;entryY=0;entryDx=0;entryDy=70;entryPerimeter=0;dashed=1;endArrow=open;endFill=0;startArrow=none;" parent="1" source="154" target="147" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="152" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;endArrow=open;endFill=0;" parent="1" source="146" target="144" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="130" y="565"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
