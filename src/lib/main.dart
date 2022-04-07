@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,9 +24,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'UNI Workluster Home Page'),
+      home: const MyHomePage(title: 'UNI Workluster'),
     );
   }
 }
@@ -48,17 +50,61 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  void _sendEmail(String _email) async {
+    if (!await launch('emailto:$_email')) throw 'Could not email to $_email';
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Future<void> _showInfo() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('App Info'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const Text(
+                    'This app is still under development. With Workluster, students will be able to easily form groups for course projects.\n',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Developed by:'),
+                const Text(
+                    '\u2022 Francisco Pires\n\u2022 José Pedro Ferreira\n\u2022 Lucas Santos\n\u2022 Sérgio Gama\n\u2022 Tomás Fidalgo'),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Lucas Santos (',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: 'up201904517@fe.up.pt',
+                        style: const TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () { _sendEmail('up201904517@fe.up.pt');
+                          },
+                      ),
+                      const TextSpan(
+                        text: ')',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -74,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        backgroundColor: const Color.fromARGB(255, 0x75, 0x17, 0x1e),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -94,21 +141,23 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: const <Widget>[
+            Text(
+              'Welcome to the UNI Workluster App',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              'Click the info icon to know more',
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _showInfo,
+        tooltip: 'Info',
+        backgroundColor: const Color.fromARGB(255, 0x75, 0x17, 0x1e),
+        child: const Icon(Icons.info_outline),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
