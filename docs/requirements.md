@@ -54,3 +54,10 @@ User stories are located in the [GitHub Issues](https://github.com/LEIC-ES-2021-
 ### Domain model
 
 ![Domain Model](../images/DomainModel.png)
+
+- **User**: Represents a student, with its corresponding information.
+- **Student Schedule**: Represents a student's schedule, containing different class schedules.
+- **Class Schedule**: Represents a class' schedule, belonging to student schedules.
+- **Invite**: Represents a student's invite to another student to join its group.
+- **Group**: Represents a partial or fully formed group, with a specific group owner.
+- **Course**: Represents a Curricular Unit
