@@ -5,7 +5,7 @@ In this section are described all the module functional and non-functional requi
 
 ## Use Cases
 
-![Use Case Diagram](/images/UseCaseView.png)
+![Use Case View](../images/UseCaseView.png)
 
 |                 |                                                                                                                                                                                                        |
 |----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -52,7 +52,5 @@ In this section are described all the module functional and non-functional requi
 User stories are located in the [GitHub Issues](https://github.com/LEIC-ES-2021-22/3LEIC07T5/issues).
 
 ### Domain model
-  
- <p align="center" justify="center">
-  <img src="./uml.png"/>
-</p>
+
+![Domain Model](../images/DomainModel.png)
