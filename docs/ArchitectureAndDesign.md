@@ -29,9 +29,9 @@ The UNI Workluster app will run on Android OS (and possibly iOS) and relies on t
 
 Our vertical prototype shows a Welcoming Home page with a button that, when pressed, displays some information about the app.
 
-![VerticalPrototype1](../images/Vertical_Prototype_1.png)
+![VerticalPrototype1](../images/VerticalPrototype1.png)
 
 Namely a quick message saying the app is under development and that it will enable students to easily form groups with other students. It also displays the list of developers working on the project
 
-![VerticalPrototype2](../images/Vertical_Prototype_2.png)
+![VerticalPrototype2](../images/VerticalPrototype2.png)
 
