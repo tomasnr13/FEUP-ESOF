@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,7 +53,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _sendEmail(String _email) async {
-    if (!await launch('emailto:$_email')) throw 'Could not email to $_email';
+    try {
+      launch('emailto:$_email');
+    } catch (e) {
+      log('Could not email to $_email. ' + e.toString());
+    }
   }
 
   Future<void> _showInfo() async {
@@ -68,24 +74,87 @@ class _MyHomePageState extends State<MyHomePage> {
                     'This app is still under development. With Workluster, students will be able to easily form groups for course projects.\n',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 const Text('Developed by:'),
-                const Text(
-                    '\u2022 Francisco Pires\n\u2022 José Pedro Ferreira\n\u2022 Lucas Santos\n\u2022 Sérgio Gama\n\u2022 Tomás Fidalgo'),
                 RichText(
                   text: TextSpan(
                     children: [
                       const TextSpan(
-                        text: 'Lucas Santos (',
+                        text: '\u2022 Francisco Pires (',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: 'up201908044@fe.up.pt',
+                        style: const TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _sendEmail('up201908044@fe.up.pt');
+                          },
+                      ),
+                      const TextSpan(
+                        text: ')\n',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      const TextSpan(
+                        text: '\u2022 José Pedro Ferreira (',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: 'up201904515@fe.up.pt',
+                        style: const TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _sendEmail('up201904515@fe.up.pt');
+                          },
+                      ),
+                      const TextSpan(
+                        text: ')\n',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      const TextSpan(
+                        text: '\u2022 Lucas Santos (',
                         style: TextStyle(color: Colors.black),
                       ),
                       TextSpan(
                         text: 'up201904517@fe.up.pt',
                         style: const TextStyle(color: Colors.blue),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () { _sendEmail('up201904517@fe.up.pt');
+                          ..onTap = () {
+                            _sendEmail('up201904517@fe.up.pt');
                           },
                       ),
                       const TextSpan(
-                        text: ')',
+                        text: ')\n',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      const TextSpan(
+                        text: '\u2022 Sérgio Gama (',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: 'up201906690@fe.up.pt',
+                        style: const TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _sendEmail('up201906690@fe.up.pt');
+                          },
+                      ),
+                      const TextSpan(
+                        text: ')\n',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      const TextSpan(
+                        text: '\u2022 Tomás Fidalgo (',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: 'up201906743@fe.up.pt',
+                        style: const TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _sendEmail('up201906743@fe.up.pt');
+                          },
+                      ),
+                      const TextSpan(
+                        text: ')\n',
                         style: TextStyle(color: Colors.black),
                       ),
                     ],
