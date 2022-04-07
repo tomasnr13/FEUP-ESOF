@@ -15,6 +15,10 @@ The UNI Workluster app will run on Android OS (and possibly iOS) and relies on t
 
 ### Physical architecture
 
+Flutter will be used for the mobile application, since it allows to create natively compiled, multi-platform applications from a single codebase.
+
+For the group's database, Node.js and MondoDB will be used, since these are modern solutions for database management.
+
 ![DeploymentView](../images/PhysicalArchitecture.png)
 
 - **UNI Workluster Application**: Represents the app developed with Flutter (based on the programming language Dart)
