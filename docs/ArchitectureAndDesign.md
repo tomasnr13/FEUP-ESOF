@@ -7,20 +7,31 @@ The UNI Workluster app will run on Android OS (and possibly iOS) and relies on t
 
 ![LogicalView](../images/LogicalArchitecture.png)
 
+- **UNI Workluster Application**: Represents the app's logical package that emcompasses both the Grouping Business Logic and Schedule Business Logic.
+- **Grouping Business Logic**: Represents the Groups' logical package, responsible for everything related to the Group forming feature.
+- **Schedule Business Logic**: Represents the Schedules' logical package, responsible for everything related to the Schedule overlapping feature.
+- **SIGARRA API**: Represents the SIGARRA's logical package, responsible for the communication with SIGARRA's database.
+- **Groups' Database API**: Represents the Groups' Database logical package, responsible for the Groups' data storage.
+
 ### Physical architecture
-
-The goal of this subsection is to document the high-level physical structure of the software system (machines, connections, software components installed, and their dependencies) using UML deployment diagrams (Deployment View) or component diagrams (Implementation View), separate or integrated, showing the physical structure of the system.
-
-It should describe also the technologies considered and justify the selections made. Examples of technologies relevant for uni4all are, for example, frameworks for mobile applications (such as Flutter).
-
-Example of _UML deployment diagram_ showing a _deployment view_ of the Eletronic Ticketing System (please notice that, instead of software components, one should represent their physical/executable manifestations for deployment, called artifacts in UML; the diagram should be accompanied by a short description of each node and artifact):
 
 ![DeploymentView](../images/PhysicalArchitecture.png)
 
+- **UNI Workluster Application**: Represents the app developed with Flutter (based on the programming language Dart)
+- **Phone**: Represents a user's smartphone, the hardware where the app is going to run. It can have either an Android OS or IOS.
+- **Grouping Management Service**: Represents the backend related to the Group forming feature, that manages the respective database.
+- **Groups' Database**: Represents the Groups' Database where the data  related to the Group forming feature is stored.
+- **Groups' Server**: Represents the hardware hosting the Groups' Database.
+- **SIGARRA API**: Represents SIGARRA's interface responsible for the communication with SIGARRA's database.
+- **SIGARRA's Server**: Represents the hardware hosting SIGARRA's database.
+
 ### Vertical prototype
-To help on validating all the architectural, design and technological decisions made, we usually implement a vertical prototype, a thin vertical slice of the system.
 
-In this subsection please describe which feature you have implemented, and how, together with a snapshot of the user interface, if applicable.
+Our vertical prototype shows a Welcoming Home page with a button that, when pressed, displays some information about the app.
 
-At this phase, instead of a complete user story, you can simply implement a feature that demonstrates thay you can use the technology, for example, show a screen with the app credits (name and authors).
+![VerticalPrototype1](../images/Vertical_Prototype_1.png)
+
+Namely a quick message saying the app is under development and that it will enable students to easily form groups with other students. It also displays the list of developers working on the project
+
+![VerticalPrototype2](../images/Vertical_Prototype_2.png)
 
