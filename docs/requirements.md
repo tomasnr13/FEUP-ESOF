@@ -3,7 +3,7 @@
 
 In this section are described all the module functional and non-functional requirements.
 
-## Use Cases
+### Use case model
 
 ![Use Case View](../images/UseCaseView.png)
 
