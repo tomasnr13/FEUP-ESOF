@@ -2,7 +2,7 @@
 
 Welcome to the documentation pages of the UNI WORKLUSTER!
 
-You can find here detailed about the product (or mini-app or module), from a high-level vision to low-level implementation decisions, a kind of Software Development Report, organized by discipline (as of RUP): 
+You can find here detailed information about the product (or mini-app or module), from a high-level vision to low-level implementation decisions, a kind of Software Development Report, organized by discipline (as of RUP): 
 
 * Business modeling 
   * [Product Vision](/docs/ProductVision.md)
@@ -11,10 +11,10 @@ You can find here detailed about the product (or mini-app or module), from a hig
   * [Use Case Model](/docs/requirements.md#Use-case-model)
   * [User stories](https://github.com/LEIC-ES-2021-22/3LEIC07T5/issues)
   * [Domain model](/docs/requirements.md#Domain-model)
-* [Architecture and Design]
-  * [Logical architecture]
-  * [Physical architecture]
-  * [Prototype]
+* [Architecture and Design](/docs/ArchitectureAndDesign.md)
+  * [Logical architecture](/docs/ArchitectureAndDesign.md#Logical-architecture)
+  * [Physical architecture](/docs/ArchitectureAndDesign.md#Physical-architecture)
+  * [Vertical prototype](/docs/ArchitectureAndDesign.md#Vertical-prototype)
 * [Implementation]
 * [Test]
 * [Configuration and change management]
