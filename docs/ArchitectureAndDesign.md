@@ -7,7 +7,7 @@ The UNI Workluster app will run on Android OS (and possibly iOS) and relies on t
 
 ![LogicalView](../images/LogicalArchitecture.png)
 
-- **UNI Workluster Application**: Represents the app's logical package that emcompasses both the Grouping Business Logic and Schedule Business Logic.
+- **UNI Workluster Application UI**: Represents the app's logical package that emcompasses both the Grouping Business Logic and Schedule Business Logic.
 - **Grouping Business Logic**: Represents the Groups' logical package, responsible for everything related to the Group forming feature.
 - **Schedule Business Logic**: Represents the Schedules' logical package, responsible for everything related to the Schedule overlapping feature.
 - **SIGARRA API**: Represents the SIGARRA's logical package, responsible for the communication with SIGARRA's database.
