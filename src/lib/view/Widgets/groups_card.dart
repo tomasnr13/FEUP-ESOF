@@ -18,9 +18,9 @@ class GroupsCard extends GenericCard {
       Key key, bool editingMode, Function onDelete)
       : super.fromEditingInformation(key, editingMode, onDelete);
 
-  final double borderRadius = 12.0;
-  final double leftPadding = 12.0;
-  final List<Lecture> lectures =  <Lecture>[];
+  //final double borderRadius = 12.0;
+  //final double leftPadding = 12.0;
+  //final List<Lecture> lectures =  <Lecture>[];
 
   @override
   Widget buildCardContent(BuildContext context) {
