@@ -59,13 +59,8 @@ class _OverlapPageState extends SecondaryPageViewState
   @override
   Widget getBody(BuildContext context) {
     return StoreConnector<AppState, Tuple2<List<Lecture>, RequestStatus>>(
-      converter: (store) {
-        final List<Lecture> lectures = store.state.content['schedule'];
-        final moreLectures = ScheduleFetcherApi().getLecturesFromUP(store, 201908057);
-        lectures.add(moreLectures);
-        return Tuple2(lectures,
-            store.state.content['scheduleStatus']);
-      },
+      converter: (store) => Tuple2(store.state.content['schedule'],
+          store.state.content['scheduleStatus']),
       builder: (context, lectureData) {
         final lectures = lectureData.item1;
         final scheduleStatus = lectureData.item2;
