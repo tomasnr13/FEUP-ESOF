@@ -5,6 +5,8 @@ import 'package:uni/model/entities/trip.dart';
 import 'package:uni/utils/constants.dart' as Constants;
 
 import 'entities/exam.dart';
+import 'entities/groups.dart';
+import 'entities/profile.dart';
 import 'entities/lecture.dart';
 import 'entities/restaurant.dart';
 
@@ -34,7 +36,8 @@ class AppState {
       'printBalanceStatus': RequestStatus.none,
       'feesStatus': RequestStatus.none,
       'coursesStateStatus': RequestStatus.none,
-      'lastUserInfoUpdateTime': null
+      'lastUserInfoUpdateTime': null,
+      // 'groups': <Groups>[Groups.fromJson({'id':1, 'course':'CPD', 'target_size':4, 'manager':Profile.fromResponse({'nome': 'Xico', 'email':'xico@sedebraga.com', 'cursos':[]}), 'members':[], 'closed':false})]
     };
   }
 
