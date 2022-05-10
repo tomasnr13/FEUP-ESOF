@@ -108,6 +108,9 @@ class MyAppState extends State<MyApp> {
                     maintainState: false);
               case '/' + Constants.navLogOut:
                 return LogoutRoute.buildLogoutRoute();
+              case '/' + Constants.navComp:
+                return PageTransition.makePageTransition(
+                    page: ScheduleCompView(), settings: settings);
             }
           }),
     );
