@@ -21,4 +21,18 @@ class ScheduleFetcherApi extends ScheduleFetcher {
             store.state.content['session']));
     return lectures;
   }
+
+  Future<List<Lecture>> getLecturesFromUP(
+      Store<AppState> store, dynamic studentNumber) async {
+    final dates = getDates();
+    final List<Lecture> lectures = await parseSchedule(
+        await NetworkRouter.getWithCookies(
+            NetworkRouter.getBaseUrlFromSession(
+                    store.state.content['session']) +
+                //ignore: lines_longer_than_80_chars
+                '''mob_hor_geral.estudante?pv_codigo=${studentNumber}&pv_semana_ini=${dates.beginWeek}&pv_semana_fim=${dates.endWeek}''',
+            {},
+            store.state.content['session']));
+    return lectures;
+  }
 }
