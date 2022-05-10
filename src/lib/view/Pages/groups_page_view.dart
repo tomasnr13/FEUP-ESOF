@@ -141,7 +141,7 @@ List<Widget> createTabs(queryData, BuildContext context) {
 List<Widget> createSchedule(context) {
   final List<Widget> tabBarViewContent = <Widget>[];
   for (int i = 0; i < studentCourses.length; i++) {
-    tabBarViewContent.add(createScheduleByDay(context, i));
+    tabBarViewContent.add(createScheduleByCourse(context, i));
   }
   return tabBarViewContent;
 }
@@ -178,16 +178,16 @@ Widget Function(dynamic daycontent, BuildContext context) dayColumnBuilder(
   return createDayColumn;
 }
 
-Widget createScheduleByDay(BuildContext context, int day) {
+Widget createScheduleByCourse(BuildContext context, int courseIndex) {
   return RequestDependentWidgetBuilder(
     context: context,
     status: scheduleStatus,
-    contentGenerator: dayColumnBuilder(day),
-    content: aggLectures[day],
-    contentChecker: aggLectures[day].isNotEmpty,
+    contentGenerator: dayColumnBuilder(courseIndex),
+    content: aggLectures[courseIndex],
+    contentChecker: aggLectures[courseIndex].isNotEmpty,
     onNullContent:
-        Center(child: Text('Não possui aulas à ' + daysOfTheWeek[day] + '.')),
-    index: day,
+        Center(child: Text('Não pertence a Grupos em ' + studentCourses[courseIndex] + '.')),
+    index: courseIndex,
   );
 }
 
