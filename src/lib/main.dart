@@ -23,7 +23,9 @@ import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
 
 import 'controller/on_start_up.dart';
+import 'model/overlap_page_model.dart';
 import 'model/schedule_page_model.dart';
+import 'model/groups_model.dart';
 
 /// Stores the state of the app
 final Store<AppState> state = Store<AppState>(appReducers,
@@ -94,6 +96,12 @@ class MyAppState extends State<MyApp> {
               case '/' + Constants.navStops:
                 return PageTransition.makePageTransition(
                     page: BusStopNextArrivalsPage(), settings: settings);
+              case '/' + Constants.navGroups:
+                return PageTransition.makePageTransition(
+                    page: GroupsPage(), settings: settings);
+              case '/' + Constants.navOverlap:
+                return PageTransition.makePageTransition(
+                    page: OverlapPage(), settings: settings);
               case '/' + Constants.navAbout:
                 return PageTransition.makePageTransition(
                     page: AboutPageView(), settings: settings);
