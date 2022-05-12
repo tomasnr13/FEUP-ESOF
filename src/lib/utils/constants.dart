@@ -1,7 +1,6 @@
 library Constants;
 
 const navPersonalArea = 'Área Pessoal';
-const navComp = 'Comparação de Horários';
 const navSchedule = 'Horário';
 const navExams = 'Mapa de Exames';
 const navStops = 'Autocarros';
