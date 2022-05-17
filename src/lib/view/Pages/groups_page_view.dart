@@ -6,6 +6,9 @@ import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
 
+import '../../model/entities/groups.dart';
+import '../Widgets/groups_slot.dart';
+
 /// Manages the 'schedule' sections of the app
 class GroupsPageView extends StatelessWidget {
 
@@ -19,7 +22,7 @@ class GroupsPageView extends StatelessWidget {
       this.scrollViewController});
 
   final List<String> daysOfTheWeek;
-  final List<List<Lecture>> aggLectures;
+  final List<List<Groups>> aggLectures;
   final RequestStatus scheduleStatus;
   final TabController tabController;
   final ScrollController scrollViewController;
@@ -126,8 +129,8 @@ Widget build(BuildContext context) {
 /// Returns a list of widgets empty with tabs for each day of the week.
 List<Widget> createTabs(queryData, BuildContext context) {
   final List<Widget> tabs = <Widget>[];
-  print("studentCourses");
-  print(studentCourses);
+  // print("studentCourses");
+  // print(studentCourses);
   for (var i = 0; i < studentCourses.length; i++) {
     tabs.add(Container(
       color: Theme.of(context).backgroundColor,
@@ -150,16 +153,15 @@ List<Widget> createSchedule(context) {
 List<Widget> createScheduleRows(lectures, BuildContext context) {
   final List<Widget> scheduleContent = <Widget>[];
   for (int i = 0; i < lectures.length; i++) {
-    final Lecture lecture = lectures[i];
-    scheduleContent.add(ScheduleSlot(
-      subject: lecture.subject,
-      typeClass: lecture.typeClass,
-      rooms: lecture.room,
-      begin: lecture.startTime,
-      end: lecture.endTime,
-      teacher: lecture.teacher,
-      classNumber: lecture.classNumber,
-    ));
+    final Groups lecture = lectures[i];
+    scheduleContent.add(GroupsSlot(
+      id: lecture.id,
+      course: lecture.course,
+      target_size: lecture.target_size,
+      manager: lecture.manager,
+      members: lecture.members,
+      closed: lecture.closed,
+      ));
   }
   return scheduleContent;
 }

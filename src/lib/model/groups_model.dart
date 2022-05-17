@@ -10,6 +10,7 @@ import 'package:uni/view/Pages/groups_page_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 
 import 'entities/course.dart';
+import 'entities/groups.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage({Key key}) : super(key: key);
@@ -45,20 +46,24 @@ class _GroupsPageState extends SecondaryPageViewState
         list.add(courses[j].subject);
       }
     }
-    print("list: ");
-    print(list);
+    // print("list: ");
+    // print(list);
     return list;
   }
 
-  List<List<Lecture>> _groupLecturesByDay(schedule) {
-    final aggLectures = <List<Lecture>>[];
+  List<List<Groups>> _groupLecturesByDay(group_data) {
 
-    for (int i = 0; i < daysOfTheWeek.length; i++) {
-      final List<Lecture> lectures = <Lecture>[];
-      for (int j = 0; j < schedule.length; j++) {
-        if (schedule[j].day == i) lectures.add(schedule[j]);
+    // print("HERE HERE HERE");
+    // print(group_data[0]);
+    final aggLectures = <List<Groups>>[];
+    final list_of_lectures = _studentCourses();
+
+    for (int i = 0; i < list_of_lectures.length; i++) {
+      final List<Groups> group_list = <Groups>[];
+      for (int j = 0; j < group_data.length; j++) {
+        if (group_data[j].course == list_of_lectures[i]) group_list.add(group_data[j]);
       }
-      aggLectures.add(lectures);
+      aggLectures.add(group_list);
     }
     return aggLectures;
   }
@@ -88,12 +93,14 @@ class _GroupsPageState extends SecondaryPageViewState
       builder: (context, lectureData) {
         final lectures = lectureData.item1;
         final scheduleStatus = lectureData.item2;
+        final group_data = <Groups>[];
+        group_data.add(Groups(id: 12, course: "CPD", target_size: 5, manager: null, members: [], closed: false));
         return GroupsPageView(
             studentCourses: _studentCourses(),
             tabController: tabController,
             scrollViewController: scrollViewController,
             daysOfTheWeek: daysOfTheWeek,
-            aggLectures: _groupLecturesByDay(lectures),
+            aggLectures: _groupLecturesByDay(group_data),
             scheduleStatus: scheduleStatus);
       },
     );
