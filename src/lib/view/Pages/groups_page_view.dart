@@ -156,6 +156,7 @@ List<Widget> createScheduleRows(lectures, BuildContext context) {
     final Groups lecture = lectures[i];
     scheduleContent.add(GroupsSlot(
       id: lecture.id,
+      name: lecture.name,
       course: lecture.course,
       target_size: lecture.target_size,
       manager: lecture.manager,

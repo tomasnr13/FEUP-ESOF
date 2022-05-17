@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 
+import '../../model/entities/groups.dart';
 import '../../model/entities/profile.dart';
+import '../Pages/group_page_view.dart';
+import '../Pages/home_page_view.dart';
 
 class GroupsSlot extends StatelessWidget {
   final int id;
   final String course;
+  final String name;
   final int target_size;
   final Profile manager;
   bool closed;
@@ -15,6 +20,7 @@ class GroupsSlot extends StatelessWidget {
   GroupsSlot({
     Key key,
     @required this.id,
+    @required this.name,
     @required this.course,
     @required this.target_size,
     @required this.manager,
@@ -22,14 +28,28 @@ class GroupsSlot extends StatelessWidget {
     @required this.closed,
   }) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
-    return RowContainer(
-        child: Container(
-      padding:
+    return GestureDetector(
+
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GroupPageView(group: Groups(id: id, course: course, name: name, target_size: target_size, manager: manager, members: [], closed: false))));
+          //return PageTransition.makePageTransition(
+              //page: HomePageView(), settings: RouteSettings(name: '/Área Pessoal', arguments: null));
+              //page: GroupPageView(group: Groups(id: id, course: course, name: name, target_size: target_size, manager: manager, members: [], closed: false)));
+        },
+        child:
+        RowContainer(
+          child: Container(
+          padding:
           EdgeInsets.only(top: 10.0, bottom: 10.0, left: 22.0, right: 22.0),
-      child: createGroupsSlotRow(context),
-    ));
+          child: createGroupsSlotRow(context),
+    ))
+    );
   }
 
   Widget createGroupsSlotRow(context) {

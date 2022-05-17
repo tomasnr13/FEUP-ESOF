@@ -94,7 +94,7 @@ class _GroupsPageState extends SecondaryPageViewState
         final lectures = lectureData.item1;
         final scheduleStatus = lectureData.item2;
         final group_data = <Groups>[];
-        group_data.add(Groups(id: 12, course: "CPD", target_size: 5, manager: null, members: [], closed: false));
+        group_data.add(Groups(id: 12, course: "CPD", name: "Terrific Trio", target_size: 5, manager: null, members: [], closed: false));
         return GroupsPageView(
             studentCourses: _studentCourses(),
             tabController: tabController,

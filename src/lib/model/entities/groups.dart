@@ -3,6 +3,7 @@ import 'profile.dart';
 class Groups {
   final int id;
   final String course;
+  final String name;
   final int target_size;
   final Profile manager;
   bool closed;
@@ -11,6 +12,7 @@ class Groups {
   Groups(
       {int this.id,
       String this.course,
+      String this.name,
       int this.target_size,
       Profile this.manager,
       List<Profile> this.members,
@@ -21,6 +23,7 @@ class Groups {
     return Groups(
         id: data['id'],
         course: data['course'],
+        name: data['name'],
         target_size: data['target_size'],
         manager: data['manager'],
         members: data['members'],
@@ -32,6 +35,7 @@ class Groups {
     return {
       'id': id,
       'course': course,
+      'name': name,
       'target_size': target_size,
       'manager': manager,
       'closed': closed,
