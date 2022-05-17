@@ -1,9 +1,8 @@
 import 'package:uni/model/app_state.dart';
-import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
-import 'package:uni/view/Widgets/schedule_slot.dart';
+import 'package:uni/view/Widgets/free_time_slot.dart';
 
 /// Manages the 'schedule' sections of the app
 class OverlapPageView extends StatelessWidget {
