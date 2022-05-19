@@ -1,9 +1,8 @@
 import 'package:uni/model/app_state.dart';
-import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
-import 'package:uni/view/Widgets/schedule_slot.dart';
+import 'package:uni/view/Widgets/free_time_slot.dart';
 
 /// Manages the 'schedule' sections of the app
 class OverlapPageView extends StatelessWidget {
@@ -11,12 +10,12 @@ class OverlapPageView extends StatelessWidget {
       {Key key,
       @required this.tabController,
       @required this.daysOfTheWeek,
-      @required this.aggLectures,
-      @required this.scheduleStatus,
+      @required this.commonTimeSpaces,
+      @required this.scheduleStatus,//??
       this.scrollViewController});
 
   final List<String> daysOfTheWeek;
-  final List<List<Lecture>> aggLectures;
+  final List<List<List<String>>> commonTimeSpaces;//PAIRS
   final RequestStatus scheduleStatus;
   final TabController tabController;
   final ScrollController scrollViewController;
@@ -30,7 +29,7 @@ class OverlapPageView extends StatelessWidget {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         children: <Widget>[
-          PageTitle(name: 'Horário'),
+          PageTitle(name: 'Sobreposição de Horários'),
           TabBar(
             controller: tabController,
             isScrollable: true,
@@ -68,18 +67,13 @@ class OverlapPageView extends StatelessWidget {
   }
 
   /// Returns a list of widgets for the rows with a singular class info.
-  List<Widget> createScheduleRows(lectures, BuildContext context) {
+  List<Widget> createScheduleRows(timespaces_day, BuildContext context) {
     final List<Widget> scheduleContent = <Widget>[];
-    for (int i = 0; i < lectures.length; i++) {
-      final Lecture lecture = lectures[i];
-      scheduleContent.add(ScheduleSlot(
-        subject: lecture.subject,
-        typeClass: lecture.typeClass,
-        rooms: lecture.room,
-        begin: lecture.startTime,
-        end: lecture.endTime,
-        teacher: lecture.teacher,
-        classNumber: lecture.classNumber,
+    for (int i = 0; i < timespaces_day.length; i++) {
+      final List<String> timespace = timespaces_day[i];
+      scheduleContent.add(FreeTimeSlot(//CHANGE
+        begin: timespace[0],
+        end: timespace[1],
       ));
     }
     return scheduleContent;
@@ -104,10 +98,10 @@ class OverlapPageView extends StatelessWidget {
       context: context,
       status: scheduleStatus,
       contentGenerator: dayColumnBuilder(day),
-      content: aggLectures[day],
-      contentChecker: aggLectures[day].isNotEmpty,
+      content: commonTimeSpaces[day],
+      contentChecker: commonTimeSpaces[day].isNotEmpty,
       onNullContent:
-          Center(child: Text('Não possui aulas à ' + daysOfTheWeek[day] + '.')),
+          Center(child: Text('Não existem espaços disponíveis à ' + daysOfTheWeek[day] + '.')),
       index: day,
     );
   }
