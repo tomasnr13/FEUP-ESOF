@@ -35,4 +35,13 @@ class ScheduleFetcherApi extends ScheduleFetcher {
             store.state.content['session']));
     return lectures;
   }
+
+  List<Lecture> compareSchedulesFreeTime(List<List<Lecture>> schedules){
+    // pseudo code:
+    // step 1: go through each day and check what is the nearest starting time slot -> free time: start time until that nearest time slot
+    // step 2: from that nearest see what is the time of the block that ends later and use that as starting point, repeat algorithm -> go to step 1
+    // in the end return list of free time slots
+    for(var i = 0; i < 7; i++){
+    }
+  }
 }
