@@ -94,6 +94,7 @@ class OverlapPageView extends StatelessWidget {
   }
 
   Widget createScheduleByDay(BuildContext context, int day) {
+    /*
     return RequestDependentWidgetBuilder(
       context: context,
       status: scheduleStatus,
@@ -103,6 +104,15 @@ class OverlapPageView extends StatelessWidget {
       onNullContent:
           Center(child: Text('Não existem espaços disponíveis à ' + daysOfTheWeek[day] + '.')),
       index: day,
+    );
+    */
+    return Scaffold(
+      appBar: AppBar(
+          title:Text("Text Widget Example")
+      ),
+      body: Center(
+          child:Text("Welcome to Javatpoint")
+      ),
     );
   }
 }

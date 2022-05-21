@@ -68,7 +68,7 @@ class _OverlapPageState extends SecondaryPageViewState
             tabController: tabController,
             scrollViewController: scrollViewController,
             daysOfTheWeek: daysOfTheWeek,
-            aggLectures: _groupLecturesByDay(lectures),
+            //aggLectures: _groupLecturesByDay(lectures),
             scheduleStatus: scheduleStatus);
       },
     );

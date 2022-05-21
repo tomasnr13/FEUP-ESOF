@@ -17,6 +17,7 @@ import 'package:uni/view/Pages/bus_stop_next_arrivals_page.dart';
 import 'package:uni/view/Pages/exams_page_view.dart';
 import 'package:uni/view/Pages/home_page_view.dart';
 import 'package:uni/view/Pages/logout_route.dart';
+import 'package:uni/view/Pages/overlap_input.dart';
 import 'package:uni/view/Pages/splash_page_view.dart';
 import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/navigation_service.dart';
@@ -101,7 +102,7 @@ class MyAppState extends State<MyApp> {
                     page: GroupsPage(), settings: settings);
               case '/' + Constants.navOverlap:
                 return PageTransition.makePageTransition(
-                    page: OverlapPage(), settings: settings);
+                    page: OverlapInput(), settings: settings);
               case '/' + Constants.navAbout:
                 return PageTransition.makePageTransition(
                     page: AboutPageView(), settings: settings);
