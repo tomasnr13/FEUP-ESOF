@@ -27,20 +27,29 @@ class _State extends State<OverlapInput> {
 
   // preliminary check that prevents overload of request for bad input
   void validateUpCode(String upCode) {
-    // check if it has the correct format
     validate = true;
+
+    // check if it has the correct format
     if (upCode.length == 11) {
       if (upCode.substring(0, 2).toLowerCase() != 'up' ||
           !isNumeric(upCode.substring(2))) {
         validate = false;
       }
-    }
-    else if (upCode.length == 9) {
-      if(!isNumeric(upCode)){
+
+      // check if it has already been submitted
+      if (students.contains(upCode) || students.contains(upCode.substring(2))) {
         validate = false;
       }
-    }
-    else {
+    } else if (upCode.length == 9) {
+      if (!isNumeric(upCode)) {
+        validate = false;
+      }
+
+      // check if it has already been submitted
+      if (students.contains(upCode) || students.contains('up' + upCode)) {
+        validate = false;
+      }
+    } else {
       validate = false;
     }
   }
@@ -54,6 +63,7 @@ class _State extends State<OverlapInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Selecionar Estudantes'),
           backgroundColor: Color(0xFF76171F),
@@ -69,17 +79,18 @@ class _State extends State<OverlapInput> {
                       cursorColor: Color(0xFF76171F),
                       controller: upController,
                       decoration: InputDecoration(
-                        errorText:
-                        !validate ? 'Código de estudante inválido' : null,
+                        errorText: !validate
+                            ? 'Código inválido ou já submetido'
+                            : null,
                         floatingLabelStyle:
-                        TextStyle(fontSize: 20.0, color: Colors.grey),
+                            TextStyle(fontSize: 20.0, color: Colors.grey),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.grey, width: 2.0),
+                              BorderSide(color: Colors.grey, width: 2.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Color(0xFF76171F), width: 2.0),
+                              BorderSide(color: Color(0xFF76171F), width: 2.0),
                         ),
                         prefixIcon: Icon(
                           Icons.person,
@@ -104,13 +115,19 @@ class _State extends State<OverlapInput> {
           ),
           Expanded(
               child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.only(
+                      left: 0, bottom: 5, right: 0, top: 5),
                   itemCount: students.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      height: 50,
-                      margin: EdgeInsets.all(2),
-                      color: Colors.grey,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Color(0x94707070),
+                        border: Border(
+                          top: BorderSide(color: Colors.white),
+                          bottom: BorderSide(color: Colors.white),
+                        ),
+                      ),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -140,7 +157,32 @@ class _State extends State<OverlapInput> {
                             ),
                           ]),
                     );
-                  }))
+                  })),
+          Padding(
+            padding: EdgeInsets.only(left: 20, bottom: 15, right: 20, top: 15),
+            //apply padding to some sides only
+            child: Center(
+              child: Text('${students.length} selecionados',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15,
+                  )),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xFF76171F),
+              minimumSize: const Size.fromHeight(50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+              ),
+            ),
+            onPressed: () {},
+            child: const Text(
+              'Calcular tempos livres',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
         ]));
   }
 }
