@@ -38,9 +38,6 @@ class GroupsSlot extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => GroupPageView(group: Groups(id: id, course: course, name: name, target_size: target_size, manager: manager, members: [], closed: false))));
-          //return PageTransition.makePageTransition(
-              //page: HomePageView(), settings: RouteSettings(name: '/Área Pessoal', arguments: null));
-              //page: GroupPageView(group: Groups(id: id, course: course, name: name, target_size: target_size, manager: manager, members: [], closed: false)));
         },
         child:
         RowContainer(

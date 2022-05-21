@@ -2,6 +2,7 @@ import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
+import 'package:uni/view/Pages/group_create_page_view.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
@@ -122,7 +123,8 @@ Widget build(BuildContext context) {
         child: TabBarView(
       controller: tabController,
       children: createSchedule(context),
-    ))
+    )),
+    groupCreateButton(context)
   ]);
 }
 
@@ -194,7 +196,24 @@ Widget createScheduleByCourse(BuildContext context, int courseIndex) {
   );
 }
 
-
+Widget groupCreateButton(BuildContext context) {
+    return Container(
+        child: ElevatedButton(
+          onPressed: () {
+              if (!FocusScope.of(context).hasPrimaryFocus) {
+                FocusScope.of(context).unfocus();
+              }
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => GroupCreatePageView(studentCourses, tabController.index)));
+          },
+          child: Text(
+            'Create New Group',
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+        ));
+  }
 
 
 
