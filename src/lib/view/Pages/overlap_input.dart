@@ -25,30 +25,41 @@ class _State extends State<OverlapInput> {
           title: Text('Selecionar Estudantes'),
         ),
         body: Column(children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Up do estudante',
+          Flexible(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Flexible(
+                    child: TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Up do estudante',
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () {},
+                    child: const Text('Adicionar'),
+                  ),
+                  /* TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Up do estudante',
+                    ),
+                  ),
+                ElevatedButton(
+                  child: Text('Add'),
+                  onPressed: () {
+                    addItemToList();
+                  },
                 ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: ElevatedButton(
-                child: Text('Add'),
-                onPressed: () {
-                  addItemToList();
-                },
-              ),
-            ),
+                */
+                ]),
           ),
           Expanded(
               child: ListView.builder(
