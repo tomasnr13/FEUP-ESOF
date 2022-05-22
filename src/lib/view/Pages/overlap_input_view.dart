@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class OverlapInput extends StatefulWidget {
   @override
-  _State createState() => _State();
+  OverlapInputState createState() => OverlapInputState();
 }
 
-class _State extends State<OverlapInput> {
+class OverlapInputState extends State<OverlapInput> {
   final List<String> students = <String>[];
   bool validate = false;
 
