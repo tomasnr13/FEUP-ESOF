@@ -42,7 +42,7 @@ class GroupsSlot extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => GroupPageView(group: Group(id: group.id, course: group.course, name: group.name, target_size: group.target_size, manager: group.manager, members: group.members, closed: group.closed))));
+                  builder: (context) => GroupPageView(group)));
         },
         child:
         RowContainer(
@@ -70,8 +70,8 @@ class GroupsSlot extends StatelessWidget {
     return  Column(
       key: Key('schedule-slot-time-${"var3"}-${"var4"}'),
       children: <Widget>[
-        createGroupsTime("var5", context),
-        createGroupsTime("var6", context)
+        createGroupsTime(group.members[0].email, context),
+        createGroupsTime(group.members[1].email, context)
       ],
     );
   }
@@ -101,8 +101,7 @@ class GroupsSlot extends StatelessWidget {
           ),
           Row(
             children: [
-              createGroupsSlotTeacherInfo(context),
-              createGroupsSlotClass(context)
+              createGroupsSlotManagerInfo(context)
             ],
           )
         ],
@@ -111,21 +110,13 @@ class GroupsSlot extends StatelessWidget {
     ];
   }
 
-  Widget createGroupsSlotTeacherInfo(context) {
+  Widget createGroupsSlotManagerInfo(context) {
     return createTextField(
-        "var10",
+        group.manager.name,
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
         TextAlign.center);
   }
 
-  Widget createGroupsSlotClass(context) {
-    final classText =
-        this.group.id != null ? (' | ' + "var11") : '';
-    return createTextField(
-        classText,
-        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
-        TextAlign.center);
-  }
 
   Widget createTextField(text, style, alignment) {
     return Text(

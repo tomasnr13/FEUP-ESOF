@@ -1,37 +1,37 @@
-import 'package:uni/model/app_state.dart';
-import 'package:uni/model/entities/course.dart';
-import 'package:uni/model/entities/lecture.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
-import 'package:uni/view/Widgets/page_title.dart';
-import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
-import 'package:uni/view/Widgets/schedule_slot.dart';
+import 'package:uni/view/Pages/unnamed_page_view.dart';
+import 'package:uni/view/Widgets/bug_report_form.dart';
 
+import '../../model/entities/course.dart';
 import '../../model/entities/group.dart';
-import '../Widgets/groups_slot.dart';
+import '../Widgets/group_create_form.dart';
 
-/// Manages the 'schedule' sections of the app
-class GroupPageView extends StatelessWidget {
-
-  GroupPageView({Key key,
-    @required this.group
-  });
-
-  final Group group;
-  final double borderRadius = 10.0;
-
+class GroupPageView extends StatefulWidget {
+  Group group;
+  GroupPageView(Group group){
+    this.group = group;
+  }
   @override
-  Widget build(BuildContext context) {
-    final MediaQueryData queryData = MediaQuery.of(context);
+  State<StatefulWidget> createState(){
+    final state = GroupPageViewState(group);
+    return state;
+  }
+}
 
-    return Column(children: <Widget>[
-      ListView(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        children: <Widget>[
-          PageTitle(name: group.name),
-        ],
-      ),
-    ]);
+/// Manages the 'Bugs and sugestions' section of the app.
+class GroupPageViewState extends UnnamedPageView {
+  Group group;
+  GroupPageViewState(Group group){
+    this.group = group;
+  }
+  @override
+  @override
+  Widget getBody(BuildContext context) {
+    return  Container(
+        margin:  EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+        child:  Text(group.name)
+    );
   }
 }

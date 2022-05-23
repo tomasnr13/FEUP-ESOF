@@ -239,11 +239,17 @@ class GroupCreateFormState extends State<GroupCreateForm> {
       _isButtonTapped = true;
     });
 
-    final Group group = Group(id: 0, course: courses[_selectedCourse], name: nameController.text, target_size: numberMembers.toInt(), manager: null, members: [], closed: false);
+    final Group group = Group(id: 0, course: courses[_selectedCourse],
+        name: nameController.text, target_size: numberMembers.toInt(),
+        manager: StoreProvider.of<AppState>(context).state.content['profile'],
+        members: [StoreProvider.of<AppState>(context).state.content['profile'],
+          StoreProvider.of<AppState>(context).state.content['profile'],
+          StoreProvider.of<AppState>(context).state.content['profile']],
+        closed: false);
     final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
     newGroups.add(group);
     StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
-    print('Chico: ' + StoreProvider.of<AppState>(context).state.content['groups'][0].name);
+    print('Chico: ' + StoreProvider.of<AppState>(context).state.content['groups'][0].manager.name);
 
     clearForm();
     FocusScope.of(context).requestFocus(FocusNode());
