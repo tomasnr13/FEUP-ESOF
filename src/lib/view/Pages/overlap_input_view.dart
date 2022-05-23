@@ -66,8 +66,8 @@ class OverlapInputState extends State<OverlapInput> {
     }
   }
 
-  Future<List<TimeSlot>> calculateFreeTimeSlots(Store<AppState> store) async {
-    final List<TimeSlot> freeTimeSlots = await scheduleFetcherApi.compareSchedulesFreeTime(store, students);
+  Future<List<List<TimeSlot>>> calculateFreeTimeSlots(Store<AppState> store) async {
+    final List<List<TimeSlot>> freeTimeSlots = await scheduleFetcherApi.compareSchedulesFreeTime(store, students);
     // TODO: find a way of getting the store for here
     return freeTimeSlots;
   }

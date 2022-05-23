@@ -36,6 +36,7 @@ class ScheduleFetcherApi extends ScheduleFetcher {
     return lectures;
   }
 
+  // TODO: change this function to new controller file and modulate code in smaller functions
   // TODO: make sure the studentsUpCodes are number only codes (without up prefix)
   Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
       Store<AppState> store, List<String> studentsUpCodes) async {
@@ -56,8 +57,8 @@ class ScheduleFetcherApi extends ScheduleFetcher {
 
     // calculating common free time slots
     List<List<TimeSlot>> result;
-    int dayStart; // TODO: find a way of putting a predetermined start and end time for each day
-    int dayEnd;
+    int dayStart = 60 * 60 * 8;
+    int dayEnd = 60 * 60 * 20;
 
     // pre-calculate last end of time for each day, if no lecture -> 0
     List<int> lastEnds;
@@ -73,7 +74,6 @@ class ScheduleFetcherApi extends ScheduleFetcher {
         }
       }
     }
-
 
     // actually comparing schedules day by day
     for (var i = 0; i < 7; i++) {
@@ -107,6 +107,7 @@ class ScheduleFetcherApi extends ScheduleFetcher {
           latestEnd = 60 * 30 * nearest.blocks + nearest.startTimeSeconds;
 
           // finding the latest
+          // TODO: if the returned latest is between other student lecture call recursively
           for (var schedule in studentsSchedules) {
             for (var lecture in schedule) {
               if (lecture.day == i) {
@@ -124,7 +125,13 @@ class ScheduleFetcherApi extends ScheduleFetcher {
           freeTimeSlotStart = latestEnd;
 
           // adding free time slot to day result
-          dayResult.add(TimeSlot(i, freeTimeSlotStart, freeTimeSlotEnd));
+          if(freeTimeSlotEnd > dayEnd) {
+            dayResult.add(TimeSlot(i, freeTimeSlotStart, dayEnd));
+            break;
+          } else {
+            dayResult.add(TimeSlot(i, freeTimeSlotStart, freeTimeSlotEnd));
+          }
+
         }
       }
 
