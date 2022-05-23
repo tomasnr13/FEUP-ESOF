@@ -7,7 +7,7 @@ import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
 
-import '../../model/entities/groups.dart';
+import '../../model/entities/group.dart';
 import '../Widgets/groups_slot.dart';
 
 /// Manages the 'schedule' sections of the app
@@ -17,7 +17,7 @@ class GroupPageView extends StatelessWidget {
     @required this.group
   });
 
-  final Groups group;
+  final Group group;
   final double borderRadius = 10.0;
 
   @override

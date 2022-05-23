@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:logger/logger.dart';
 import 'package:sentry/sentry.dart';
 import 'package:uni/model/entities/course.dart';
@@ -12,7 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-import '../../model/entities/groups.dart';
+import '../../model/app_state.dart';
+import '../../model/entities/group.dart';
 
 class GroupCreateForm extends StatefulWidget {
   List<String> courses;
@@ -85,8 +87,10 @@ class GroupCreateFormState extends State<GroupCreateForm> {
       bottomMargin: 30.0,
     ));
 
-    formWidget.add(Slider(
-
+    /*
+    formWidget.add(Container(
+        margin: EdgeInsets.only(top: 20.0),
+        child: Slider(
         activeColor: Colors.red[700],
         inactiveColor: Colors.red[300],
         min: 2,
@@ -99,7 +103,9 @@ class GroupCreateFormState extends State<GroupCreateForm> {
             numberMembers = value;
           });
         }
-    ));
+    )));
+    */
+    formWidget.add(numberElementsSliderWidget(context));
 
     formWidget.add(submitButton(context));
 
@@ -166,8 +172,49 @@ class GroupCreateFormState extends State<GroupCreateForm> {
     );
   }
 
+  Widget numberElementsSliderWidget(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 30, top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Número de Elementos',
+            style: Theme.of(context).textTheme.bodyText2,
+            textAlign: TextAlign.left,
+          ),
+          Row(children: <Widget>[
+            Container(
+                margin: EdgeInsets.only(right: 15),
+                child: Icon(
+                  Icons.numbers,
+                  color: Theme.of(context).accentColor,
+                )),
+            Expanded(
+                child:
+            Slider(
+                activeColor: Colors.red[700],
+                inactiveColor: Colors.red[300],
+                min: 2,
+                max: 12,
+                divisions: 11,
+                label: '${numberMembers.round()}',
+                value: numberMembers,
+                onChanged: (value){
+                  setState(() {
+                    numberMembers = value;
+                  });
+                }
+            )
+            )])
+        ],
+      ),
+    );
+  }
+
   Widget submitButton(BuildContext context) {
     return Container(
+        margin: EdgeInsets.symmetric(vertical: 50.0),
         child: ElevatedButton(
           onPressed: () {
             if (!FocusScope.of(context).hasPrimaryFocus) {
@@ -192,7 +239,11 @@ class GroupCreateFormState extends State<GroupCreateForm> {
       _isButtonTapped = true;
     });
 
-    Groups group = Groups(id: 0, course: courses[_selectedCourse], name: nameController.text, target_size: numberMembers.toInt(), manager: null, members: [], closed: false);
+    final Group group = Group(id: 0, course: courses[_selectedCourse], name: nameController.text, target_size: numberMembers.toInt(), manager: null, members: [], closed: false);
+    final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
+    newGroups.add(group);
+    StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
+    print('Chico: ' + StoreProvider.of<AppState>(context).state.content['groups'][0].name);
 
     clearForm();
     FocusScope.of(context).requestFocus(FocusNode());

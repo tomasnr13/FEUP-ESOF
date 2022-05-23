@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
+import 'package:uni/view/Pages/unnamed_page_view.dart';
 import 'package:uni/view/Widgets/bug_report_form.dart';
 
 import '../../model/entities/course.dart';
@@ -15,20 +16,20 @@ class GroupCreatePageView extends StatefulWidget {
   }
   @override
   State<StatefulWidget> createState(){
-    final state = GroupCreatePageViewState();
-    state.setCourses(courses, index);
+    final state = GroupCreatePageViewState(courses, index);
     return state;
   }
 }
 
 /// Manages the 'Bugs and sugestions' section of the app.
-class GroupCreatePageViewState extends SecondaryPageViewState {
+class GroupCreatePageViewState extends UnnamedPageView {
   List<String> courses;
   int index;
-  void setCourses(List<String> courses, int index){
+  GroupCreatePageViewState(List<String> courses, int index){
     this.courses = courses;
     this.index = index;
   }
+
   @override
   Widget getBody(BuildContext context) {
     return  Container(

@@ -1,6 +1,6 @@
 import 'profile.dart';
 
-class Groups {
+class Group {
   final int id;
   final String course;
   final String name;
@@ -9,7 +9,7 @@ class Groups {
   bool closed;
   List<Profile> members;
 
-  Groups(
+  Group(
       {int this.id,
       String this.course,
       String this.name,
@@ -19,8 +19,8 @@ class Groups {
       bool this.closed = false});
 
   /// Creates a new instance from a JSON object.
-  static Groups fromJson(dynamic data) {
-    return Groups(
+  static Group fromJson(dynamic data) {
+    return Group(
         id: data['id'],
         course: data['course'],
         name: data['name'],

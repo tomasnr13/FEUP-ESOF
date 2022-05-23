@@ -7,7 +7,7 @@ import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
 
-import '../../model/entities/groups.dart';
+import '../../model/entities/group.dart';
 import '../Widgets/groups_slot.dart';
 
 /// Manages the 'schedule' sections of the app
@@ -16,15 +16,13 @@ class GroupsPageView extends StatelessWidget {
   GroupsPageView(
       {Key key,
       @required this.tabController,
-      @required this.daysOfTheWeek,
       @required this.studentCourses,
-      @required this.aggLectures,
-      @required this.scheduleStatus,
+      @required this.aggGroups,
+      @required this.groupsStatus,
       this.scrollViewController});
 
-  final List<String> daysOfTheWeek;
-  final List<List<Groups>> aggLectures;
-  final RequestStatus scheduleStatus;
+  final List<List<Group>> aggGroups;
+  final RequestStatus groupsStatus;
   final TabController tabController;
   final ScrollController scrollViewController;
   final List<String> studentCourses;
@@ -122,7 +120,7 @@ Widget build(BuildContext context) {
     Expanded(
         child: TabBarView(
       controller: tabController,
-      children: createSchedule(context),
+      children: createGroups(context),
     )),
     groupCreateButton(context)
   ]);
@@ -143,19 +141,21 @@ List<Widget> createTabs(queryData, BuildContext context) {
   return tabs;
 }
 
-List<Widget> createSchedule(context) {
+List<Widget> createGroups(context) {
   final List<Widget> tabBarViewContent = <Widget>[];
   for (int i = 0; i < studentCourses.length; i++) {
-    tabBarViewContent.add(createScheduleByCourse(context, i));
+    tabBarViewContent.add(createGroupsByCourse(context, i));
   }
   return tabBarViewContent;
 }
 
 /// Returns a list of widgets for the rows with a singular class info.
-List<Widget> createScheduleRows(lectures, BuildContext context) {
-  final List<Widget> scheduleContent = <Widget>[];
-  for (int i = 0; i < lectures.length; i++) {
-    final Groups lecture = lectures[i];
+List<Widget> createGroupRows(groups, BuildContext context) {
+  final List<Widget> groupsContent = <Widget>[];
+  for (int i = 0; i < groups.length; i++) {
+    final Group group = groups[i];
+    groupsContent.add(GroupsSlot(group));
+    /*
     scheduleContent.add(GroupsSlot(
       id: lecture.id,
       name: lecture.name,
@@ -165,31 +165,32 @@ List<Widget> createScheduleRows(lectures, BuildContext context) {
       members: lecture.members,
       closed: lecture.closed,
       ));
+     */
   }
-  return scheduleContent;
+  return groupsContent;
 }
 
-Widget Function(dynamic daycontent, BuildContext context) dayColumnBuilder(
+Widget Function(dynamic daycontent, BuildContext context) courseColumnBuilder(
     int day) {
-  Widget createDayColumn(dayContent, BuildContext context) {
+  Widget createCourseColumn(courseContent, BuildContext context) {
     return Container(
         key: Key('schedule-page-day-column-$day'),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: createScheduleRows(dayContent, context),
+          children: createGroupRows(courseContent, context),
         ));
   }
 
-  return createDayColumn;
+  return createCourseColumn;
 }
 
-Widget createScheduleByCourse(BuildContext context, int courseIndex) {
+Widget createGroupsByCourse(BuildContext context, int courseIndex) {
   return RequestDependentWidgetBuilder(
     context: context,
-    status: scheduleStatus,
-    contentGenerator: dayColumnBuilder(courseIndex),
-    content: aggLectures[courseIndex],
-    contentChecker: aggLectures[courseIndex].isNotEmpty,
+    status: groupsStatus,
+    contentGenerator: courseColumnBuilder(courseIndex),
+    content: aggGroups[courseIndex],
+    contentChecker: aggGroups[courseIndex].isNotEmpty,
     onNullContent:
         Center(child: Text('Não pertence a Grupos em ' + studentCourses[courseIndex] + '.')),
     index: courseIndex,
@@ -209,7 +210,7 @@ Widget groupCreateButton(BuildContext context) {
                       builder: (context) => GroupCreatePageView(studentCourses, tabController.index)));
           },
           child: Text(
-            'Create New Group',
+            'Criar Novo Grupo',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
         ));

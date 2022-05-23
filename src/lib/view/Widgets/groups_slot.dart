@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 
-import '../../model/entities/groups.dart';
+import '../../model/entities/group.dart';
 import '../../model/entities/profile.dart';
 import '../Pages/group_page_view.dart';
 import '../Pages/home_page_view.dart';
 
 class GroupsSlot extends StatelessWidget {
+  Group group;
+  /*
   final int id;
   final String course;
   final String name;
@@ -27,7 +29,10 @@ class GroupsSlot extends StatelessWidget {
     @required this.members,
     @required this.closed,
   }) : super(key: key);
-
+  */
+  GroupsSlot(Group group){
+    this.group = group;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,7 @@ class GroupsSlot extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => GroupPageView(group: Groups(id: id, course: course, name: name, target_size: target_size, manager: manager, members: [], closed: false))));
+                  builder: (context) => GroupPageView(group: Group(id: group.id, course: group.course, name: group.name, target_size: group.target_size, manager: group.manager, members: group.members, closed: group.closed))));
         },
         child:
         RowContainer(
@@ -78,12 +83,8 @@ class GroupsSlot extends StatelessWidget {
 
   List<Widget> createGroupsSlotPrimInfo(context) {
     final subjectTextField = createTextField(
-        "var7",
+        group.name,
         Theme.of(context).textTheme.headline3.apply(fontSizeDelta: 5),
-        TextAlign.center);
-    final typeClassTextField = createTextField(
-        ' (' + "var8" + ')',
-        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
         TextAlign.center);
     final roomTextField = createTextField(
         "var9",
@@ -96,7 +97,6 @@ class GroupsSlot extends StatelessWidget {
           Row(
             children: <Widget>[
               subjectTextField,
-              typeClassTextField,
             ],
           ),
           Row(
@@ -120,7 +120,7 @@ class GroupsSlot extends StatelessWidget {
 
   Widget createGroupsSlotClass(context) {
     final classText =
-        this.id != null ? (' | ' + "var11") : '';
+        this.group.id != null ? (' | ' + "var11") : '';
     return createTextField(
         classText,
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
