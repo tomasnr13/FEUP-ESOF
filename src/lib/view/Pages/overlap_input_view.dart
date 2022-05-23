@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../controller/schedule_fetcher/schedule_fetcher_api.dart';
+import '../../model/app_state.dart';
+import '../../model/entities/time_slot.dart';
+import 'package:redux/redux.dart';
+
 
 class OverlapInput extends StatefulWidget {
   @override
@@ -8,6 +13,7 @@ class OverlapInput extends StatefulWidget {
 class OverlapInputState extends State<OverlapInput> {
   final List<String> students = <String>[];
   bool validate = false;
+  ScheduleFetcherApi scheduleFetcherApi;
 
   TextEditingController upController = TextEditingController();
 
@@ -15,6 +21,12 @@ class OverlapInputState extends State<OverlapInput> {
     setState(() {
       validateUpCode(upController.text);
       if (validate) students.insert(0, upController.text);
+    });
+  }
+
+  void removeItemFromList(int index) {
+    setState(() {
+      students.removeAt(index);
     });
   }
 
@@ -54,10 +66,10 @@ class OverlapInputState extends State<OverlapInput> {
     }
   }
 
-  void removeItemFromList(int index) {
-    setState(() {
-      students.removeAt(index);
-    });
+  Future<List<TimeSlot>> calculateFreeTimeSlots(Store<AppState> store) async {
+    final List<TimeSlot> freeTimeSlots = await scheduleFetcherApi.compareSchedulesFreeTime(store, students);
+    // TODO: find a way of getting the store for here
+    return freeTimeSlots;
   }
 
   @override
