@@ -102,6 +102,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
                 Navigator.pushNamed(context, '/${Constants.navPersonalArea}');
               }
             },
+            //key: const Key( ('key' + '${Constants.navPersonalArea}')),
             child: SvgPicture.asset(
               'assets/images/logo_dark.svg',
               height: queryData.size.height / 25,
@@ -120,6 +121,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
         builder: (BuildContext context,
             AsyncSnapshot<DecorationImage> decorationImage) {
           return TextButton(
+            key: const Key('fotoicon'), //BMCL
             onPressed: () => {
               Navigator.push(
                   context, MaterialPageRoute(builder: (__) => ProfilePage()))

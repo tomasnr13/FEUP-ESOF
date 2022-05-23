@@ -49,26 +49,30 @@ class FormTextField extends StatelessWidget {
                 )),
             Expanded(
                 child: TextFormField(
-              // margins
-              minLines: minLines,
-              maxLines: maxLines,
-              decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                  // margins
+                  minLines: minLines,
+                  maxLines: maxLines,
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Theme.of(context).accentColor),
+                    ),
+                    hintText: hintText,
+                    hintStyle: Theme.of(context).textTheme.bodyText2,
+                    labelText: labelText,
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  controller: controller,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return isOptional ? null : emptyText;
+                    }
+                    return formatValidator != null
+                        ? formatValidator(value)
+                        : null;
+                  },
                 ),
-                hintText: hintText,
-                hintStyle: Theme.of(context).textTheme.bodyText2,
-                labelText: labelText,
-                labelStyle: Theme.of(context).textTheme.bodyText2,
-              ),
-              controller: controller,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return isOptional ? null : emptyText;
-                }
-                return formatValidator != null ? formatValidator(value) : null;
-              },
-            ))
+                key: Key('key_bug_form_$description')) //BMCL
           ])
         ],
       ),
