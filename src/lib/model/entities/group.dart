@@ -16,7 +16,11 @@ class Group {
       int this.target_size,
       Profile this.manager,
       List<Profile> this.members,
-      bool this.closed = false});
+      bool this.closed = false}){
+    if(this.members.length >= this.target_size){
+      this.closed = true;
+    }
+  }
 
   /// Creates a new instance from a JSON object.
   static Group fromJson(dynamic data) {

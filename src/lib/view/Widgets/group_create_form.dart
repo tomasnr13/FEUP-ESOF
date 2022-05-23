@@ -197,7 +197,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                 inactiveColor: Colors.red[300],
                 min: 2,
                 max: 12,
-                divisions: 11,
+                divisions: 10,
                 label: '${numberMembers.round()}',
                 value: numberMembers,
                 onChanged: (value){
@@ -240,12 +240,10 @@ class GroupCreateFormState extends State<GroupCreateForm> {
     });
 
     final Group group = Group(id: 0, course: courses[_selectedCourse],
-        name: nameController.text, target_size: numberMembers.toInt(),
+        name: nameController.text, target_size: numberMembers.round(),
         manager: StoreProvider.of<AppState>(context).state.content['profile'],
         members: [StoreProvider.of<AppState>(context).state.content['profile'],
-          StoreProvider.of<AppState>(context).state.content['profile'],
-          StoreProvider.of<AppState>(context).state.content['profile']],
-        closed: false);
+          StoreProvider.of<AppState>(context).state.content['profile']]);
     final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
     newGroups.add(group);
     StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
@@ -257,6 +255,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
     setState(() {
       _isButtonTapped = false;
     });
+    Navigator.pop(context);
   }
 
   void clearForm() {
