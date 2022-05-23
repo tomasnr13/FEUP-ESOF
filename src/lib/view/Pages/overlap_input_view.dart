@@ -66,12 +66,6 @@ class OverlapInputState extends State<OverlapInput> {
     }
   }
 
-  Future<List<List<TimeSlot>>> calculateFreeTimeSlots(Store<AppState> store) async {
-    final List<List<TimeSlot>> freeTimeSlots = await scheduleFetcherApi.compareSchedulesFreeTime(store, students);
-    // TODO: find a way of getting the store for here
-    return freeTimeSlots;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,7 +183,7 @@ class OverlapInputState extends State<OverlapInput> {
                 borderRadius: BorderRadius.zero,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {}, // TODO: go to next page after calling for schedules comparison function
             child: const Text(
               'Calcular tempos livres',
               style: TextStyle(fontSize: 18),

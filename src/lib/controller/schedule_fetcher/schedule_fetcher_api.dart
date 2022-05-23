@@ -15,129 +15,27 @@ class ScheduleFetcherApi extends ScheduleFetcher {
     final List<Lecture> lectures = await parseSchedule(
         await NetworkRouter.getWithCookies(
             NetworkRouter.getBaseUrlFromSession(
-                    store.state.content['session']) +
-                '''mob_hor_geral.estudante?pv_codigo=${store.state.content['session'].studentNumber}&pv_semana_ini=${dates.beginWeek}&pv_semana_fim=${dates.endWeek}''',
+                store.state.content['session']) +
+                '''mob_hor_geral.estudante?pv_codigo=${store.state
+                    .content['session'].studentNumber}&pv_semana_ini=${dates
+                    .beginWeek}&pv_semana_fim=${dates.endWeek}''',
             {},
             store.state.content['session']));
     return lectures;
   }
 
-  Future<List<Lecture>> getLecturesFromUP(
-      Store<AppState> store, dynamic studentCode) async {
+  Future<List<Lecture>> getLecturesFromUP(Store<AppState> store,
+      dynamic studentCode) async {
     final dates = getDates();
     final List<Lecture> lectures = await parseSchedule(
         await NetworkRouter.getWithCookies(
             NetworkRouter.getBaseUrlFromSession(
-                    store.state.content['session']) +
+                store.state.content['session']) +
                 //ignore: lines_longer_than_80_chars
-                '''mob_hor_geral.estudante?pv_codigo=${studentCode}&pv_semana_ini=${dates.beginWeek}&pv_semana_fim=${dates.endWeek}''',
+                '''mob_hor_geral.estudante?pv_codigo=${studentCode}&pv_semana_ini=${dates
+                    .beginWeek}&pv_semana_fim=${dates.endWeek}''',
             {},
             store.state.content['session']));
     return lectures;
-  }
-
-  // TODO: change this function to new controller file and modulate code in smaller functions
-  // TODO: make sure the studentsUpCodes are number only codes (without up prefix)
-  Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
-      Store<AppState> store, List<String> studentsUpCodes) async {
-    // pseudo code:
-    // step 1: go through each day and check what is the nearest starting time
-    // slot -> free time: start time until that nearest time slot
-    // step 2: from that nearest see what is the time of the block that ends
-    // later and use that as starting point, repeat algorithm -> go to step 1
-
-    // get schedules from students given
-    List<List<Lecture>> studentsSchedules;
-
-    for (var student in studentsUpCodes) {
-      final List<Lecture> schedule =
-          await getLecturesFromUP(store, int.parse(student));
-      studentsSchedules.add(schedule);
-    }
-
-    // calculating common free time slots
-    List<List<TimeSlot>> result;
-    int dayStart = 60 * 60 * 8;
-    int dayEnd = 60 * 60 * 20;
-
-    // pre-calculate last end of time for each day, if no lecture -> 0
-    List<int> lastEnds;
-
-    for (int i = 0; i < 7; i++) {
-      lastEnds.add(0);
-      for (var schedule in studentsSchedules) {
-        for (var lecture in schedule) {
-          final int lectureEnd = 60 * 30 * lecture.blocks + lecture.startTimeSeconds;
-          if (lecture.day == i && lastEnds[i] <= lectureEnd) {
-            lastEnds[i] = lectureEnd;
-          }
-        }
-      }
-    }
-
-    // actually comparing schedules day by day
-    for (var i = 0; i < 7; i++) {
-      Lecture nearest = Lecture('', '', i, 0, '', '', '', 0, 0, 0, 0);
-      nearest.startTimeSeconds = double.maxFinite as int;
-      int latestEnd = 0;
-
-      int freeTimeSlotStart = dayStart;
-      int freeTimeSlotEnd;
-
-      List<TimeSlot> dayResult;
-
-      if (lastEnds[i] == 0) {
-        dayResult.add(TimeSlot(i, dayEnd, dayStart));
-      } else {
-        while (latestEnd != lastEnds[i]) {
-          // finding the nearest
-          for (var schedule in studentsSchedules) {
-            for (var lecture in schedule) {
-              if (lecture.day == i) {
-                if (lecture.startTimeSeconds <= nearest.startTimeSeconds &&
-                    lecture.startTimeSeconds >= freeTimeSlotStart) {
-                  nearest = lecture;
-                }
-              }
-            }
-          }
-
-          freeTimeSlotEnd = nearest.startTimeSeconds;
-
-          latestEnd = 60 * 30 * nearest.blocks + nearest.startTimeSeconds;
-
-          // finding the latest
-          // TODO: if the returned latest is between other student lecture call recursively
-          for (var schedule in studentsSchedules) {
-            for (var lecture in schedule) {
-              if (lecture.day == i) {
-                final int nearestEnd =
-                    60 * 30 * nearest.blocks + nearest.startTimeSeconds;
-                final int lectureEnd =
-                    60 * 30 * lecture.blocks + lecture.startTimeSeconds;
-                if (lecture.startTimeSeconds < nearestEnd &&
-                    lectureEnd > latestEnd) {
-                  latestEnd = lectureEnd;
-                }
-              }
-            }
-          }
-          freeTimeSlotStart = latestEnd;
-
-          // adding free time slot to day result
-          if(freeTimeSlotEnd > dayEnd) {
-            dayResult.add(TimeSlot(i, freeTimeSlotStart, dayEnd));
-            break;
-          } else {
-            dayResult.add(TimeSlot(i, freeTimeSlotStart, freeTimeSlotEnd));
-          }
-
-        }
-      }
-
-      result.add(dayResult);
-    }
-
-    return result;
   }
 }
