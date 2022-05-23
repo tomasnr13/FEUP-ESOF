@@ -33,7 +33,6 @@ class GroupCreateForm extends StatefulWidget {
 
 /// Manages the 'Bugs and Suggestions' section of the app
 class GroupCreateFormState extends State<GroupCreateForm> {
-
   static final _formKey = GlobalKey<FormState>();
 
   List<DropdownMenuItem<int>> courseList = [];
@@ -47,7 +46,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
 
   bool _isButtonTapped = false;
 
-  void setCourses(List<String> courses, int index){
+  void setCourses(List<String> courses, int index) {
     this.courses = courses;
     this.index = index;
   }
@@ -61,7 +60,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
   void loadCourseList() {
     _selectedCourse = index;
     courseList = [];
-    for(int i = 0; i < courses.length; i++){
+    for (int i = 0; i < courses.length; i++) {
       courseList.add(DropdownMenuItem(child: Text(courses[i]), value: i));
     }
   }
@@ -69,7 +68,10 @@ class GroupCreateFormState extends State<GroupCreateForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey, child: ListView(children: getFormWidget(context)));
+        key: _formKey,
+        child: ListView(
+          children: getFormWidget(context),
+        ));
   }
 
   List<Widget> getFormWidget(BuildContext context) {
@@ -123,16 +125,15 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                 color: Theme.of(context).accentColor, size: 50.0),
             Expanded(
                 child: Text(
-                  'Criar Grupo de Trabalho',
-                  textScaleFactor: 1.6,
-                  textAlign: TextAlign.center,
-                )),
+              'Criar Grupo de Trabalho',
+              textScaleFactor: 1.6,
+              textAlign: TextAlign.center,
+            )),
             Icon(Icons.group_add,
                 color: Theme.of(context).accentColor, size: 50.0),
           ],
         ));
   }
-
 
   /// Returns a widget for the dropdown displayed when the user tries to choose
   /// the type of bug on the form
@@ -156,16 +157,16 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                 )),
             Expanded(
                 child: DropdownButton(
-                  hint: Text('Cadeira'),
-                  items: courseList,
-                  value: _selectedCourse,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCourse = value;
-                    });
-                  },
-                  isExpanded: true,
-                ))
+              hint: Text('Cadeira'),
+              items: courseList,
+              value: _selectedCourse,
+              onChanged: (value) {
+                setState(() {
+                  _selectedCourse = value;
+                });
+              },
+              isExpanded: true,
+            ))
           ])
         ],
       ),
@@ -191,22 +192,21 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                   color: Theme.of(context).accentColor,
                 )),
             Expanded(
-                child:
-            Slider(
-                activeColor: Colors.red[700],
-                inactiveColor: Colors.red[300],
-                min: 2,
-                max: 12,
-                divisions: 11,
-                label: '${numberMembers.round()}',
-                value: numberMembers,
-                onChanged: (value){
-                  setState(() {
-                    numberMembers = value;
-                  });
-                }
-            )
-            )])
+                child: Slider(
+                    key: const Key('create_group_form_slider'),
+                    activeColor: Colors.red[700],
+                    inactiveColor: Colors.red[300],
+                    min: 2,
+                    max: 12,
+                    divisions: 11,
+                    label: '${numberMembers.round()}',
+                    value: numberMembers,
+                    onChanged: (value) {
+                      setState(() {
+                        numberMembers = value;
+                      });
+                    }))
+          ])
         ],
       ),
     );
@@ -222,6 +222,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
             }
             submitBugReport();
           },
+          key: const Key('create_group_form_send'),
           child: Text(
             'Enviar',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
@@ -239,17 +240,30 @@ class GroupCreateFormState extends State<GroupCreateForm> {
       _isButtonTapped = true;
     });
 
-    final Group group = Group(id: 0, course: courses[_selectedCourse],
-        name: nameController.text, target_size: numberMembers.toInt(),
+    final Group group = Group(
+        id: 0,
+        course: courses[_selectedCourse],
+        name: nameController.text,
+        target_size: numberMembers.toInt(),
         manager: StoreProvider.of<AppState>(context).state.content['profile'],
-        members: [StoreProvider.of<AppState>(context).state.content['profile'],
+        members: [
           StoreProvider.of<AppState>(context).state.content['profile'],
-          StoreProvider.of<AppState>(context).state.content['profile']],
+          StoreProvider.of<AppState>(context).state.content['profile'],
+          StoreProvider.of<AppState>(context).state.content['profile']
+        ],
         closed: false);
-    final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
+    final List<Group> newGroups =
+        StoreProvider.of<AppState>(context).state.content['groups'];
     newGroups.add(group);
-    StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
-    print('Chico: ' + StoreProvider.of<AppState>(context).state.content['groups'][0].manager.name);
+    StoreProvider.of<AppState>(context)
+        .state
+        .cloneAndUpdateValue('groups', newGroups);
+    print('Chico: ' +
+        StoreProvider.of<AppState>(context)
+            .state
+            .content['groups'][0]
+            .manager
+            .name);
 
     clearForm();
     FocusScope.of(context).requestFocus(FocusNode());
@@ -277,7 +291,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
 
   void loadGHKey() async {
     final Map<String, dynamic> dataMap =
-    await parseJsonFromAssets('assets/env/env.json');
+        await parseJsonFromAssets('assets/env/env.json');
     this.ghToken = dataMap['gh_token'];
   }
 }

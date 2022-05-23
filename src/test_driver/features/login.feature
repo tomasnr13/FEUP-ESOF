@@ -4,9 +4,9 @@ Feature: Open pages
   Scenario: login and access the main page
     When I fill the "usernameinput" field with "up201904517"
     And  I fill the "passwordinput" field with "****************"
+    And I tap the "remind_me" button
     And I tap the "entrar" button
     Then I expect the text "Área Pessoal" to be present
-
 
   # Scenario: login and access the "Horário" page
   Scenario: Access the "Horário" page

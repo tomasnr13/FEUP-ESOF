@@ -209,6 +209,7 @@ Widget groupCreateButton(BuildContext context) {
                   MaterialPageRoute(
                       builder: (context) => GroupCreatePageView(studentCourses, tabController.index)));
           },
+          key: const Key('create_group'),
           child: Text(
             'Criar Novo Grupo',
             style: TextStyle(color: Colors.white, fontSize: 20.0),

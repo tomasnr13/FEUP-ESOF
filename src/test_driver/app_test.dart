@@ -6,7 +6,7 @@ import 'steps/tap_button_n_times_step.dart';
 import 'steps/I_am_logged_in.dart';
 Future<void> main() {
   final config = FlutterTestConfiguration()
-    ..features = [Glob(r"test_driver/features/**.feature")]
+    ..features = [Glob(r"test_driver/features/create_group.feature")]
     ..reporters = [
       ProgressReporter(),
       TestRunSummaryReporter(),

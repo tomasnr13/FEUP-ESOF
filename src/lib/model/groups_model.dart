@@ -9,8 +9,8 @@ import 'package:uni/view/Pages/schedule_page_view.dart';
 import 'package:uni/view/Pages/groups_page_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 
-import 'entities/course.dart';
-import 'entities/group.dart';
+import 'package:uni/model/entities/course.dart';
+import 'package:uni/model/entities/group.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage({Key key}) : super(key: key);

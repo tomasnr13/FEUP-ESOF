@@ -231,6 +231,7 @@ class _LoginPageViewState extends State<LoginPageView> {
     return CheckboxListTile(
       value: _keepSignedIn,
       onChanged: _setKeepSignedIn,
+      key: const Key('remind_me'),
       title: Text(
         'Manter sessão iniciada',
         textAlign: TextAlign.center,
