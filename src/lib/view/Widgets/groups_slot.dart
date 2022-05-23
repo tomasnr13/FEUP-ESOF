@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 
@@ -10,26 +11,7 @@ import '../Pages/home_page_view.dart';
 
 class GroupsSlot extends StatelessWidget {
   Group group;
-  /*
-  final int id;
-  final String course;
-  final String name;
-  final int target_size;
-  final Profile manager;
-  bool closed;
-  List<Profile> members;
 
-  GroupsSlot({
-    Key key,
-    @required this.id,
-    @required this.name,
-    @required this.course,
-    @required this.target_size,
-    @required this.manager,
-    @required this.members,
-    @required this.closed,
-  }) : super(key: key);
-  */
   GroupsSlot(Group group){
     this.group = group;
   }
@@ -56,7 +38,6 @@ class GroupsSlot extends StatelessWidget {
 
   Widget createGroupsSlotRow(context) {
     return  Container(
-        key: Key('schedule-slot-time-${"var1"}-${"var2"}'),
         margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -66,48 +47,45 @@ class GroupsSlot extends StatelessWidget {
         ));
   }
 
-  Widget createGroupsSlotTime(context) {
+  Widget createGroupsSlotLeft(context) {
     return  Column(
-      key: Key('schedule-slot-time-${"var3"}-${"var4"}'),
       children: <Widget>[
-        createGroupsTime(group.members[0].email, context),
-        createGroupsTime(group.members[1].email, context)
+        createGroupsRatio(context)
       ],
     );
   }
 
-  Widget createGroupsTime(String time, context) => createTextField(
-      time,
+  Widget createGroupsRatio(context) => createTextField(
+      (this.group.members.length + 1).toString() + '/' + this.group.target_size.toString(),
       Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
       TextAlign.center);
 
   List<Widget> createGroupsSlotPrimInfo(context) {
-    final subjectTextField = createTextField(
+    final groupNameTextField = createTextField(
         group.name,
         Theme.of(context).textTheme.headline3.apply(fontSizeDelta: 5),
-        TextAlign.center);
-    final roomTextField = createTextField(
-        "var9",
-        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
-        TextAlign.right);
+        TextAlign.center,
+    );
+    var icon = Icons.lock_open;
+    if(this.group.closed){
+      icon = Icons.lock;
+    }
+    final rows = [Row(children: <Widget>[groupNameTextField]), createGroupsSlotManagerRow(context)];
+    for(final member in group.members){
+      rows.add(createGroupsSlotMemberRow(context, member));
+    }
     return [
-      createGroupsSlotTime(context),
+      createGroupsSlotLeft(context),
       Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              subjectTextField,
-            ],
-          ),
-          Row(
-            children: [
-              createGroupsSlotManagerInfo(context)
-            ],
-          )
-        ],
+        children: rows,
       ),
-      createGroupsSlotPrimInfoColumn(roomTextField)
+      createGroupsLockIcon(icon)
     ];
+  }
+
+  Row createGroupsSlotManagerRow(context) {
+      final widgetList = [createGroupsSlotManagerIcon(), createGroupsSlotManagerInfo(context)];
+      return Row(children: widgetList);
   }
 
   Widget createGroupsSlotManagerInfo(context) {
@@ -117,6 +95,20 @@ class GroupsSlot extends StatelessWidget {
         TextAlign.center);
   }
 
+  Widget createGroupsSlotManagerIcon(){
+    return Icon(Icons.star);
+  }
+
+  Widget createGroupsSlotMemberIcon(){
+    return Icon(Icons.person);
+  }
+
+  Row createGroupsSlotMemberRow(context, member) {
+    return Row(children: [createGroupsSlotMemberIcon(), createTextField(
+        member.name,
+        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
+        TextAlign.center)]);
+  }
 
   Widget createTextField(text, style, alignment) {
     return Text(
@@ -126,7 +118,7 @@ class GroupsSlot extends StatelessWidget {
     );
   }
 
-  Widget createGroupsSlotPrimInfoColumn(elements) {
-    return Container(child: elements);
+  Widget createGroupsLockIcon(icon) {
+    return Icon(icon);
   }
 }
