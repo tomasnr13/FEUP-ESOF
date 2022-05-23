@@ -36,10 +36,9 @@ class ScheduleFetcherApi extends ScheduleFetcher {
     return lectures;
   }
 
-  // TODO: make sure the studentsUpCodes
-  Future<List<TimeSlot>> compareSchedulesFreeTime(
+  // TODO: make sure the studentsUpCodes are number only codes (without up prefix)
+  Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
       Store<AppState> store, List<String> studentsUpCodes) async {
-
     // pseudo code:
     // step 1: go through each day and check what is the nearest starting time
     // slot -> free time: start time until that nearest time slot
@@ -56,53 +55,80 @@ class ScheduleFetcherApi extends ScheduleFetcher {
     }
 
     // calculating common free time slots
-    List<TimeSlot> result;
+    List<List<TimeSlot>> result;
+    int dayStart; // TODO: find a way of putting a predetermined start and end time for each day
+    int dayEnd;
 
+    // pre-calculate last end of time for each day, if no lecture -> 0
+    List<int> lastEnds;
+
+    for (int i = 0; i < 7; i++) {
+      lastEnds.add(0);
+      for (var schedule in studentsSchedules) {
+        for (var lecture in schedule) {
+          final int lectureEnd = 60 * 30 * lecture.blocks + lecture.startTimeSeconds;
+          if (lecture.day == i && lastEnds[i] <= lectureEnd) {
+            lastEnds[i] = lectureEnd;
+          }
+        }
+      }
+    }
+
+
+    // actually comparing schedules day by day
     for (var i = 0; i < 7; i++) {
       Lecture nearest = Lecture('', '', i, 0, '', '', '', 0, 0, 0, 0);
       nearest.startTimeSeconds = double.maxFinite as int;
-
-      int lowerLimit = double.minPositive as int;
       int latestEnd = 0;
 
-      int freeTimeSlotStart; // TODO: find a way of putting a predetermined start time for each day
+      int freeTimeSlotStart = dayStart;
       int freeTimeSlotEnd;
 
-      while(latestEnd != ) {  // TODO: find a stopping criteria
+      List<TimeSlot> dayResult;
 
-        // finding the nearest
-        for (var schedule in studentsSchedules) {
-          for (var lecture in schedule) {
-            if (lecture.day == i) {
-              if (lecture.startTimeSeconds <= nearest.startTimeSeconds && lecture.startTimeSeconds >= lowerLimit) {
-                nearest = lecture;
+      if (lastEnds[i] == 0) {
+        dayResult.add(TimeSlot(i, dayEnd, dayStart));
+      } else {
+        while (latestEnd != lastEnds[i]) {
+          // finding the nearest
+          for (var schedule in studentsSchedules) {
+            for (var lecture in schedule) {
+              if (lecture.day == i) {
+                if (lecture.startTimeSeconds <= nearest.startTimeSeconds &&
+                    lecture.startTimeSeconds >= freeTimeSlotStart) {
+                  nearest = lecture;
+                }
               }
             }
           }
-        }
 
-        latestEnd = 60 * 30 * nearest.blocks + nearest.startTimeSeconds;
+          freeTimeSlotEnd = nearest.startTimeSeconds;
 
-        // finding the latest
-        for (var schedule in studentsSchedules) {
-          for (var lecture in schedule) {
-            if (lecture.day == i) {
-              final int nearestEnd = 60 * 30 * nearest.blocks +
-                  nearest.startTimeSeconds;
-              final int lectureEnd = 60 * 30 * lecture.blocks +
-                  lecture.startTimeSeconds;
-              if (lecture.startTimeSeconds < nearestEnd &&
-                  lectureEnd > latestEnd) {
-                latestEnd = lectureEnd;
+          latestEnd = 60 * 30 * nearest.blocks + nearest.startTimeSeconds;
+
+          // finding the latest
+          for (var schedule in studentsSchedules) {
+            for (var lecture in schedule) {
+              if (lecture.day == i) {
+                final int nearestEnd =
+                    60 * 30 * nearest.blocks + nearest.startTimeSeconds;
+                final int lectureEnd =
+                    60 * 30 * lecture.blocks + lecture.startTimeSeconds;
+                if (lecture.startTimeSeconds < nearestEnd &&
+                    lectureEnd > latestEnd) {
+                  latestEnd = lectureEnd;
+                }
               }
             }
           }
+          freeTimeSlotStart = latestEnd;
+
+          // adding free time slot to day result
+          dayResult.add(TimeSlot(i, freeTimeSlotStart, freeTimeSlotEnd));
         }
-
-        lowerLimit = latestEnd;
-
-        // TODO: add free time slot at end of each iteration
       }
+
+      result.add(dayResult);
     }
 
     return result;
