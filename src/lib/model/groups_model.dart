@@ -10,6 +10,7 @@ import 'package:uni/view/Pages/groups_page_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 
 import 'entities/course.dart';
+import 'entities/group.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage({Key key}) : super(key: key);
@@ -26,14 +27,6 @@ class _GroupsPageState extends SecondaryPageViewState
   ScrollController scrollViewController;
   List<String> studentCourses;
 
-  List<String> daysOfTheWeek = [
-    'Segunda-feira',
-    'Terça-feira',
-    'Quarta-feira',
-    'Quinta-feira',
-    'Sexta-feira'
-  ];
-
   List<String> _studentCourses() {
     final courses = StoreProvider.of<AppState>(context)
         .state
@@ -45,22 +38,26 @@ class _GroupsPageState extends SecondaryPageViewState
         list.add(courses[j].subject);
       }
     }
-    print("list: ");
-    print(list);
+    // print("list: ");
+    // print(list);
     return list;
   }
 
-  List<List<Lecture>> _groupLecturesByDay(schedule) {
-    final aggLectures = <List<Lecture>>[];
+  List<List<Group>> _groupGroupsByCourse(group_data) {
 
-    for (int i = 0; i < daysOfTheWeek.length; i++) {
-      final List<Lecture> lectures = <Lecture>[];
-      for (int j = 0; j < schedule.length; j++) {
-        if (schedule[j].day == i) lectures.add(schedule[j]);
+    // print("HERE HERE HERE");
+    // print(group_data[0]);
+    final aggGroups = <List<Group>>[];
+    final list_of_courses = _studentCourses();
+
+    for (int i = 0; i < list_of_courses.length; i++) {
+      final List<Group> group_list = <Group>[];
+      for (int j = 0; j < group_data.length; j++) {
+        if (group_data[j].course == list_of_courses[i]) group_list.add(group_data[j]);
       }
-      aggLectures.add(lectures);
+      aggGroups.add(group_list);
     }
-    return aggLectures;
+    return aggGroups;
   }
 
   @override
@@ -68,7 +65,6 @@ class _GroupsPageState extends SecondaryPageViewState
     super.initState();
     tabController = TabController(vsync: this, length:4);
     final offset = 0;
-    //final offset = (weekDay > 5) ? 0 : (weekDay - 1) % studentCourses.length;
     tabController.animateTo((tabController.index + offset));
     return tabController;
   }
@@ -85,16 +81,16 @@ class _GroupsPageState extends SecondaryPageViewState
     return StoreConnector<AppState, Tuple2<List<Lecture>, RequestStatus>>(
       converter: (store) => Tuple2(store.state.content['schedule'],
           store.state.content['scheduleStatus']),
-      builder: (context, lectureData) {
-        final lectures = lectureData.item1;
-        final scheduleStatus = lectureData.item2;
+      builder: (context, groupData) {
+        final groupsStatus = groupData.item2;
+        //final group_data = <Group>[];
+        //group_data.add(Group(id: 12, course: "CPD", name: "Terrific Trio", target_size: 5, manager: null, members: [], closed: false));
         return GroupsPageView(
             studentCourses: _studentCourses(),
             tabController: tabController,
             scrollViewController: scrollViewController,
-            daysOfTheWeek: daysOfTheWeek,
-            aggLectures: _groupLecturesByDay(lectures),
-            scheduleStatus: scheduleStatus);
+            aggGroups: _groupGroupsByCourse(StoreProvider.of<AppState>(context).state.content['groups']),
+            groupsStatus: groupsStatus);
       },
     );
   }
