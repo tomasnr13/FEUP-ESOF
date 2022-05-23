@@ -89,15 +89,34 @@ class GroupPageViewState extends UnnamedPageView {
   Widget getBody(BuildContext context) {
 
     var widget = <Widget>[
-    Container(child: Text(this.group.name,style: TextStyle(fontSize:25,),textAlign: TextAlign.center,)),
+    Container(margin: EdgeInsets.all(2.0),
+        padding: EdgeInsets.all(2.0),
+        child: Text(this.group.course,style: TextStyle(fontSize:30,fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
+    Container(margin: EdgeInsets.all(2.0),
+        padding: EdgeInsets.all(2.0),
+        child: Text(this.group.name,style: TextStyle(fontSize:25,),textAlign: TextAlign.center,)),
     Container(
     padding: EdgeInsets.all(20.0),
     child: Text('Membros ' + (group.members.length+1).toString() +
     ' de ' + group.target_size.toString(),
     textAlign: TextAlign.left)),
     ];
+
     widget.addAll(showMembers());
+    if(group.members.length>= group.target_size-1){
+      widget.add(Container(padding: EdgeInsets.fromLTRB(20.0,40.0,20.0,20.0),
+          child: Text("The group has reached it's maximum capacity",
+            textAlign: TextAlign.center)),);
+      widget.add(Container(child:Icon(Icons.lock)));
+    }else{
+      widget.add(Container(padding: EdgeInsets.fromLTRB(20.0,40.0,20.0,20.0),
+          child: Text('You can still add more members',
+              textAlign: TextAlign.center)),);
+      widget.add(Container(child:Icon(Icons.lock_open)));
+    }
     return ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
     padding: EdgeInsets.only(
     bottom: 20,
     ),

@@ -17,7 +17,7 @@ class Group {
       Profile this.manager,
       List<Profile> this.members,
       bool this.closed = false}){
-    if(this.members.length >= this.target_size){
+    if(this.members.length >= this.target_size-1){
       this.closed = true;
     }
   }

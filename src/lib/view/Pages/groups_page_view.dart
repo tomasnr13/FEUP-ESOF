@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/lecture.dart';
