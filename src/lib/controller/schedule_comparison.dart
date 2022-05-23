@@ -4,9 +4,6 @@ import 'package:redux/redux.dart';
 import 'package:uni/model/entities/time_slot.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher_api.dart';
 
-// TODO: change this function to new controller file and modulate code in smaller functions
-// TODO: make sure the studentsUpCodes are number only codes (without up prefix)
-
 /**
  * Compares students schedules and returns the free time slots common to each other
  */
@@ -52,6 +49,7 @@ Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
         nearest = findNearestLecture(i, studentsSchedules, freeTimeSlotStart);
         freeTimeSlotEnd = nearest.startTimeSeconds;
 
+        lastEnd = findLastLectureNoCollision(i, nearest, studentsSchedules);
         freeTimeSlotStart = lastEnd;
 
         // adding free time slot to day result
@@ -150,19 +148,46 @@ int findLastLectureNoCollision(
     int day, Lecture nearest, List<List<Lecture>> studentsSchedules) {
   int lastEnd = getSecsFromBlocks(nearest.startTimeSeconds, nearest.blocks);
 
-  // TODO: if the returned latest is between other student lecture call recursively
-  for (var schedule in studentsSchedules) {
-    for (var lecture in schedule) {
-      if (lecture.day == day) {
-        final int nearestEnd =
-            getSecsFromBlocks(nearest.startTimeSeconds, nearest.blocks);
-        final int lectureEnd =
-            getSecsFromBlocks(lecture.startTimeSeconds, lecture.blocks);
 
-        if (lecture.startTimeSeconds < nearestEnd && lectureEnd > lastEnd) {
-          lastEnd = lectureEnd;
+
+  // get last lecture end
+  while (true) {
+    for (var schedule in studentsSchedules) {
+      for (var lecture in schedule) {
+        if (lecture.day == day) {
+          final int nearestEnd =
+              getSecsFromBlocks(nearest.startTimeSeconds, nearest.blocks);
+          final int lectureEnd =
+              getSecsFromBlocks(lecture.startTimeSeconds, lecture.blocks);
+
+          if (lecture.startTimeSeconds < nearestEnd && lectureEnd > lastEnd) {
+            lastEnd = lectureEnd;
+          }
         }
       }
+    }
+
+    // check if that last lecture end is between other lecture period
+    // if it is -> repeat step one -> else -> return
+    bool between = false;
+
+    for (var schedule in studentsSchedules) {
+      for (var lecture in schedule) {
+        final int lectureEnd =
+        getSecsFromBlocks(lecture.startTimeSeconds, lecture.blocks);
+
+        if (lecture.day == day) {
+          if(lastEnd >= lecture.startTimeSeconds && lastEnd > lectureEnd){
+            lastEnd = lectureEnd;
+            nearest = lecture;
+            between = true;
+          }
+        }
+      }
+    }
+
+    if(!between){
+      break;
     }
   }
 
@@ -172,11 +197,11 @@ int findLastLectureNoCollision(
 /**
  * Removes all 'up' prefixes from up students codes
  */
-List<String> truncateUpCodes(List<String> studentsUpCodes){
+List<String> truncateUpCodes(List<String> studentsUpCodes) {
   List<String> studentsUpCodes;
 
-  for(var code in studentsUpCodes){
-    if(code.length == 11) {
+  for (var code in studentsUpCodes) {
+    if (code.length == 11) {
       studentsUpCodes.add(code.substring(2));
     } else {
       studentsUpCodes.add(code);
