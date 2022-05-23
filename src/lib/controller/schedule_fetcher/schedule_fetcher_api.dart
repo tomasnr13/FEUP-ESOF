@@ -4,7 +4,6 @@ import 'package:uni/controller/schedule_fetcher/schedule_fetcher.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:redux/redux.dart';
-import 'package:uni/model/entities/time_slot.dart';
 
 /// Class for fetching the user's lectures from the faculty's API.
 class ScheduleFetcherApi extends ScheduleFetcher {

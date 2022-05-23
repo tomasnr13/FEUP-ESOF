@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:uni/view/Pages/about_page_view.dart';
 import '../../controller/schedule_fetcher/schedule_fetcher_api.dart';
 import '../../model/app_state.dart';
 import '../../model/entities/time_slot.dart';
 import 'package:redux/redux.dart';
-
 
 class OverlapInput extends StatefulWidget {
   @override
@@ -183,7 +183,13 @@ class OverlapInputState extends State<OverlapInput> {
                 borderRadius: BorderRadius.zero,
               ),
             ),
-            onPressed: () {}, // TODO: go to next page after calling for schedules comparison function
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutPageView()),
+              );
+            },
+            // TODO: go to next page after calling for schedules comparison function
             child: const Text(
               'Calcular tempos livres',
               style: TextStyle(fontSize: 18),
