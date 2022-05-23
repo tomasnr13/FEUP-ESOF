@@ -11,7 +11,9 @@ import 'package:uni/controller/schedule_fetcher/schedule_fetcher_api.dart';
  * Compares students schedules and returns the free time slots common to each other
  */
 Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
-    Store<AppState> store, List<String> studentsUpCodes) async {
+    Store<AppState> store, List<String> noTruncatedCodes) async {
+  List<String> studentsUpCodes = truncateUpCodes(noTruncatedCodes);
+
   const int dayStart = 60 * 60 * 8;
   const int dayEnd = 60 * 60 * 20;
 
@@ -165,4 +167,21 @@ int findLastLectureNoCollision(
   }
 
   return lastEnd;
+}
+
+/**
+ * Removes all 'up' prefixes from up students codes
+ */
+List<String> truncateUpCodes(List<String> studentsUpCodes){
+  List<String> studentsUpCodes;
+
+  for(var code in studentsUpCodes){
+    if(code.length == 11) {
+      studentsUpCodes.add(code.substring(2));
+    } else {
+      studentsUpCodes.add(code);
+    }
+  }
+
+  return studentsUpCodes;
 }
