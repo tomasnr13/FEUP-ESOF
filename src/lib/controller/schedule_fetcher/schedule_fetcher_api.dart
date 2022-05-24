@@ -14,23 +14,25 @@ class ScheduleFetcherApi extends ScheduleFetcher {
     final List<Lecture> lectures = await parseSchedule(
         await NetworkRouter.getWithCookies(
             NetworkRouter.getBaseUrlFromSession(
-                    store.state.content['session']) +
-                //ignore: lines_longer_than_80_chars
-                '''mob_hor_geral.estudante?pv_codigo=${store.state.content['session'].studentNumber}&pv_semana_ini=${dates.beginWeek}&pv_semana_fim=${dates.endWeek}''',
+                store.state.content['session']) +
+                '''mob_hor_geral.estudante?pv_codigo=${store.state
+                    .content['session'].studentNumber}&pv_semana_ini=${dates
+                    .beginWeek}&pv_semana_fim=${dates.endWeek}''',
             {},
             store.state.content['session']));
     return lectures;
   }
 
-  Future<List<Lecture>> getLecturesFromUP(
-      Store<AppState> store, dynamic studentNumber) async {
+  Future<List<Lecture>> getLecturesFromUP(Store<AppState> store,
+      dynamic studentCode) async {
     final dates = getDates();
     final List<Lecture> lectures = await parseSchedule(
         await NetworkRouter.getWithCookies(
             NetworkRouter.getBaseUrlFromSession(
-                    store.state.content['session']) +
+                store.state.content['session']) +
                 //ignore: lines_longer_than_80_chars
-                '''mob_hor_geral.estudante?pv_codigo=${studentNumber}&pv_semana_ini=${dates.beginWeek}&pv_semana_fim=${dates.endWeek}''',
+                '''mob_hor_geral.estudante?pv_codigo=${studentCode}&pv_semana_ini=${dates
+                    .beginWeek}&pv_semana_fim=${dates.endWeek}''',
             {},
             store.state.content['session']));
     return lectures;
