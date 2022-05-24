@@ -66,6 +66,27 @@ class OverlapInputState extends State<OverlapInput> {
     }
   }
 
+  void goToComparisonView() {
+    // check whether there are 2 or more students submitted
+    if (students.length < 2) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Select at least 2 students'),
+        ),
+      );
+      return;
+    }
+
+    // request comparison to the schedules submitted
+
+
+    // go to next page with result from previous call
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AboutPageView()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +125,7 @@ class OverlapInputState extends State<OverlapInput> {
                           color: Color(0xFF76171F),
                         ),
                         border: OutlineInputBorder(),
-                        labelText: 'Up do estudante',
+                        labelText: 'Código do estudante',
                       ),
                     ),
                   ),
@@ -183,12 +204,7 @@ class OverlapInputState extends State<OverlapInput> {
                 borderRadius: BorderRadius.zero,
               ),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutPageView()),
-              );
-            },
+            onPressed: () => goToComparisonView(),
             // TODO: go to next page after calling for schedules comparison function
             child: const Text(
               'Calcular tempos livres',
