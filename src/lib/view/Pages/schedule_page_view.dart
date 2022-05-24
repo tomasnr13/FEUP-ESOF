@@ -30,7 +30,7 @@ class SchedulePageView extends StatelessWidget {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         children: <Widget>[
-          PageTitle(name: 'Horário'),
+          PageTitle(name: 'Horários'),
           TabBar(
             controller: tabController,
             isScrollable: true,
@@ -67,22 +67,17 @@ class SchedulePageView extends StatelessWidget {
     return tabBarViewContent;
   }
 
-  /// Returns a list of widgets for the rows with a singular class info.
-  List<Widget> createScheduleRows(lectures, BuildContext context) {
-    final List<Widget> scheduleContent = <Widget>[];
-    for (int i = 0; i < lectures.length; i++) {
-      final Lecture lecture = lectures[i];
-      scheduleContent.add(ScheduleSlot(
-        subject: lecture.subject,
-        typeClass: lecture.typeClass,
-        rooms: lecture.room,
-        begin: lecture.startTime,
-        end: lecture.endTime,
-        teacher: lecture.teacher,
-        classNumber: lecture.classNumber,
-      ));
-    }
-    return scheduleContent;
+  Widget createScheduleByDay(BuildContext context, int day) {
+    return RequestDependentWidgetBuilder(
+      context: context,
+      status: scheduleStatus,
+      contentGenerator: dayColumnBuilder(day),
+      content: aggLectures[day],
+      contentChecker: aggLectures[day].isNotEmpty,
+      onNullContent:
+          Center(child: Text('Não possui aulas à ' + daysOfTheWeek[day] + '.')),
+      index: day,
+    );
   }
 
   Widget Function(dynamic daycontent, BuildContext context) dayColumnBuilder(
@@ -99,16 +94,21 @@ class SchedulePageView extends StatelessWidget {
     return createDayColumn;
   }
 
-  Widget createScheduleByDay(BuildContext context, int day) {
-    return RequestDependentWidgetBuilder(
-      context: context,
-      status: scheduleStatus,
-      contentGenerator: dayColumnBuilder(day),
-      content: aggLectures[day],
-      contentChecker: aggLectures[day].isNotEmpty,
-      onNullContent:
-          Center(child: Text('Não possui aulas à ' + daysOfTheWeek[day] + '.')),
-      index: day,
-    );
+  /// Returns a list of widgets for the rows with a singular class info.
+  List<Widget> createScheduleRows(lectures, BuildContext context) {
+    final List<Widget> scheduleContent = <Widget>[];
+    for (int i = 0; i < lectures.length; i++) {
+      final Lecture lecture = lectures[i];
+      scheduleContent.add(ScheduleSlot(
+        subject: lecture.subject,
+        typeClass: lecture.typeClass,
+        rooms: lecture.room,
+        begin: lecture.startTime,
+        end: lecture.endTime,
+        teacher: lecture.teacher,
+        classNumber: lecture.classNumber,
+      ));
+    }
+    return scheduleContent;
   }
 }
