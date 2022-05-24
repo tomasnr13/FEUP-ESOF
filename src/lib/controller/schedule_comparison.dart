@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:redux/redux.dart';
@@ -9,13 +11,14 @@ import 'package:uni/controller/schedule_fetcher/schedule_fetcher_api.dart';
  */
 Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
     Store<AppState> store, List<String> noTruncatedCodes) async {
-  List<String> studentsUpCodes = truncateUpCodes(noTruncatedCodes);
+
+  final List<String> studentsUpCodes = truncateUpCodes(noTruncatedCodes);
 
   const int dayStart = 60 * 60 * 8;
   const int dayEnd = 60 * 60 * 20;
 
   // calculating common free time slots
-  List<List<TimeSlot>> result;
+  List<List<TimeSlot>> result = [];
 
   // pseudo code:
   // step 1: go through each day and check what is the nearest starting time
@@ -26,20 +29,19 @@ Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
   // get schedules from students given
   final List<List<Lecture>> studentsSchedules =
       await schedulesFromStudentsList(studentsUpCodes, store);
-
   // pre-calculate last end of time for each day, if no lecture -> 0
   final List<int> lastEnds = getLastLectureEnds(studentsSchedules);
 
   // actually comparing schedules day by day
   for (var i = 0; i < 7; i++) {
     Lecture nearest = Lecture('', '', i, 0, '', '', '', 0, 0, 0, 0);
-    nearest.startTimeSeconds = double.maxFinite as int;
+    nearest.startTimeSeconds = 99999999999;
     int lastEnd = 0;
 
     int freeTimeSlotStart = dayStart;
     int freeTimeSlotEnd;
 
-    List<TimeSlot> dayResult;
+    final List<TimeSlot> dayResult = [];
 
     if (lastEnds[i] == 0) {
       dayResult.add(TimeSlot(i, dayEnd, dayStart));
@@ -63,6 +65,7 @@ Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
     }
 
     result.add(dayResult);
+
   }
 
   return result;
@@ -72,7 +75,7 @@ Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
  * Returns list of the end times of the last lecture of each day
  */
 List<int> getLastLectureEnds(List<List<Lecture>> studentsSchedules) {
-  List<int> lastEnds;
+  List<int> lastEnds = [];
 
   // go through all week days
   for (int i = 0; i < 7; i++) {
@@ -106,14 +109,29 @@ int getSecsFromBlocks(int startTime, int blocks) {
  */
 Future<List<List<Lecture>>> schedulesFromStudentsList(
     List<String> studentsUpCodes, Store<AppState> store) async {
-  ScheduleFetcherApi fetcherApi;
-
-  List<List<Lecture>> studentsSchedules;
+  final List<List<Lecture>> studentsSchedules = [];
 
   for (var student in studentsUpCodes) {
     final List<Lecture> schedule =
-        await fetcherApi.getLecturesFromUP(store, int.parse(student));
+        await ScheduleFetcherApi().getLecturesFromUP(store, int.parse(student));
     studentsSchedules.add(schedule);
+  }
+
+  return studentsSchedules;
+}
+
+/**
+ * Get the students schedules by day for a given group of given students codes
+ */
+Future<List<Lecture>> allSchedulesFromStudentsList(
+    List<String> noTruncatedCodes, Store<AppState> store) async {
+  final List<String> studentsUpCodes = truncateUpCodes(noTruncatedCodes);
+  final List<Lecture> studentsSchedules = [];
+
+  for (var student in studentsUpCodes) {
+    final List<Lecture> schedule =
+    await ScheduleFetcherApi().getLecturesFromUP(store, int.parse(student));
+    studentsSchedules.addAll(schedule);
   }
 
   return studentsSchedules;
@@ -125,7 +143,7 @@ Future<List<List<Lecture>>> schedulesFromStudentsList(
 Lecture findNearestLecture(
     int day, List<List<Lecture>> studentsSchedules, int freeTimeSlotStart) {
   Lecture nearest = Lecture('', '', day, 0, '', '', '', 0, 0, 0, 0);
-  nearest.startTimeSeconds = double.maxFinite as int;
+  nearest.startTimeSeconds = 99999999999;
 
   for (var schedule in studentsSchedules) {
     for (var lecture in schedule) {
@@ -198,15 +216,14 @@ int findLastLectureNoCollision(
  * Removes all 'up' prefixes from up students codes
  */
 List<String> truncateUpCodes(List<String> studentsUpCodes) {
-  List<String> studentsUpCodes;
-
+  final List<String> truncatedStudentsUpCodes = [];
   for (var code in studentsUpCodes) {
     if (code.length == 11) {
-      studentsUpCodes.add(code.substring(2));
+      truncatedStudentsUpCodes.add(code.substring(2));
     } else {
-      studentsUpCodes.add(code);
+      truncatedStudentsUpCodes.add(code);
     }
   }
 
-  return studentsUpCodes;
+  return truncatedStudentsUpCodes;
 }

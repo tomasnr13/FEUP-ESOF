@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uni/model/overlap_page_model.dart';
 import 'package:uni/view/Pages/about_page_view.dart';
-import 'package:uni/view/Pages/overlap_simple_view.dart';
 import '../../controller/schedule_fetcher/schedule_fetcher_api.dart';
 import '../../model/app_state.dart';
 import '../../model/entities/time_slot.dart';
@@ -81,7 +81,7 @@ class OverlapInputState extends State<OverlapInput> {
     // go to next page and makes api call
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OverlapSimple(store, students)),
+      MaterialPageRoute(builder: (context) => OverlapPage(students: students)),
     );
   }
 
