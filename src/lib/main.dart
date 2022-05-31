@@ -8,6 +8,7 @@ import 'package:sentry/sentry.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/controller/middleware.dart';
 import 'package:uni/model/app_state.dart';
+import 'package:uni/model/entities/profile.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
 import 'package:uni/utils/constants.dart' as Constants;
@@ -23,6 +24,7 @@ import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
 
 import 'controller/on_start_up.dart';
+import 'model/entities/group.dart';
 import 'model/overlap_page_model.dart';
 import 'model/schedule_page_model.dart';
 import 'model/groups_model.dart';

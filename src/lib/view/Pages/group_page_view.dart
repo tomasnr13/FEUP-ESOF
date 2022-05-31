@@ -48,7 +48,7 @@ class GroupPageViewState extends UnnamedPageView {
     )
     );
     widget.add(
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:<Widget>[
               Container(
                 margin: EdgeInsets.all(8.0),
@@ -63,21 +63,64 @@ class GroupPageViewState extends UnnamedPageView {
             ]
         )
     );
-    for (var member in group.members){
-      widget.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children:<Widget>[
-            Container(
-              margin: EdgeInsets.all(8.0),
-              padding: EdgeInsets.all(4.0),
-              child: Text(shortName(member),style: TextStyle(fontSize:15),),
-            ),
-            Container(
-              margin: EdgeInsets.all(8.0),
-              padding: EdgeInsets.all(4.0),
-              child: Text(member.email,style: TextStyle(fontSize:15),),
-            ),
-          ]
-      ));
+    if (group.manager.name == StoreProvider.of<AppState>(context).state.content['profile'].name) {
+      for (var member in group.members) {
+        widget.add(Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
+                child: Text(shortName(member), style: TextStyle(fontSize: 15),),
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.fromLTRB(8.0,2.0,4.0,2.0),
+                      padding: EdgeInsets.all(4.0),
+                      child: Text(
+                        member.email, style: TextStyle(fontSize: 15),),
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(8.0,2.0,4.0,2.0),
+                      padding: EdgeInsets.all(4.0),
+                      child:
+                      IconButton(
+                        onPressed: () {
+                        if (!FocusScope
+                          .of(context)
+                          .hasPrimaryFocus) {
+                            FocusScope.of(context).unfocus();
+                          }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => null));
+                        },
+                      icon: Icon(Icons.close),
+                      )
+                    ),
+                  ])
+            ]
+        ));
+      }
+    }else {
+      for (var member in group.members) {
+        widget.add(Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
+                child: Text(shortName(member), style: TextStyle(fontSize: 15),),
+              ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(4.0),
+                child: Text(
+                  member.email, style: TextStyle(fontSize: 15),),
+              ),
+            ]
+        ));
+      }
     }
     return widget;
   }
@@ -103,12 +146,14 @@ class GroupPageViewState extends UnnamedPageView {
     ];
 
     widget.addAll(showMembers());
-    if(group.members.length>= group.target_size-1){
+
+    if (group.manager.name == StoreProvider.of<AppState>(context).state.content['profile'].name) {
+      if(group.members.length>= group.target_size-1){
       widget.add(Container(padding: EdgeInsets.fromLTRB(20.0,40.0,20.0,20.0),
           child: Text("The group has reached it's maximum capacity",
             textAlign: TextAlign.center)),);
       widget.add(Container(child:Icon(Icons.lock)));
-    }else {
+      }else {
       widget.add(Container(padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
           child: Text('You can still add more members',
               textAlign: TextAlign.center)),);
@@ -134,23 +179,46 @@ class GroupPageViewState extends UnnamedPageView {
       )
       );
       }
-      widget.add(Container(margin: EdgeInsets.fromLTRB(8.0,8,8,0.0),
-          padding: EdgeInsets.fromLTRB(8.0,0,8,0),
-          child:ElevatedButton(
-              onPressed: () {
-                if (!FocusScope.of(context).hasPrimaryFocus) {
-                  FocusScope.of(context).unfocus();
-                }
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => null));
-              },
-              child: Text('Delete Group',style: TextStyle(color: Colors.white, fontSize: 20.0))
-          )
-      )
-      );
-
+        widget.add(Container(margin: EdgeInsets.fromLTRB(8.0, 8, 8, 0.0),
+            padding: EdgeInsets.fromLTRB(8.0, 0, 8, 0),
+            child: ElevatedButton(
+                onPressed: () {
+                  if (!FocusScope
+                      .of(context)
+                      .hasPrimaryFocus) {
+                    FocusScope.of(context).unfocus();
+                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => null));
+                },
+                child: Text('Delete Group',
+                    style: TextStyle(color: Colors.white, fontSize: 20.0))
+            )
+        )
+        );
+      }else {
+        widget.add(Container(margin: EdgeInsets.fromLTRB(8.0, 8, 8, 0.0),
+            padding: EdgeInsets.fromLTRB(8.0, 0, 8, 0),
+            child: ElevatedButton(
+                onPressed: () {
+                  if (!FocusScope
+                      .of(context)
+                      .hasPrimaryFocus) {
+                    FocusScope.of(context).unfocus();
+                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => null));
+                },
+                child: Text('Leave Group',
+                    style: TextStyle(color: Colors.white, fontSize: 20.0))
+            )
+        )
+        );
+      }
     return ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
