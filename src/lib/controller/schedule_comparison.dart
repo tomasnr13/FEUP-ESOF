@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:core';
 
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
@@ -33,7 +33,7 @@ Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
   final List<int> lastEnds = getLastLectureEnds(studentsSchedules);
 
   // actually comparing schedules day by day
-  for (var i = 0; i < 7; i++) {
+  for (var i = 0; i < 5; i++) {
     Lecture nearest = Lecture('', '', i, 0, '', '', '', 0, 0, 0, 0);
     nearest.startTimeSeconds = 99999999999;
     int lastEnd = 0;
@@ -44,28 +44,34 @@ Future<List<List<TimeSlot>>> compareSchedulesFreeTime(
     final List<TimeSlot> dayResult = [];
 
     if (lastEnds[i] == 0) {
-      dayResult.add(TimeSlot(i, dayEnd, dayStart));
+      dayResult.add(TimeSlot(i, dayStart, dayEnd));
     } else {
       while (lastEnd != lastEnds[i]) {
         // finding the nearest
         nearest = findNearestLecture(i, studentsSchedules, freeTimeSlotStart);
         freeTimeSlotEnd = nearest.startTimeSeconds;
 
+        if(dayStart == freeTimeSlotStart){
+          if(freeTimeSlotStart != freeTimeSlotEnd) dayResult.add(TimeSlot(i, dayStart, freeTimeSlotEnd));
+        }
+
         lastEnd = findLastLectureNoCollision(i, nearest, studentsSchedules);
         freeTimeSlotStart = lastEnd;
 
+        nearest = findNearestLecture(i, studentsSchedules, freeTimeSlotStart);
+        freeTimeSlotEnd = nearest.startTimeSeconds;
+
         // adding free time slot to day result
         if (freeTimeSlotEnd > dayEnd) {
-          dayResult.add(TimeSlot(i, freeTimeSlotStart, dayEnd));
+          if(freeTimeSlotStart != freeTimeSlotEnd) dayResult.add(TimeSlot(i, freeTimeSlotStart, dayEnd));
           break;
         } else {
-          dayResult.add(TimeSlot(i, freeTimeSlotStart, freeTimeSlotEnd));
+          if(freeTimeSlotStart != freeTimeSlotEnd) dayResult.add(TimeSlot(i, freeTimeSlotStart, freeTimeSlotEnd));
         }
       }
     }
 
     result.add(dayResult);
-
   }
 
   return result;
@@ -78,7 +84,7 @@ List<int> getLastLectureEnds(List<List<Lecture>> studentsSchedules) {
   List<int> lastEnds = [];
 
   // go through all week days
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i < 5; i++) {
     lastEnds.add(0);
 
     // go through all students schedules
@@ -166,19 +172,17 @@ int findLastLectureNoCollision(
     int day, Lecture nearest, List<List<Lecture>> studentsSchedules) {
   int lastEnd = getSecsFromBlocks(nearest.startTimeSeconds, nearest.blocks);
 
-
-
   // get last lecture end
   while (true) {
     for (var schedule in studentsSchedules) {
       for (var lecture in schedule) {
         if (lecture.day == day) {
           final int nearestEnd =
-              getSecsFromBlocks(nearest.startTimeSeconds, nearest.blocks);
+          getSecsFromBlocks(nearest.startTimeSeconds, nearest.blocks);
           final int lectureEnd =
-              getSecsFromBlocks(lecture.startTimeSeconds, lecture.blocks);
+          getSecsFromBlocks(lecture.startTimeSeconds, lecture.blocks);
 
-          if (lecture.startTimeSeconds < nearestEnd && lectureEnd > lastEnd) {
+          if (lecture.startTimeSeconds <= nearestEnd && lectureEnd > lastEnd) {
             lastEnd = lectureEnd;
           }
         }
@@ -195,7 +199,7 @@ int findLastLectureNoCollision(
         getSecsFromBlocks(lecture.startTimeSeconds, lecture.blocks);
 
         if (lecture.day == day) {
-          if(lastEnd >= lecture.startTimeSeconds && lastEnd > lectureEnd){
+          if(lastEnd > lecture.startTimeSeconds && lectureEnd > lastEnd){
             lastEnd = lectureEnd;
             nearest = lecture;
             between = true;
@@ -226,4 +230,24 @@ List<String> truncateUpCodes(List<String> studentsUpCodes) {
   }
 
   return truncatedStudentsUpCodes;
+}
+
+/**
+ * Gets the compatibility of a group of people, in percentage
+ */
+String compatibilityPercentage(List<List<TimeSlot>> freeTimeSlots){
+  const int dayStart = 60 * 60 * 8;
+  const int dayEnd = 60 * 60 * 20;
+
+  const totalDaySecs = (dayEnd - dayStart) * 5;
+
+  int totalFreeSecs = 0;
+
+  for(var day in freeTimeSlots){
+    for(var slot in day){
+      totalFreeSecs += slot.getDurationSecs();
+    }
+  }
+
+  return ((totalFreeSecs * 100) ~/ totalDaySecs).toString();
 }
