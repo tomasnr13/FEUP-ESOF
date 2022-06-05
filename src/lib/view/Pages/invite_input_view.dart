@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:uni/controller/networking/network_router.dart';
 import 'package:uni/model/overlap_page_model.dart';
 import 'package:uni/view/Pages/about_page_view.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../controller/schedule_fetcher/schedule_fetcher_api.dart';
 import '../../model/app_state.dart';
 import '../../model/entities/time_slot.dart';
@@ -69,10 +72,10 @@ class InviteInputState extends State<InviteInput> {
 
   void goToComparisonView() {
     // check whether there are 2 or more students submitted
-    if (students.length < 2) {
+    if (students.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Select at least 2 students'),
+          content: Text('Seleciona pelo menos 1 estudante'),
         ),
       );
       return;
@@ -85,12 +88,26 @@ class InviteInputState extends State<InviteInput> {
     );
   }
 
+  Future launchEmail() async{
+    String upCode = '';
+
+    String toEmail = 'up201906690@edu.fe.up.pt';
+    String subject = 'Caro/a Colega';
+    String message = 'Gostava de o convidar para participar no meu grupo de trabalho.\nPor favor, envie um email a confirmar\n\nCumprimentos';
+
+    final String url = 'mailto:$toEmail?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(message)}';
+
+    if(await canLaunchUrlString(url)){
+      await launchUrlString(url);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Selecionar Estudantes'),
+          title: Text('Convidar Estudantes'),
           backgroundColor: Color(0xFF76171F),
         ),
         body: Column(children: <Widget>[
@@ -202,10 +219,10 @@ class InviteInputState extends State<InviteInput> {
                 borderRadius: BorderRadius.zero,
               ),
             ),
-            onPressed: () => goToComparisonView(),
+            onPressed: () => launchEmail(),
             // TODO: go to next page after calling for schedules comparison function
             child: const Text(
-              'Calcular tempos livres',
+              'Enviar convite(s)',
               style: TextStyle(fontSize: 18),
             ),
           ),
