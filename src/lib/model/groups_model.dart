@@ -11,6 +11,7 @@ import 'package:uni/view/Pages/secondary_page_view.dart';
 
 import 'entities/course.dart';
 import 'entities/group.dart';
+import 'entities/profile.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage({Key key}) : super(key: key);
@@ -78,6 +79,20 @@ class _GroupsPageState extends SecondaryPageViewState
 
   @override
   Widget getBody(BuildContext context) {
+    List<Group> groups = StoreProvider.of<AppState>(context).state.content['groups'];
+    groups.clear();
+    List<Profile> profiles = <Profile>[new Profile(name: "Sérgio", email: "sergio@edu.fe.up.pt"),
+      new Profile(name: "António", email: "to@edu.fe.up.pt"),
+      new Profile(name: "Zé", email: "ze@edu.fe.up.pt"),
+      new Profile(name: "Maria", email: "maria@edu.fe.up.pt")];
+    groups.add(new Group(id:0,course: "CPD", name: "grupo dos amiguinhos", target_size: 5,
+        manager: profiles[0], members: [profiles[2],profiles[1],StoreProvider.of<AppState>(context).state.content['profile']],
+        closed: false));
+    groups.add(new Group(id:0,course: "C", name: "lol", target_size: 5,
+        manager: StoreProvider.of<AppState>(context).state.content['profile'], members: [profiles[2],profiles[1]],
+        closed: false));
+    print(groups);
+    // StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', groups);
     return StoreConnector<AppState, Tuple2<List<Lecture>, RequestStatus>>(
       converter: (store) => Tuple2(store.state.content['schedule'],
           store.state.content['scheduleStatus']),
