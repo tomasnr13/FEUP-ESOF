@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:uni/model/entities/profile.dart';
+import 'package:uni/view/Pages/group_create_add_member_view.dart';
 import 'package:uni/view/Pages/invite_input_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 import 'package:uni/view/Pages/unnamed_page_view.dart';
@@ -92,10 +93,13 @@ class GroupPageViewState extends UnnamedPageView {
                           .hasPrimaryFocus) {
                             FocusScope.of(context).unfocus();
                           }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => null));
+                        final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
+                        for(Group group in newGroups){
+                          if(group.name == this.group.name){
+                            group.members.remove(member);
+                            }
+                          }
+                        StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
                         },
                       icon: Icon(Icons.close),
                       )
@@ -172,7 +176,7 @@ class GroupPageViewState extends UnnamedPageView {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => null));
+                        builder: (context) => GroupCreateAddMemberView(this.group)));
               },
               child: Text('Add Member',
                   style: TextStyle(color: Colors.white, fontSize: 20.0))
@@ -209,10 +213,10 @@ class GroupPageViewState extends UnnamedPageView {
                       .hasPrimaryFocus) {
                     FocusScope.of(context).unfocus();
                   }
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => null));
+                  final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
+                    newGroups.remove(this.group);
+                  StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
+                  Navigator.pop(context);
                 },
                 child: Text('Delete Group',
                     style: TextStyle(color: Colors.white, fontSize: 20.0))
@@ -229,10 +233,14 @@ class GroupPageViewState extends UnnamedPageView {
                       .hasPrimaryFocus) {
                     FocusScope.of(context).unfocus();
                   }
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => null));
+                  final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
+                  for(Group group in newGroups){
+                    if(group.name == this.group.name){
+                      group.members.remove(StoreProvider.of<AppState>(context).state.content['profile']);
+                    }
+                  }
+                  StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
+                  Navigator.pop(context);
                 },
                 child: Text('Leave Group',
                     style: TextStyle(color: Colors.white, fontSize: 20.0))
