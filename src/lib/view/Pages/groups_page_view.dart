@@ -10,6 +10,7 @@ import 'package:uni/view/Widgets/schedule_slot.dart';
 
 import '../../model/entities/group.dart';
 import '../Widgets/groups_slot.dart';
+import 'groups_search_page_view.dart';
 
 /// Manages the 'schedule' sections of the app
 class GroupsPageView extends StatelessWidget {
@@ -110,7 +111,7 @@ Widget build(BuildContext context) {
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       children: <Widget>[
-        PageTitle(name: 'Grupos de trabalho'),
+        PageTitle(name: 'Grupos de Trabalho'),
         TabBar(
           controller: tabController,
           isScrollable: true,
@@ -123,7 +124,12 @@ Widget build(BuildContext context) {
       controller: tabController,
       children: createGroups(context),
     )),
-    groupCreateButton(context)
+    Center(
+        child:Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              groupCreateButton(context),
+              groupSearchButton(context)]))
   ]);
 }
 
@@ -217,7 +223,21 @@ Widget groupCreateButton(BuildContext context) {
         ));
   }
 
-
+  Widget groupSearchButton(BuildContext context) {
+    return Container(
+        child: IconButton(
+          onPressed: () {
+            if (!FocusScope.of(context).hasPrimaryFocus) {
+              FocusScope.of(context).unfocus();
+            }
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GroupsSearchPageView(course: studentCourses[tabController.index], status: groupsStatus, defaultIndex: 0, scrollViewController: scrollViewController)));
+          },
+          icon: Icon(Icons.search),
+        ));
+  }
 
 
   // @override
