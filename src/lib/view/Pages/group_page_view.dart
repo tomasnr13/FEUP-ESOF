@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:uni/model/entities/profile.dart';
+import 'package:uni/view/Pages/invite_input_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 import 'package:uni/view/Pages/unnamed_page_view.dart';
 import 'package:uni/view/Widgets/bug_report_form.dart';
@@ -174,6 +175,26 @@ class GroupPageViewState extends UnnamedPageView {
                         builder: (context) => null));
               },
               child: Text('Add Member',
+                  style: TextStyle(color: Colors.white, fontSize: 20.0))
+          )
+      )
+      );
+
+      widget.add(Container(margin: EdgeInsets.fromLTRB(8.0, 8, 8, 0.0),
+          padding: EdgeInsets.fromLTRB(8.0, 0, 8, 0),
+          child: ElevatedButton(
+              onPressed: () {
+                if (!FocusScope
+                    .of(context)
+                    .hasPrimaryFocus) {
+                  FocusScope.of(context).unfocus();
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => InviteInput()));
+              },
+              child: Text('Invite Member',
                   style: TextStyle(color: Colors.white, fontSize: 20.0))
           )
       )

@@ -87,11 +87,12 @@ class _OverlapPageState extends SecondaryPageViewState
                     title: Text('Compatibilidade de Horários'),
                     backgroundColor: Color(0xFF76171F),
                   ),
-                  body: Center(
+                  body: SingleChildScrollView(
+                  child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: childrenScaffold,
-                      ))));
+                      )))));
               List<List<TimeSlot>> times = snapshot.data;
                   childrenScaffold.add(Center(
                   child: (Padding(
