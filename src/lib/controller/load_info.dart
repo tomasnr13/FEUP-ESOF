@@ -4,6 +4,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
 import 'package:redux/redux.dart';
+import 'package:uni/controller/groups_fetcher/groups_fetcher_files.dart';
 import 'package:uni/controller/local_storage/image_offline_storage.dart';
 import 'package:uni/controller/parsers/parser_exams.dart';
 import 'package:uni/model/app_state.dart';
@@ -15,13 +16,13 @@ import 'local_storage/app_shared_preferences.dart';
 
 Future loadReloginInfo(Store<AppState> store) async {
   final Tuple2<String, String> userPersistentCredentials =
-      await AppSharedPreferences.getPersistentUserInfo();
+  await AppSharedPreferences.getPersistentUserInfo();
   final List<String> userPersistentFacs =
-      await AppSharedPreferences.getUserFaculties();
+  await AppSharedPreferences.getUserFaculties();
   final String userName = userPersistentCredentials.item1;
   final String password = userPersistentCredentials.item2;
   final List<String> faculties =
-      userPersistentFacs.isEmpty ? userPersistentFacs : ['feup'];
+  userPersistentFacs.isEmpty ? userPersistentFacs : ['feup'];
 
   if (userName != '' && password != '') {
     final action = Completer();
@@ -51,6 +52,7 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
   final Completer<Null> userInfo = Completer(),
       exams = Completer(),
       schedule = Completer(),
+      groups = Completer(),
       printBalance = Completer(),
       fees = Completer(),
       coursesStates = Completer(),
@@ -66,15 +68,17 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
   store.dispatch(getRestaurantsFromFetcher(restaurants));
 
   final Tuple2<String, String> userPersistentInfo =
-      await AppSharedPreferences.getPersistentUserInfo();
+  await AppSharedPreferences.getPersistentUserInfo();
   userInfo.future.then((value) {
     store.dispatch(getUserExams(exams, ParserExams(), userPersistentInfo));
     store.dispatch(getUserSchedule(schedule, userPersistentInfo));
+    store.dispatch(getUserGroups(groups, userPersistentInfo, fetcher: GroupsFetcherFiles()));
   });
 
   final allRequests = Future.wait([
     exams.future,
     schedule.future,
+    groups.future,
     printBalance.future,
     fees.future,
     coursesStates.future,
@@ -95,7 +99,7 @@ void loadLocalUserInfoToState(store) async {
   store.dispatch(
       SetUserFaculties(await AppSharedPreferences.getUserFaculties()));
   final Tuple2<String, String> userPersistentInfo =
-      await AppSharedPreferences.getPersistentUserInfo();
+  await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
     store.dispatch(updateStateBasedOnLocalProfile());
     store.dispatch(updateStateBasedOnLocalUserExams());

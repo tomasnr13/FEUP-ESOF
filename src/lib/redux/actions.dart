@@ -1,6 +1,7 @@
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
+import 'package:uni/model/entities/group.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
@@ -50,6 +51,15 @@ class SetScheduleStatusAction {
   SetScheduleStatusAction(this.status);
 }
 
+class SetGroupsAction {
+  List<Group> groups;
+  SetGroupsAction(this.groups);
+}
+
+class SetGroupsStatusAction {
+  RequestStatus status;
+  SetGroupsStatusAction(this.status);
+}
 
 class SetInitialStoreStateAction {
   SetInitialStoreStateAction();

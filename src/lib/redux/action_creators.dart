@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:tuple/tuple.dart';
+import 'package:uni/controller/groups_fetcher/groups_fetcher.dart';
 import 'package:uni/controller/load_info.dart';
 import 'package:uni/controller/load_static/terms_and_conditions.dart';
 import 'package:uni/controller/local_storage/app_bus_stop_database.dart';
@@ -30,6 +31,7 @@ import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/group.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
@@ -277,6 +279,25 @@ ThunkAction<AppState> getUserSchedule(
     } catch (e) {
       Logger().e('Failed to get Schedule: ${e.toString()}');
       store.dispatch(SetScheduleStatusAction(RequestStatus.failed));
+    }
+    action.complete();
+  };
+}
+
+ThunkAction<AppState> getUserGroups(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo,
+    {GroupsFetcher fetcher}) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetGroupsStatusAction(RequestStatus.busy));
+
+      final List<Group> groups = await fetcher.getGroups(store);
+
+      store.dispatch(SetGroupsAction(groups));
+      store.dispatch(SetGroupsStatusAction(RequestStatus.successful));
+    } catch (e) {
+      Logger().e('Failed to get Groups: ${e.toString()}');
+      store.dispatch(SetGroupsStatusAction(RequestStatus.failed));
     }
     action.complete();
   };
