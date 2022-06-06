@@ -10,6 +10,7 @@ import 'package:uni/view/Widgets/schedule_slot.dart';
 
 import '../../model/entities/group.dart';
 import '../Widgets/groups_slot.dart';
+import 'groups_search_page_view.dart';
 
 /// Manages the 'schedule' sections of the app
 class GroupsPageView extends StatelessWidget {
@@ -28,79 +29,6 @@ class GroupsPageView extends StatelessWidget {
   final ScrollController scrollViewController;
   final List<String> studentCourses;
 
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final MediaQueryData queryData = MediaQuery.of(context);
-//     // TODO: implement build
-//     return Column(children: <Widget>[
-//       ListView(
-//         scrollDirection: Axis.vertical,
-//         shrinkWrap: true,
-//         children: <Widget>[
-//           PageTitle(name: 'Grupos'),
-//           TabBar(
-//             controller: tabController,
-//             isScrollable: true,
-//             tabs: createTabs(queryData, context),
-//           )
-//         ],
-//     ),
-//     Expanded(
-//         child: TabBarView(
-//           controller: tabController,
-//           children: createSchedule(context),
-//         ))
-//       ]);
-//     throw UnimplementedError();
-//   }
-//
-//   List<Widget> createTabs(queryData, BuildContext context) {
-//       final List<Widget> tabs = <Widget>[];
-//       for (var i = 0; i < studentCourses.length; i++) {
-//         tabs.add(Container(
-//           color: Theme.of(context).backgroundColor,
-//           width: queryData.size.width * 1 / 3,
-//           child: Tab(key: Key('schedule-page-tab-$i'), text: studentCourses[i]),
-//         ));
-//       }
-//       return tabs;
-//     }
-//
-// List<Widget> createSchedule(context) {
-//   final List<Widget> tabBarViewContent = <Widget>[];
-//   for (int i = 0; i < daysOfTheWeek.length; i++) {
-//     tabBarViewContent.add(createScheduleByDay(context, i));
-//   }
-//   return tabBarViewContent;
-// }
-//
-//   Widget createScheduleByDay(BuildContext context, int day) {
-//       return RequestDependentWidgetBuilder(
-//         context: context,
-//         status: scheduleStatus,
-//         contentGenerator: dayColumnBuilder(day),
-//         content: aggLectures[day],
-//         contentChecker: aggLectures[day].isNotEmpty,
-//         onNullContent:
-//             Center(child: Text('Não possui aulas à ' + daysOfTheWeek[day] + '.')),
-//         index: day,
-//       );
-//     }
-//
-//   Widget Function(dynamic daycontent, BuildContext context) dayColumnBuilder(
-//     int day) {
-//   Widget createDayColumn(dayContent, BuildContext context) {
-//     return Container(
-//         key: Key('schedule-page-day-column-$day'),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: createScheduleRows(dayContent, context),
-//         ));
-//   }
-//
-//   return createDayColumn;
-// }
 @override
 Widget build(BuildContext context) {
   final MediaQueryData queryData = MediaQuery.of(context);
@@ -110,7 +38,7 @@ Widget build(BuildContext context) {
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       children: <Widget>[
-        PageTitle(name: 'Grupos de trabalho'),
+        PageTitle(name: 'Grupos de Trabalho'),
         TabBar(
           controller: tabController,
           isScrollable: true,
@@ -121,9 +49,15 @@ Widget build(BuildContext context) {
     Expanded(
         child: TabBarView(
       controller: tabController,
-      children: createGroups(context),
+      children: createGroups(context)
+      ,
     )),
-    groupCreateButton(context)
+    Center(
+        child:Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              groupCreateButton(context),
+              ]))
   ]);
 }
 
@@ -145,7 +79,7 @@ List<Widget> createTabs(queryData, BuildContext context) {
 List<Widget> createGroups(context) {
   final List<Widget> tabBarViewContent = <Widget>[];
   for (int i = 0; i < studentCourses.length; i++) {
-    tabBarViewContent.add(createGroupsByCourse(context, i));
+    tabBarViewContent.add(SingleChildScrollView(child:createGroupsByCourse(context, i)));
   }
   return tabBarViewContent;
 }
@@ -156,17 +90,7 @@ List<Widget> createGroupRows(groups, BuildContext context) {
   for (int i = 0; i < groups.length; i++) {
     final Group group = groups[i];
     groupsContent.add(GroupsSlot(group));
-    /*
-    scheduleContent.add(GroupsSlot(
-      id: lecture.id,
-      name: lecture.name,
-      course: lecture.course,
-      target_size: lecture.target_size,
-      manager: lecture.manager,
-      members: lecture.members,
-      closed: lecture.closed,
-      ));
-     */
+
   }
   return groupsContent;
 }
@@ -193,7 +117,7 @@ Widget createGroupsByCourse(BuildContext context, int courseIndex) {
     content: aggGroups[courseIndex],
     contentChecker: aggGroups[courseIndex].isNotEmpty,
     onNullContent:
-        Center(child: Text('Não pertence a Grupos em ' + studentCourses[courseIndex] + '.')),
+        Center(child: Container(padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),child:Text('Não há a Grupos em ' + studentCourses[courseIndex] + '.'))),
     index: courseIndex,
   );
 }
@@ -217,7 +141,21 @@ Widget groupCreateButton(BuildContext context) {
         ));
   }
 
-
+  Widget groupSearchButton(BuildContext context) {
+    return Container(
+        child: IconButton(
+          onPressed: () {
+            if (!FocusScope.of(context).hasPrimaryFocus) {
+              FocusScope.of(context).unfocus();
+            }
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GroupsSearchPageView(course: studentCourses[tabController.index], status: groupsStatus, defaultIndex: 0, scrollViewController: scrollViewController)));
+          },
+          icon: Icon(Icons.search),
+        ));
+  }
 
 
   // @override

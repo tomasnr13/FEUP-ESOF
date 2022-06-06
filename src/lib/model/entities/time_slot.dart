@@ -12,6 +12,8 @@ class TimeSlot {
   int day;
   int startTimeSeconds;
   int endTimeSeconds;
+  String startTime;
+  String endTime;
 
   TimeSlot(int day, int starTimeSeconds, int endTimeSeconds) {
     //this.endTimeSeconds = 60 * 30 * blocks + startTimeSeconds;
@@ -19,5 +21,13 @@ class TimeSlot {
     this.dayName = dayNames[day];
     this.endTimeSeconds = endTimeSeconds;
     this.startTimeSeconds = starTimeSeconds;
+    this.startTime = (startTimeSeconds ~/ 3600).toString().padLeft(2, '0') +
+        'h'  + ((startTimeSeconds % 3600) ~/ 60).toString().padLeft(2, '0');
+    this.endTime = (endTimeSeconds ~/ 3600).toString().padLeft(2, '0') +
+        'h'  + ((endTimeSeconds % 3600) ~/ 60).toString().padLeft(2, '0');
+  }
+
+  int getDurationSecs(){
+    return endTimeSeconds - startTimeSeconds;
   }
 }

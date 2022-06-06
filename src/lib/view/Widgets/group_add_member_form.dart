@@ -15,56 +15,39 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import '../../model/app_state.dart';
 import '../../model/entities/group.dart';
+import '../../model/entities/profile.dart';
 
-class GroupCreateForm extends StatefulWidget {
-  List<String> courses;
-  int index;
+class GroupAddMemberForm extends StatefulWidget {
+  Group group;
 
-  GroupCreateForm(List<String> courses, int index) {
-    this.courses = courses;
-    this.index = index;
+
+  GroupAddMemberForm(Group group) {
+    this.group = group;
   }
 
   @override
   State<StatefulWidget> createState() {
-    return GroupCreateFormState(courses, index);
+    return GroupAddMemberFormState(group);
   }
 }
 
 /// Manages the 'Bugs and Suggestions' section of the app
-class GroupCreateFormState extends State<GroupCreateForm> {
+class GroupAddMemberFormState extends State<GroupAddMemberForm> {
 
   static final _formKey = GlobalKey<FormState>();
+  Group group;
 
-  List<DropdownMenuItem<int>> courseList = [];
-  List<String> courses;
-  int index;
-
-  double numberMembers = 2.0;
-  static int _selectedCourse = 0;
   static final TextEditingController nameController = TextEditingController();
+  static final TextEditingController emailController = TextEditingController();
   String ghToken = '';
 
   bool _isButtonTapped = false;
 
-  void setCourses(List<String> courses, int index){
-    this.courses = courses;
-    this.index = index;
-  }
-
-  GroupCreateFormState(List<String> courses, int index) {
-    setCourses(courses, index);
+  GroupAddMemberFormState(Group group) {
+    this.group = group;
     //if (ghToken == '') loadGHKey();
-    loadCourseList();
   }
 
-  void loadCourseList() {
-    _selectedCourse = index;
-    courseList = [];
-    for(int i = 0; i < courses.length; i++){
-      courseList.add(DropdownMenuItem(child: Text(courses[i]), value: i));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,14 +59,22 @@ class GroupCreateFormState extends State<GroupCreateForm> {
     final List<Widget> formWidget = [];
 
     formWidget.add(createGroupTitle(context));
-    formWidget.add(dropdownCourseSelectWidget(context));
     formWidget.add(FormTextField(
       nameController,
-      Icons.create_outlined,
+      Icons.person,
       minLines: 1,
       maxLines: 2,
-      description: 'Nome do Grupo',
-      labelText: 'Insira o nome do grupo',
+      description: 'Nome',
+      labelText: 'Insira o nome do novo membro',
+      bottomMargin: 30.0,
+    ));
+    formWidget.add(FormTextField(
+      emailController,
+      Icons.alternate_email,
+      minLines: 1,
+      maxLines: 2,
+      description: 'Email',
+      labelText: 'Insira o email do novo Membro',
       bottomMargin: 30.0,
     ));
 
@@ -105,7 +96,6 @@ class GroupCreateFormState extends State<GroupCreateForm> {
         }
     )));
     */
-    formWidget.add(numberElementsSliderWidget(context));
 
     formWidget.add(submitButton(context));
 
@@ -123,7 +113,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                 color: Theme.of(context).accentColor, size: 50.0),
             Expanded(
                 child: Text(
-                  'Criar Grupo de Trabalho',
+                  "Adicionar membro ao Grupo '"+group.name+"'",
                   textScaleFactor: 1.6,
                   textAlign: TextAlign.center,
                 )),
@@ -134,83 +124,6 @@ class GroupCreateFormState extends State<GroupCreateForm> {
   }
 
 
-  /// Returns a widget for the dropdown displayed when the user tries to choose
-  /// the type of bug on the form
-  Widget dropdownCourseSelectWidget(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 30, top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Cadeira',
-            style: Theme.of(context).textTheme.bodyText2,
-            textAlign: TextAlign.left,
-          ),
-          Row(children: <Widget>[
-            Container(
-                margin: EdgeInsets.only(right: 15),
-                child: Icon(
-                  Icons.book,
-                  color: Theme.of(context).accentColor,
-                )),
-            Expanded(
-                child: DropdownButton(
-                  hint: Text('Cadeira'),
-                  items: courseList,
-                  value: _selectedCourse,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCourse = value;
-                    });
-                  },
-                  isExpanded: true,
-                ))
-          ])
-        ],
-      ),
-    );
-  }
-
-  Widget numberElementsSliderWidget(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 30, top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Número de Elementos',
-            style: Theme.of(context).textTheme.bodyText2,
-            textAlign: TextAlign.left,
-          ),
-          Row(children: <Widget>[
-            Container(
-                margin: EdgeInsets.only(right: 15),
-                child: Icon(
-                  Icons.numbers,
-                  color: Theme.of(context).accentColor,
-                )),
-            Expanded(
-                child:
-            Slider(
-                activeColor: Colors.red[700],
-                inactiveColor: Colors.red[300],
-                min: 2,
-                max: 12,
-                divisions: 10,
-                label: '${numberMembers.round()}',
-                value: numberMembers,
-                onChanged: (value){
-                  setState(() {
-                    numberMembers = value;
-                  });
-                }
-            )
-            )])
-        ],
-      ),
-    );
-  }
 
   Widget submitButton(BuildContext context) {
     return Container(
@@ -220,10 +133,10 @@ class GroupCreateFormState extends State<GroupCreateForm> {
             if (!FocusScope.of(context).hasPrimaryFocus) {
               FocusScope.of(context).unfocus();
             }
-            submitBugReport();
+            submitMember();
           },
           child: Text(
-            'Enviar',
+            'Adicionar',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
         ));
@@ -234,20 +147,18 @@ class GroupCreateFormState extends State<GroupCreateForm> {
   /// If successful, an issue based on the bug
   /// report is created in the project repository.
   /// If unsuccessful, the user receives an error message.
-  void submitBugReport() async {
+  void submitMember() async {
     setState(() {
       _isButtonTapped = true;
     });
 
-    final Group group = Group(id: 0, course: courses[_selectedCourse],
-        name: nameController.text, target_size: numberMembers.round(),
-        manager: StoreProvider.of<AppState>(context).state.content['profile'],
-        members: []);
     final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
-    newGroups.add(group);
+    for(Group group in newGroups){
+      if(group.name == this.group.name){
+        group.members.add(new Profile(name: nameController.text, email: emailController.text));
+      }
+    }
     StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
-    print('Chico: ' + StoreProvider.of<AppState>(context).state.content['groups'][0].manager.name);
-
     clearForm();
     FocusScope.of(context).requestFocus(FocusNode());
 
@@ -259,11 +170,13 @@ class GroupCreateFormState extends State<GroupCreateForm> {
 
   void clearForm() {
     nameController.clear();
-    numberMembers = 2;
+    emailController.clear();
+
+    // numberMembers = 2;
 
     if (!mounted) return;
     setState(() {
-      _selectedCourse = index;
+      // _selectedCourse = index;
     });
   }
 
