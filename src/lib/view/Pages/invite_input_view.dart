@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:uni/controller/networking/network_router.dart';
 import 'package:uni/model/overlap_page_model.dart';
-import 'package:uni/view/Pages/about_page_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../controller/schedule_fetcher/schedule_fetcher_api.dart';
-import '../../model/app_state.dart';
-import '../../model/entities/time_slot.dart';
-import 'package:redux/redux.dart';
+
 
 class InviteInput extends StatefulWidget {
   @override
@@ -89,17 +84,26 @@ class InviteInputState extends State<InviteInput> {
   }
 
   Future launchEmail() async{
-    String upCode = '';
+    String emailString = '@edu.fe.up.pt';
+    String toEmail = "";
 
-    String toEmail = 'up201906690@edu.fe.up.pt';
+    for(var up in students){
+      if(!up.startsWith('u')){
+        toEmail += 'up';
+      }
+
+      toEmail += up + emailString;
+      toEmail += ',';
+    }
+
+    toEmail = toEmail.substring(0, toEmail.length-1);
+
     String subject = 'Caro/a Colega';
-    String message = 'Gostava de o convidar para participar no meu grupo de trabalho.\nPor favor, envie um email a confirmar\n\nCumprimentos';
+    String message = 'Gostava de o convidar para participar no meu grupo de trabalho.\nPor favor, envie um email a confirmar\n\nCumprimentos.';
 
     final String url = 'mailto:$toEmail?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(message)}';
 
-    if(await canLaunchUrlString(url)){
-      await launchUrlString(url);
-    }
+    await launchUrlString(url);
   }
 
   @override
