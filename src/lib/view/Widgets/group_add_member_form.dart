@@ -1,16 +1,11 @@
 import 'dart:convert';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:logger/logger.dart';
-import 'package:sentry/sentry.dart';
-import 'package:uni/model/entities/course.dart';
+import 'package:uni/controller/groups_fetcher/groups_fetcher_files.dart';
 import 'package:uni/view/Widgets/form_text_field.dart';
-import 'package:uni/view/Widgets/toast_message.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:uni/utils/constants.dart' as Constants;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:tuple/tuple.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../../model/app_state.dart';
@@ -19,7 +14,6 @@ import '../../model/entities/profile.dart';
 
 class GroupAddMemberForm extends StatefulWidget {
   Group group;
-
 
   GroupAddMemberForm(Group group) {
     this.group = group;
@@ -33,7 +27,6 @@ class GroupAddMemberForm extends StatefulWidget {
 
 /// Manages the 'Bugs and Suggestions' section of the app
 class GroupAddMemberFormState extends State<GroupAddMemberForm> {
-
   static final _formKey = GlobalKey<FormState>();
   Group group;
 
@@ -47,7 +40,6 @@ class GroupAddMemberFormState extends State<GroupAddMemberForm> {
     this.group = group;
     //if (ghToken == '') loadGHKey();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,17 +105,15 @@ class GroupAddMemberFormState extends State<GroupAddMemberForm> {
                 color: Theme.of(context).accentColor, size: 50.0),
             Expanded(
                 child: Text(
-                  "Adicionar membro ao Grupo '"+group.name+"'",
-                  textScaleFactor: 1.6,
-                  textAlign: TextAlign.center,
-                )),
+              "Adicionar membro ao Grupo '" + group.name + "'",
+              textScaleFactor: 1.6,
+              textAlign: TextAlign.center,
+            )),
             Icon(Icons.group_add,
                 color: Theme.of(context).accentColor, size: 50.0),
           ],
         ));
   }
-
-
 
   Widget submitButton(BuildContext context) {
     return Container(
@@ -152,13 +142,22 @@ class GroupAddMemberFormState extends State<GroupAddMemberForm> {
       _isButtonTapped = true;
     });
 
-    final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
-    for(Group group in newGroups){
-      if(group.name == this.group.name){
-        group.members.add(new Profile(name: nameController.text, email: emailController.text));
+    final List<Group> newGroups =
+        StoreProvider.of<AppState>(context).state.content['groups'];
+    for (Group group in newGroups) {
+      if (group == this.group) {
+        group.members.add(new Profile(
+            name: nameController.text, email: emailController.text));
+        if (group.members.length >= group.target_size - 1) {
+          group.closed = true;
+        }
       }
     }
-    StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
+    StoreProvider.of<AppState>(context)
+        .state
+        .cloneAndUpdateValue('groups', newGroups);
+    GroupsFetcherFiles()
+        .setGroups(StoreProvider.of<AppState>(context), newGroups);
     clearForm();
     FocusScope.of(context).requestFocus(FocusNode());
 
@@ -166,6 +165,8 @@ class GroupAddMemberFormState extends State<GroupAddMemberForm> {
       _isButtonTapped = false;
     });
     Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pushNamed(context, '/' + Constants.navGroups);
   }
 
   void clearForm() {
@@ -188,7 +189,7 @@ class GroupAddMemberFormState extends State<GroupAddMemberForm> {
 
   void loadGHKey() async {
     final Map<String, dynamic> dataMap =
-    await parseJsonFromAssets('assets/env/env.json');
+        await parseJsonFromAssets('assets/env/env.json');
     this.ghToken = dataMap['gh_token'];
   }
 }

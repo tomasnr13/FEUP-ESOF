@@ -16,21 +16,21 @@ class Group {
       int this.target_size,
       Profile this.manager,
       List<Profile> this.members,
-      bool this.closed = false}){
-    if(this.members.length >= this.target_size-1){
-      this.closed = true;
-    }
-  }
+      bool this.closed = false}) {}
 
   /// Creates a new instance from a JSON object.
   static Group fromJson(dynamic data) {
+    List<Profile> members = [];
+    for (dynamic member in data['members']) {
+      members.add(Profile.fromJson(member));
+    }
     return Group(
         id: data['id'],
         course: data['course'],
         name: data['name'],
         target_size: data['target_size'],
-        manager: data['manager'],
-        members: data['members'],
+        manager: Profile.fromJson(data['manager']),
+        members: members,
         closed: data['closed']);
   }
 

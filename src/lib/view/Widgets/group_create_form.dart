@@ -1,16 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:logger/logger.dart';
-import 'package:sentry/sentry.dart';
-import 'package:uni/model/entities/course.dart';
+import 'package:uni/controller/groups_fetcher/groups_fetcher_files.dart';
 import 'package:uni/view/Widgets/form_text_field.dart';
-import 'package:uni/view/Widgets/toast_message.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:uni/utils/constants.dart' as Constants;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:tuple/tuple.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../../model/app_state.dart';
@@ -33,7 +29,6 @@ class GroupCreateForm extends StatefulWidget {
 
 /// Manages the 'Bugs and Suggestions' section of the app
 class GroupCreateFormState extends State<GroupCreateForm> {
-
   static final _formKey = GlobalKey<FormState>();
 
   List<DropdownMenuItem<int>> courseList = [];
@@ -47,7 +42,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
 
   bool _isButtonTapped = false;
 
-  void setCourses(List<String> courses, int index){
+  void setCourses(List<String> courses, int index) {
     this.courses = courses;
     this.index = index;
   }
@@ -61,7 +56,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
   void loadCourseList() {
     _selectedCourse = index;
     courseList = [];
-    for(int i = 0; i < courses.length; i++){
+    for (int i = 0; i < courses.length; i++) {
       courseList.add(DropdownMenuItem(child: Text(courses[i]), value: i));
     }
   }
@@ -123,16 +118,15 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                 color: Theme.of(context).accentColor, size: 50.0),
             Expanded(
                 child: Text(
-                  'Criar Grupo de Trabalho',
-                  textScaleFactor: 1.6,
-                  textAlign: TextAlign.center,
-                )),
+              'Criar Grupo de Trabalho',
+              textScaleFactor: 1.6,
+              textAlign: TextAlign.center,
+            )),
             Icon(Icons.group_add,
                 color: Theme.of(context).accentColor, size: 50.0),
           ],
         ));
   }
-
 
   /// Returns a widget for the dropdown displayed when the user tries to choose
   /// the type of bug on the form
@@ -156,16 +150,16 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                 )),
             Expanded(
                 child: DropdownButton(
-                  hint: Text('Cadeira'),
-                  items: courseList,
-                  value: _selectedCourse,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCourse = value;
-                    });
-                  },
-                  isExpanded: true,
-                ))
+              hint: Text('Cadeira'),
+              items: courseList,
+              value: _selectedCourse,
+              onChanged: (value) {
+                setState(() {
+                  _selectedCourse = value;
+                });
+              },
+              isExpanded: true,
+            ))
           ])
         ],
       ),
@@ -191,22 +185,20 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                   color: Theme.of(context).accentColor,
                 )),
             Expanded(
-                child:
-            Slider(
-                activeColor: Colors.red[700],
-                inactiveColor: Colors.red[300],
-                min: 2,
-                max: 12,
-                divisions: 10,
-                label: '${numberMembers.round()}',
-                value: numberMembers,
-                onChanged: (value){
-                  setState(() {
-                    numberMembers = value;
-                  });
-                }
-            )
-            )])
+                child: Slider(
+                    activeColor: Colors.red[700],
+                    inactiveColor: Colors.red[300],
+                    min: 2,
+                    max: 12,
+                    divisions: 10,
+                    label: '${numberMembers.round()}',
+                    value: numberMembers,
+                    onChanged: (value) {
+                      setState(() {
+                        numberMembers = value;
+                      });
+                    }))
+          ])
         ],
       ),
     );
@@ -220,33 +212,40 @@ class GroupCreateFormState extends State<GroupCreateForm> {
             if (!FocusScope.of(context).hasPrimaryFocus) {
               FocusScope.of(context).unfocus();
             }
-            submitBugReport();
+            submitGroup();
           },
           child: Text(
-            'Enviar',
+            'Confirmar',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
         ));
   }
 
-  /// Submits the user's bug report
-  ///
-  /// If successful, an issue based on the bug
-  /// report is created in the project repository.
-  /// If unsuccessful, the user receives an error message.
-  void submitBugReport() async {
+  /// Submits the new group
+  void submitGroup() async {
     setState(() {
       _isButtonTapped = true;
     });
 
-    final Group group = Group(id: 0, course: courses[_selectedCourse],
-        name: nameController.text, target_size: numberMembers.round(),
+    final Group group = Group(
+        id: 0,
+        course: courses[_selectedCourse],
+        name: nameController.text,
+        target_size: numberMembers.round(),
         manager: StoreProvider.of<AppState>(context).state.content['profile'],
         members: []);
-    final List<Group> newGroups = StoreProvider.of<AppState>(context).state.content['groups'];
+    final List<Group> newGroups =
+        StoreProvider.of<AppState>(context).state.content['groups'];
     newGroups.add(group);
-    StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', newGroups);
-    print('Chico: ' + StoreProvider.of<AppState>(context).state.content['groups'][0].manager.name);
+    StoreProvider.of<AppState>(context)
+        .state
+        .cloneAndUpdateValue('groups', newGroups);
+    try {
+      GroupsFetcherFiles()
+          .setGroups(StoreProvider.of<AppState>(context), newGroups);
+    } catch (e) {
+      Logger().e('Failed to set Groups: ${e.toString()}');
+    }
 
     clearForm();
     FocusScope.of(context).requestFocus(FocusNode());
@@ -255,6 +254,8 @@ class GroupCreateFormState extends State<GroupCreateForm> {
       _isButtonTapped = false;
     });
     Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pushNamed(context, '/' + Constants.navGroups);
   }
 
   void clearForm() {
@@ -275,7 +276,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
 
   void loadGHKey() async {
     final Map<String, dynamic> dataMap =
-    await parseJsonFromAssets('assets/env/env.json');
+        await parseJsonFromAssets('assets/env/env.json');
     this.ghToken = dataMap['gh_token'];
   }
 }
