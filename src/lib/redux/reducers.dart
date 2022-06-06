@@ -16,6 +16,10 @@ AppState appReducers(AppState state, dynamic action) {
     return setScheduleStatus(state, action);
   } else if (action is SetScheduleAction) {
     return setSchedule(state, action);
+  } else if (action is SetGroupsStatusAction) {
+    return setGroupsStatus(state, action);
+  } else if (action is SetGroupsAction) {
+    return setGroups(state, action);
   } else if (action is SaveProfileAction) {
     return saveProfile(state, action);
   } else if (action is SaveProfileStatusAction) {
@@ -62,7 +66,7 @@ AppState appReducers(AppState state, dynamic action) {
     return setExamFilter(state, action);
   } else if (action is SetUserFaculties) {
     return setUserFaculties(state, action);
-  } else if(action is SetRestaurantsAction){
+  } else if (action is SetRestaurantsAction) {
     return setRestaurantsAction(state, action);
   }
   return state;
@@ -101,6 +105,16 @@ AppState setSchedule(AppState state, SetScheduleAction action) {
 AppState setScheduleStatus(AppState state, SetScheduleStatusAction action) {
   Logger().i('setting schedule status: ' + action.status.toString());
   return state.cloneAndUpdateValue('scheduleStatus', action.status);
+}
+
+AppState setGroups(AppState state, SetGroupsAction action) {
+  Logger().i('setting groups: ' + action.groups.length.toString());
+  return state.cloneAndUpdateValue('groups', action.groups);
+}
+
+AppState setGroupsStatus(AppState state, SetGroupsStatusAction action) {
+  Logger().i('setting groups status: ' + action.status.toString());
+  return state.cloneAndUpdateValue('groupsStatus', action.status);
 }
 
 AppState saveProfile(AppState state, SaveProfileAction action) {

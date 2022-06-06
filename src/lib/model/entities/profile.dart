@@ -34,6 +34,20 @@ class Profile {
         courses: courses);
   }
 
+  /// Converts an instance to json
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'email': email,
+  };
+
+  /// Creates a new instance from a JSON object.
+  static Profile fromJson(Map<String, dynamic> json) {
+    return Profile(
+        name: json['name'],
+        email: json['email']
+    );
+  }
+
   /// Returns a list with two tuples: the first tuple contains the user's name
   /// and the other one contains the user's email.
   List<Tuple2<String, String>> keymapValues() {
