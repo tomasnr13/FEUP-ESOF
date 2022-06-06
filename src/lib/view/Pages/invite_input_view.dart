@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:uni/controller/schedule_comparison.dart';
 import 'package:uni/model/overlap_page_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../controller/schedule_fetcher/schedule_fetcher_api.dart';
 
-
 class InviteInput extends StatefulWidget {
+  InviteInput(this.course, this.name);
+
+  final String course;
+  final String name;
+
   @override
   InviteInputState createState() => InviteInputState();
 }
@@ -19,7 +24,13 @@ class InviteInputState extends State<InviteInput> {
   void addItemToList() {
     setState(() {
       validateUpCode(upController.text);
-      if (validate) students.insert(0, upController.text);
+      String upInsert = 'up';
+      if (upController.text.length == 11) {
+        upInsert += upController.text.substring(2);
+      } else {
+        upInsert += upController.text;
+      }
+      if (validate) students.insert(0, upInsert);
     });
   }
 
@@ -83,12 +94,12 @@ class InviteInputState extends State<InviteInput> {
     );
   }
 
-  Future launchEmail() async{
-    String emailString = '@edu.fe.up.pt';
+  Future launchEmail() async {
+    String emailString = '@up.pt';
     String toEmail = "";
 
-    for(var up in students){
-      if(!up.startsWith('u')){
+    for (var up in students) {
+      if (!up.startsWith('u')) {
         toEmail += 'up';
       }
 
@@ -96,13 +107,23 @@ class InviteInputState extends State<InviteInput> {
       toEmail += ',';
     }
 
-    toEmail = toEmail.substring(0, toEmail.length-1);
+    String pluralS = '';
+    String pluralM = '';
+    if (students.length > 1) {
+      pluralS = 's';
+      pluralM = 'm';
+    }
 
-    String subject = 'Caro/a Colega';
-    String message = 'Gostava de o convidar para participar no meu grupo de trabalho.\nPor favor, envie um email a confirmar\n\nCumprimentos.';
+    toEmail = toEmail.substring(0, toEmail.length - 1);
 
-    final String url = 'mailto:$toEmail?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(message)}';
+    String subject = 'Convite para grupo de ${widget.course}';
+    String message =
+        'Caro$pluralS/a$pluralS Colega$pluralS, \r\n\r\nGostava de o$pluralS/a$pluralS convidar para participar no meu grupo de trabalho de ${widget.course}. \r\nPor favor, envie$pluralM um email a confirmar. \r\n\r\nCumprimentos, \r\n${widget.name}';
 
+    final String url =
+        'mailto:$toEmail?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(message)}';
+
+    print('URL: $url');
     await launchUrlString(url);
   }
 
@@ -129,14 +150,14 @@ class InviteInputState extends State<InviteInput> {
                             ? 'Código inválido ou já submetido'
                             : null,
                         floatingLabelStyle:
-                        TextStyle(fontSize: 20.0, color: Colors.grey),
+                            TextStyle(fontSize: 20.0, color: Colors.grey),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.grey, width: 2.0),
+                              BorderSide(color: Colors.grey, width: 2.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Color(0xFF76171F), width: 2.0),
+                              BorderSide(color: Color(0xFF76171F), width: 2.0),
                         ),
                         prefixIcon: Icon(
                           Icons.person,
