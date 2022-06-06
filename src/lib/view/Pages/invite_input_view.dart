@@ -118,12 +118,11 @@ class InviteInputState extends State<InviteInput> {
 
     String subject = 'Convite para grupo de ${widget.course}';
     String message =
-        'Caro$pluralS/a$pluralS Colega$pluralS, \r\n\r\nGostava de o$pluralS/a$pluralS convidar para participar no meu grupo de trabalho de ${widget.course}. \r\nPor favor, envie$pluralM um email a confirmar. \r\n\r\nCumprimentos, \r\n${widget.name}';
+        'Caro$pluralS/a$pluralS colega$pluralS, \r\n\r\nGostava de o$pluralS/a$pluralS convidar para participar no meu grupo de trabalho de ${widget.course}. \r\nPor favor, envie$pluralM um email a confirmar. \r\n\r\nCumprimentos, \r\n${widget.name}';
 
     final String url =
         'mailto:$toEmail?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(message)}';
 
-    print('URL: $url');
     await launchUrlString(url);
   }
 

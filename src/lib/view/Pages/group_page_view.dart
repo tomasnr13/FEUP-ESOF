@@ -2,17 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:uni/controller/groups_fetcher/groups_fetcher_files.dart';
 import 'package:uni/model/entities/profile.dart';
+import 'package:uni/view/Pages/group_create_add_member_view.dart';
 import 'package:uni/view/Pages/invite_input_view.dart';
-import 'package:uni/view/Pages/secondary_page_view.dart';
 import 'package:uni/view/Pages/unnamed_page_view.dart';
-import 'package:uni/view/Widgets/bug_report_form.dart';
-
-import '../../model/app_state.dart';
-import '../../model/entities/course.dart';
-import '../../model/entities/group.dart';
-import '../Widgets/group_create_form.dart';
-import '../Widgets/page_title.dart';
+import 'package:uni/model/entities/group.dart';
+import 'package:uni/model/app_state.dart';
+import 'package:uni/utils/constants.dart' as Constants;
 
 class GroupPageView extends StatefulWidget {
   Group group;
@@ -28,7 +25,6 @@ class GroupPageView extends StatefulWidget {
   }
 }
 
-/// Manages the 'Bugs and sugestions' section of the app.
 class GroupPageViewState extends UnnamedPageView {
   Group group;
 
@@ -41,7 +37,7 @@ class GroupPageViewState extends UnnamedPageView {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Members',
+            'Membros',
             style:
                 Theme.of(context).textTheme.headline6.apply(fontSizeDelta: 5),
           ),
@@ -101,8 +97,26 @@ class GroupPageViewState extends UnnamedPageView {
                             if (!FocusScope.of(context).hasPrimaryFocus) {
                               FocusScope.of(context).unfocus();
                             }
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => null));
+                            final List<Group> newGroups =
+                                StoreProvider.of<AppState>(context)
+                                    .state
+                                    .content['groups'];
+                            for (Group group in newGroups) {
+                              if (group == this.group) {
+                                group.members.remove(member);
+                                group.closed = false;
+                                setState(() {});
+                              }
+                            }
+                            StoreProvider.of<AppState>(context)
+                                .state
+                                .cloneAndUpdateValue('groups', newGroups);
+                            GroupsFetcherFiles().setGroups(
+                                StoreProvider.of<AppState>(context), newGroups);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pushNamed(
+                                context, '/' + Constants.navGroups);
                           },
                           icon: Icon(Icons.close),
                         )),
@@ -180,7 +194,7 @@ class GroupPageViewState extends UnnamedPageView {
         widget.add(
           Container(
               padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
-              child: Text("The group has reached it's maximum capacity",
+              child: Text("O grupo atingiu a sua capacidade máxima",
                   textAlign: TextAlign.center)),
         );
         widget.add(Container(child: Icon(Icons.lock)));
@@ -188,7 +202,7 @@ class GroupPageViewState extends UnnamedPageView {
         widget.add(
           Container(
               padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
-              child: Text('You can still add more members',
+              child: Text('Pode adicionar mais membros ao grupo',
                   textAlign: TextAlign.center)),
         );
         widget.add(Container(child: Icon(Icons.lock_open)));
@@ -201,10 +215,14 @@ class GroupPageViewState extends UnnamedPageView {
                   if (!FocusScope.of(context).hasPrimaryFocus) {
                     FocusScope.of(context).unfocus();
                   }
+                  Navigator.pop(context);
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => null));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              GroupCreateAddMemberView(this.group)));
                 },
-                child: Text('Add Member',
+                child: Text('Adicionar Membro',
                     style: TextStyle(color: Colors.white, fontSize: 20.0)))));
 
         widget.add(Container(
@@ -225,7 +243,7 @@ class GroupPageViewState extends UnnamedPageView {
                                   .content['profile']
                                   .name)));
                 },
-                child: Text('Invite Member',
+                child: Text('Convidar Membro',
                     style: TextStyle(color: Colors.white, fontSize: 20.0)))));
       }
       widget.add(Container(
@@ -236,10 +254,19 @@ class GroupPageViewState extends UnnamedPageView {
                 if (!FocusScope.of(context).hasPrimaryFocus) {
                   FocusScope.of(context).unfocus();
                 }
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => null));
+                final List<Group> newGroups =
+                    StoreProvider.of<AppState>(context).state.content['groups'];
+                newGroups.remove(this.group);
+                StoreProvider.of<AppState>(context)
+                    .state
+                    .cloneAndUpdateValue('groups', newGroups);
+                GroupsFetcherFiles()
+                    .setGroups(StoreProvider.of<AppState>(context), newGroups);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/' + Constants.navGroups);
               },
-              child: Text('Delete Group',
+              child: Text('Eliminar Grupo',
                   style: TextStyle(color: Colors.white, fontSize: 20.0)))));
     } else {
       widget.add(Container(
@@ -250,10 +277,25 @@ class GroupPageViewState extends UnnamedPageView {
                 if (!FocusScope.of(context).hasPrimaryFocus) {
                   FocusScope.of(context).unfocus();
                 }
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => null));
+                final List<Group> newGroups =
+                    StoreProvider.of<AppState>(context).state.content['groups'];
+                for (Group group in newGroups) {
+                  if (group.name == this.group.name) {
+                    group.members.remove(StoreProvider.of<AppState>(context)
+                        .state
+                        .content['profile']);
+                  }
+                }
+                StoreProvider.of<AppState>(context)
+                    .state
+                    .cloneAndUpdateValue('groups', newGroups);
+                GroupsFetcherFiles()
+                    .setGroups(StoreProvider.of<AppState>(context), newGroups);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/' + Constants.navGroups);
               },
-              child: Text('Leave Group',
+              child: Text('Sair do Grupo',
                   style: TextStyle(color: Colors.white, fontSize: 20.0)))));
     }
     return ListView(

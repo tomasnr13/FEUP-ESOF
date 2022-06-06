@@ -39,6 +39,7 @@ class GroupsSlot extends StatelessWidget {
   Widget createGroupsSlotRow(context) {
     return  Container(
         margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
+        alignment:Alignment.center,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -77,8 +77,6 @@ class GroupsSearchPageViewState extends UnnamedPageView {
   /// Returns a list of widgets empty with tabs for each day of the week.
   List<Widget> createTabs(queryData, BuildContext context) {
     final List<Widget> tabs = <Widget>[];
-    // print("studentCourses");
-    // print(studentCourses);
     for (var i = 0; i < tabNames.length; i++) {
       tabs.add(Container(
         color: Theme.of(context).backgroundColor,

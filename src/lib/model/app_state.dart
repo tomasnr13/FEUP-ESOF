@@ -37,7 +37,8 @@ class AppState {
       'feesStatus': RequestStatus.none,
       'coursesStateStatus': RequestStatus.none,
       'lastUserInfoUpdateTime': null,
-      'groups': <Group>[]
+      'groups': <Group>[],
+      'groupsStatus': RequestStatus.none,
     };
   }
 
