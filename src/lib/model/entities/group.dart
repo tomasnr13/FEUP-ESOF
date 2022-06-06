@@ -34,7 +34,7 @@ class Group {
         closed: data['closed']);
   }
 
-  /// Converts this course to a map.
+  /// Converts this group to a map.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
