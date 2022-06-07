@@ -195,6 +195,7 @@ class _LoginPageViewState extends State<LoginPageView> {
         usernameFocus.unfocus();
         FocusScope.of(context).requestFocus(passwordFocus);
       },
+      key: const Key('usernameinput'),
       textInputAction: TextInputAction.next,
       textAlign: TextAlign.left,
       decoration: textFieldDecoration('número de estudante'),
@@ -215,6 +216,7 @@ class _LoginPageViewState extends State<LoginPageView> {
           passwordFocus.unfocus();
           _login(context);
         },
+        key: const Key('passwordinput'),
         textInputAction: TextInputAction.done,
         obscureText: _obscurePasswordInput,
         enableInteractiveSelection: !_obscurePasswordInput,
@@ -229,6 +231,7 @@ class _LoginPageViewState extends State<LoginPageView> {
     return CheckboxListTile(
       value: _keepSignedIn,
       onChanged: _setKeepSignedIn,
+      key: const Key('remind_me'),
       title: Text(
         'Manter sessão iniciada',
         textAlign: TextAlign.center,
@@ -258,6 +261,7 @@ class _LoginPageViewState extends State<LoginPageView> {
             }
             _login(context);
           },
+          key: const Key('entrar'),
           child: Text('Entrar',
               style: TextStyle(
                   color: Theme.of(context).accentColor,

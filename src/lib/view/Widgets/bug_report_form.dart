@@ -55,8 +55,12 @@ class BugReportFormState extends State<BugReportForm> {
   void loadBugClassList() {
     bugList = [];
 
-    bugDescriptions.forEach((int key, Tuple2<String, String> tup) =>
-        {bugList.add(DropdownMenuItem(child: Text(tup.item1), value: key))});
+    bugDescriptions.forEach((int keyint, Tuple2<String, String> tup) => {
+          bugList.add(DropdownMenuItem(
+              child: Text(tup.item1),
+              value: keyint,
+              key: Key('key_bug_type_op_$keyint')))
+        }); //BMCL
   }
 
   @override
@@ -173,6 +177,8 @@ class BugReportFormState extends State<BugReportForm> {
                 )),
             Expanded(
                 child: DropdownButton(
+              key: const Key('key_bug_type'),
+              //BMCL
               hint: Text('Tipo de ocorrência'),
               items: bugList,
               value: _selectedBug,
@@ -201,6 +207,8 @@ class BugReportFormState extends State<BugReportForm> {
               '''Consinto que esta informação seja revista pelo NIAEFEUP, podendo ser eliminada a meu pedido.''',
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.left),
+          key: Key('key_bug_consent'),
+          //BMCL
           value: _isConsentGiven,
           onChanged: (bool newValue) {
             setState(() {

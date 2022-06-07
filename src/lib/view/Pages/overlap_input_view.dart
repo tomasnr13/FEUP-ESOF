@@ -107,6 +107,7 @@ class OverlapInputState extends State<OverlapInput> {
                 children: <Widget>[
                   Flexible(
                     child: TextField(
+                      key: const Key('overlap_input_up'),
                       cursorColor: Color(0xFF76171F),
                       controller: upController,
                       decoration: InputDecoration(
@@ -135,6 +136,7 @@ class OverlapInputState extends State<OverlapInput> {
                   ),
                   SizedBox(width: 15),
                   ElevatedButton(
+                    key: const Key('overlap_input_add'),
                     onPressed: addItemToList,
                     child: const Text('Adicionar',
                         style: TextStyle(
@@ -201,6 +203,7 @@ class OverlapInputState extends State<OverlapInput> {
             ),
           ),
           ElevatedButton(
+            key: const Key('overlap_input_send'),
             style: ElevatedButton.styleFrom(
               primary: Color(0xFF76171F),
               minimumSize: const Size.fromHeight(50),

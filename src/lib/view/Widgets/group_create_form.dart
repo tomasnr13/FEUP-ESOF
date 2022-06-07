@@ -4,13 +4,11 @@ import 'package:logger/logger.dart';
 import 'package:uni/controller/groups_fetcher/groups_fetcher_files.dart';
 import 'package:uni/view/Widgets/form_text_field.dart';
 import 'package:uni/utils/constants.dart' as Constants;
+import 'package:uni/model/app_state.dart';
+import 'package:uni/model/entities/group.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
-import '../../model/app_state.dart';
-import '../../model/entities/group.dart';
 
 class GroupCreateForm extends StatefulWidget {
   List<String> courses;
@@ -64,7 +62,10 @@ class GroupCreateFormState extends State<GroupCreateForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey, child: ListView(children: getFormWidget(context)));
+        key: _formKey,
+        child: ListView(
+          children: getFormWidget(context),
+        ));
   }
 
   List<Widget> getFormWidget(BuildContext context) {
@@ -82,24 +83,6 @@ class GroupCreateFormState extends State<GroupCreateForm> {
       bottomMargin: 30.0,
     ));
 
-    /*
-    formWidget.add(Container(
-        margin: EdgeInsets.only(top: 20.0),
-        child: Slider(
-        activeColor: Colors.red[700],
-        inactiveColor: Colors.red[300],
-        min: 2,
-        max: 20,
-        divisions: 19,
-        label: '${numberMembers.round()}',
-        value: numberMembers,
-        onChanged: (value){
-          setState(() {
-            numberMembers = value;
-          });
-        }
-    )));
-    */
     formWidget.add(numberElementsSliderWidget(context));
 
     formWidget.add(submitButton(context));
@@ -186,6 +169,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                 )),
             Expanded(
                 child: Slider(
+                    key: const Key('create_group_form_slider'),
                     activeColor: Colors.red[700],
                     inactiveColor: Colors.red[300],
                     min: 2,
@@ -214,6 +198,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
             }
             submitGroup();
           },
+          key: const Key('create_group_form_send'),
           child: Text(
             'Confirmar',
             style: TextStyle(color: Colors.white, fontSize: 20.0),

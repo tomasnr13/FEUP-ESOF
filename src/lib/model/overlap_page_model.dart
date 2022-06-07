@@ -1,17 +1,11 @@
-import 'dart:developer';
-
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:uni/view/Pages/schedule_page_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
-
-import '../controller/schedule_comparison.dart';
-import '../view/Pages/overlap_page_view.dart';
-import '../view/Widgets/schedule_slot.dart';
-import 'entities/time_slot.dart';
+import 'package:uni/controller/schedule_comparison.dart';
+import 'package:uni/model/entities/time_slot.dart';
 
 class OverlapPage extends StatefulWidget {
   const OverlapPage({Key key, @required this.students}) : super(key: key);
