@@ -78,7 +78,7 @@ class OverlapInputState extends State<OverlapInput> {
     if (students.length < 2) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Select at least 2 students'),
+          content: Text('Selecione pelo menos 2 estudantes!'),
         ),
       );
       return;
@@ -209,7 +209,6 @@ class OverlapInputState extends State<OverlapInput> {
               ),
             ),
             onPressed: () => goToComparisonView(),
-            // TODO: go to next page after calling for schedules comparison function
             child: const Text(
               'Calcular tempos livres',
               style: TextStyle(fontSize: 18),

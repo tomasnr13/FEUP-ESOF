@@ -77,10 +77,10 @@ class _OverlapPageState extends SecondaryPageViewState
           builder: (BuildContext context,
               AsyncSnapshot<List<List<TimeSlot>>> snapshot) {
             List<Widget> children;
+            children = <Widget>[];
             List<Widget> childrenScaffold;
             if (snapshot.hasData) {
               childrenScaffold = <Widget>[];
-              children = <Widget>[];
               children.add(Scaffold(
                   resizeToAvoidBottomInset: false,
                   appBar: AppBar(
@@ -88,13 +88,13 @@ class _OverlapPageState extends SecondaryPageViewState
                     backgroundColor: Color(0xFF76171F),
                   ),
                   body: SingleChildScrollView(
-                  child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: childrenScaffold,
-                      )))));
+                      child: Center(
+                          child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: childrenScaffold,
+                  )))));
               List<List<TimeSlot>> times = snapshot.data;
-                  childrenScaffold.add(Center(
+              childrenScaffold.add(Center(
                   child: (Padding(
                       padding: const EdgeInsets.only(
                           top: 2, right: 26, left: 26, bottom: 10),
@@ -102,13 +102,13 @@ class _OverlapPageState extends SecondaryPageViewState
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight. bold,
+                              fontWeight: FontWeight.bold,
                               color: Color(0xFF76171F),
                               decoration: TextDecoration.none))))));
               for (int i = 0; i < 5; i++) {
-            childrenScaffold.add(Text(' ',
+                childrenScaffold.add(Text(' ',
                     style: TextStyle(decoration: TextDecoration.none)));
-            childrenScaffold.add(Text(daysOfTheWeek[i],
+                childrenScaffold.add(Text(daysOfTheWeek[i],
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -116,14 +116,14 @@ class _OverlapPageState extends SecondaryPageViewState
                 for (TimeSlot timeSlot in times[i]) {
                   final String text =
                       timeSlot.startTime + ' - ' + timeSlot.endTime;
-            childrenScaffold.add(Text(text,
+                  childrenScaffold.add(Text(text,
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
                           decoration: TextDecoration.none)));
                 }
               }
-            childrenScaffold.add(Center(
+              childrenScaffold.add(Center(
                   child: (Padding(
                       padding: const EdgeInsets.only(
                           top: 70, right: 60, left: 60, bottom: 20),
@@ -134,25 +134,47 @@ class _OverlapPageState extends SecondaryPageViewState
                               fontSize: 18,
                               color: Colors.black,
                               decoration: TextDecoration.none))))));
-            childrenScaffold.add(Text(compatibilityPercentage(times) + "%",
+              childrenScaffold.add(Text(compatibilityPercentage(times) + "%",
                   style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF76171F),
                       decoration: TextDecoration.none)));
-            return children.first;
+              return children.first;
             } else if (snapshot.hasError) {
-              children = <Widget>[
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Error: ${snapshot.error}'),
-                )
-              ];
+              /*
+                children.add(AppBar(
+                      title: Text('Compatibilidade de Horários'),
+                      backgroundColor: Color(0xFF76171F),
+                    ));
+                children.add(Expanded(
+                  child: Center(
+                    child: Text('Selecione dois estudantes válidos!',
+                      style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF76171F),
+                        backgroundColor: Colors.white,
+                        decoration: TextDecoration.none),
+                    ),
+                  ),
+                ));
+
+                 */
+              children.add(Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  appBar: AppBar(
+                    title: Text('Compatibilidade de Horários'),
+                    backgroundColor: Color(0xFF76171F),
+                  ),
+                  body: SingleChildScrollView(
+                    child: Center(
+                        child: Container(
+                            padding:
+                                EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
+                            child: Text('Selecione estudantes válidos!'))),
+                  )));
+              return children.first;
             } else {
               children = const <Widget>[
                 SizedBox(
