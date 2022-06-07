@@ -211,6 +211,7 @@ class GroupPageViewState extends UnnamedPageView {
             margin: EdgeInsets.fromLTRB(8.0, 8, 8, 0.0),
             padding: EdgeInsets.fromLTRB(8.0, 0, 8, 0),
             child: ElevatedButton(
+                key: Key('add_member'),
                 onPressed: () {
                   if (!FocusScope.of(context).hasPrimaryFocus) {
                     FocusScope.of(context).unfocus();
@@ -247,6 +248,7 @@ class GroupPageViewState extends UnnamedPageView {
                     style: TextStyle(color: Colors.white, fontSize: 20.0)))));
       }
       widget.add(Container(
+          key: Key('remove_group'),
           margin: EdgeInsets.fromLTRB(8.0, 8, 8, 0.0),
           padding: EdgeInsets.fromLTRB(8.0, 0, 8, 0),
           child: ElevatedButton(

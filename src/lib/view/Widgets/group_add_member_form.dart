@@ -117,6 +117,7 @@ class GroupAddMemberFormState extends State<GroupAddMemberForm> {
 
   Widget submitButton(BuildContext context) {
     return Container(
+        key: Key('add-member-form-add'),
         margin: EdgeInsets.symmetric(vertical: 50.0),
         child: ElevatedButton(
           onPressed: () {
