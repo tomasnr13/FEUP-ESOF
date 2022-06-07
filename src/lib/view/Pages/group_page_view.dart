@@ -115,7 +115,8 @@ class GroupPageViewState extends UnnamedPageView {
                                 StoreProvider.of<AppState>(context), newGroups);
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            Navigator.pushNamed(context, '/' + Constants.navGroups);
+                            Navigator.pushNamed(
+                                context, '/' + Constants.navGroups);
                           },
                           icon: Icon(Icons.close),
                         )),
@@ -232,8 +233,15 @@ class GroupPageViewState extends UnnamedPageView {
                   if (!FocusScope.of(context).hasPrimaryFocus) {
                     FocusScope.of(context).unfocus();
                   }
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => InviteInput()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => InviteInput(
+                              group.course,
+                              StoreProvider.of<AppState>(context)
+                                  .state
+                                  .content['profile']
+                                  .name)));
                 },
                 child: Text('Convidar Membro',
                     style: TextStyle(color: Colors.white, fontSize: 20.0)))));

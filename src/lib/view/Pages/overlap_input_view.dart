@@ -21,7 +21,13 @@ class OverlapInputState extends State<OverlapInput> {
   void addItemToList() {
     setState(() {
       validateUpCode(upController.text);
-      if (validate) students.insert(0, upController.text);
+      String upInsert = 'up';
+      if (upController.text.length == 11) {
+        upInsert += upController.text.substring(2);
+      } else {
+        upInsert += upController.text;
+      }
+      if (validate) students.insert(0, upInsert);
     });
   }
 

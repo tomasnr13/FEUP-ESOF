@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:uni/controller/schedule_comparison.dart';
 import 'package:uni/model/overlap_page_model.dart';
-import 'package:uni/view/Pages/about_page_view.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../controller/schedule_fetcher/schedule_fetcher_api.dart';
-import '../../model/app_state.dart';
-import '../../model/entities/time_slot.dart';
-import 'package:redux/redux.dart';
 
 class InviteInput extends StatefulWidget {
+  InviteInput(this.course, this.name);
+
+  final String course;
+  final String name;
+
   @override
   InviteInputState createState() => InviteInputState();
 }
@@ -21,7 +24,13 @@ class InviteInputState extends State<InviteInput> {
   void addItemToList() {
     setState(() {
       validateUpCode(upController.text);
-      if (validate) students.insert(0, upController.text);
+      String upInsert = 'up';
+      if (upController.text.length == 11) {
+        upInsert += upController.text.substring(2);
+      } else {
+        upInsert += upController.text;
+      }
+      if (validate) students.insert(0, upInsert);
     });
   }
 
@@ -69,10 +78,10 @@ class InviteInputState extends State<InviteInput> {
 
   void goToComparisonView() {
     // check whether there are 2 or more students submitted
-    if (students.length < 2) {
+    if (students.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Select at least 2 students'),
+          content: Text('Seleciona pelo menos 1 estudante'),
         ),
       );
       return;
@@ -85,12 +94,44 @@ class InviteInputState extends State<InviteInput> {
     );
   }
 
+  Future launchEmail() async {
+    String emailString = '@up.pt';
+    String toEmail = "";
+
+    for (var up in students) {
+      if (!up.startsWith('u')) {
+        toEmail += 'up';
+      }
+
+      toEmail += up + emailString;
+      toEmail += ',';
+    }
+
+    String pluralS = '';
+    String pluralM = '';
+    if (students.length > 1) {
+      pluralS = 's';
+      pluralM = 'm';
+    }
+
+    toEmail = toEmail.substring(0, toEmail.length - 1);
+
+    String subject = 'Convite para grupo de ${widget.course}';
+    String message =
+        'Caro$pluralS/a$pluralS colega$pluralS, \r\n\r\nGostava de o$pluralS/a$pluralS convidar para participar no meu grupo de trabalho de ${widget.course}. \r\nPor favor, envie$pluralM um email a confirmar. \r\n\r\nCumprimentos, \r\n${widget.name}';
+
+    final String url =
+        'mailto:$toEmail?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(message)}';
+
+    await launchUrlString(url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Selecionar Estudantes'),
+          title: Text('Convidar Estudantes'),
           backgroundColor: Color(0xFF76171F),
         ),
         body: Column(children: <Widget>[
@@ -108,14 +149,14 @@ class InviteInputState extends State<InviteInput> {
                             ? 'Código inválido ou já submetido'
                             : null,
                         floatingLabelStyle:
-                        TextStyle(fontSize: 20.0, color: Colors.grey),
+                            TextStyle(fontSize: 20.0, color: Colors.grey),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.grey, width: 2.0),
+                              BorderSide(color: Colors.grey, width: 2.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Color(0xFF76171F), width: 2.0),
+                              BorderSide(color: Color(0xFF76171F), width: 2.0),
                         ),
                         prefixIcon: Icon(
                           Icons.person,
@@ -202,10 +243,10 @@ class InviteInputState extends State<InviteInput> {
                 borderRadius: BorderRadius.zero,
               ),
             ),
-            onPressed: () => goToComparisonView(),
+            onPressed: () => launchEmail(),
             // TODO: go to next page after calling for schedules comparison function
             child: const Text(
-              'Calcular tempos livres',
+              'Enviar convite(s)',
               style: TextStyle(fontSize: 18),
             ),
           ),
