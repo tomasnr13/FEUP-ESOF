@@ -6,7 +6,7 @@ Link to the release: https://github.com/LEIC-ES-2021-22/3LEIC07T5/releases/tag/v
 We were able to finish the product in a complete and stable state. Team coordination on the final issues went smoothly.
 
 - What should we do differently?
-We should plan the issues and releases in a more breath-first approach, so that we are able to have better mid-development releases and avoid changing features to much in the final release. 
+We should plan the issues and releases in a more breadth-first approach, so that we are able to have better mid-development releases and avoid changing features too much in the final release. 
 
 - What still puzzles me?
 We wanted to implement a database but since it was out of the project's scope, we had to implement an interface that's ready for a database but using local files. 
@@ -33,4 +33,4 @@ The state of the board at the end of the previous iteration.
 
 
 ![Board at Iteration 3](../images/BoardIteration3.png)
-The state of the board at the end of the second iteration.
+The state of the board at the end of the third and final iteration.
