@@ -16,21 +16,25 @@ class Group {
       int this.target_size,
       Profile this.manager,
       List<Profile> this.members,
-      bool this.closed = false});
+      bool this.closed = false}) {}
 
   /// Creates a new instance from a JSON object.
   static Group fromJson(dynamic data) {
+    List<Profile> members = [];
+    for (dynamic member in data['members']) {
+      members.add(Profile.fromJson(member));
+    }
     return Group(
         id: data['id'],
         course: data['course'],
         name: data['name'],
         target_size: data['target_size'],
-        manager: data['manager'],
-        members: data['members'],
+        manager: Profile.fromJson(data['manager']),
+        members: members,
         closed: data['closed']);
   }
 
-  /// Converts this course to a map.
+  /// Converts this group to a map.
   Map<String, dynamic> toMap() {
     return {
       'id': id,

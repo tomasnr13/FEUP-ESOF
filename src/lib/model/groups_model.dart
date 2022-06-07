@@ -1,15 +1,9 @@
-import 'dart:ffi';
-
 import 'package:tuple/tuple.dart';
 import 'package:uni/model/app_state.dart';
-import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:uni/view/Pages/schedule_page_view.dart';
 import 'package:uni/view/Pages/groups_page_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
-
-import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/group.dart';
 
 class GroupsPage extends StatefulWidget {
@@ -38,15 +32,10 @@ class _GroupsPageState extends SecondaryPageViewState
         list.add(courses[j].subject);
       }
     }
-    // print("list: ");
-    // print(list);
     return list;
   }
 
   List<List<Group>> _groupGroupsByCourse(group_data) {
-
-    // print("HERE HERE HERE");
-    // print(group_data[0]);
     final aggGroups = <List<Group>>[];
     final list_of_courses = _studentCourses();
 
@@ -78,18 +67,20 @@ class _GroupsPageState extends SecondaryPageViewState
 
   @override
   Widget getBody(BuildContext context) {
-    return StoreConnector<AppState, Tuple2<List<Lecture>, RequestStatus>>(
-      converter: (store) => Tuple2(store.state.content['schedule'],
-          store.state.content['scheduleStatus']),
+
+    // StoreProvider.of<AppState>(context).state.cloneAndUpdateValue('groups', groups);
+    return StoreConnector<AppState, Tuple2<List<Group>, RequestStatus>>(
+      converter: (store) => Tuple2(store.state.content['groups'],
+          store.state.content['groupsStatus']),
       builder: (context, groupData) {
+        final groups = groupData.item1;
         final groupsStatus = groupData.item2;
-        //final group_data = <Group>[];
         //group_data.add(Group(id: 12, course: "CPD", name: "Terrific Trio", target_size: 5, manager: null, members: [], closed: false));
         return GroupsPageView(
             studentCourses: _studentCourses(),
             tabController: tabController,
             scrollViewController: scrollViewController,
-            aggGroups: _groupGroupsByCourse(StoreProvider.of<AppState>(context).state.content['groups']),
+            aggGroups: _groupGroupsByCourse(groups),
             groupsStatus: groupsStatus);
       },
     );

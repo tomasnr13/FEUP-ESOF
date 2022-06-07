@@ -1,20 +1,14 @@
 import 'dart:convert';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:logger/logger.dart';
-import 'package:sentry/sentry.dart';
-import 'package:uni/model/entities/course.dart';
+import 'package:uni/controller/groups_fetcher/groups_fetcher_files.dart';
 import 'package:uni/view/Widgets/form_text_field.dart';
-import 'package:uni/view/Widgets/toast_message.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:uni/utils/constants.dart' as Constants;
+import 'package:uni/model/app_state.dart';
+import 'package:uni/model/entities/group.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:tuple/tuple.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
-import '../../model/app_state.dart';
-import '../../model/entities/group.dart';
 
 class GroupCreateForm extends StatefulWidget {
   List<String> courses;
@@ -89,24 +83,6 @@ class GroupCreateFormState extends State<GroupCreateForm> {
       bottomMargin: 30.0,
     ));
 
-    /*
-    formWidget.add(Container(
-        margin: EdgeInsets.only(top: 20.0),
-        child: Slider(
-        activeColor: Colors.red[700],
-        inactiveColor: Colors.red[300],
-        min: 2,
-        max: 20,
-        divisions: 19,
-        label: '${numberMembers.round()}',
-        value: numberMembers,
-        onChanged: (value){
-          setState(() {
-            numberMembers = value;
-          });
-        }
-    )));
-    */
     formWidget.add(numberElementsSliderWidget(context));
 
     formWidget.add(submitButton(context));
@@ -198,7 +174,7 @@ class GroupCreateFormState extends State<GroupCreateForm> {
                     inactiveColor: Colors.red[300],
                     min: 2,
                     max: 12,
-                    divisions: 11,
+                    divisions: 10,
                     label: '${numberMembers.round()}',
                     value: numberMembers,
                     onChanged: (value) {
@@ -220,22 +196,18 @@ class GroupCreateFormState extends State<GroupCreateForm> {
             if (!FocusScope.of(context).hasPrimaryFocus) {
               FocusScope.of(context).unfocus();
             }
-            submitBugReport();
+            submitGroup();
           },
           key: const Key('create_group_form_send'),
           child: Text(
-            'Enviar',
+            'Confirmar',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
         ));
   }
 
-  /// Submits the user's bug report
-  ///
-  /// If successful, an issue based on the bug
-  /// report is created in the project repository.
-  /// If unsuccessful, the user receives an error message.
-  void submitBugReport() async {
+  /// Submits the new group
+  void submitGroup() async {
     setState(() {
       _isButtonTapped = true;
     });
@@ -244,26 +216,21 @@ class GroupCreateFormState extends State<GroupCreateForm> {
         id: 0,
         course: courses[_selectedCourse],
         name: nameController.text,
-        target_size: numberMembers.toInt(),
+        target_size: numberMembers.round(),
         manager: StoreProvider.of<AppState>(context).state.content['profile'],
-        members: [
-          StoreProvider.of<AppState>(context).state.content['profile'],
-          StoreProvider.of<AppState>(context).state.content['profile'],
-          StoreProvider.of<AppState>(context).state.content['profile']
-        ],
-        closed: false);
+        members: []);
     final List<Group> newGroups =
         StoreProvider.of<AppState>(context).state.content['groups'];
     newGroups.add(group);
     StoreProvider.of<AppState>(context)
         .state
         .cloneAndUpdateValue('groups', newGroups);
-    print('Chico: ' +
-        StoreProvider.of<AppState>(context)
-            .state
-            .content['groups'][0]
-            .manager
-            .name);
+    try {
+      GroupsFetcherFiles()
+          .setGroups(StoreProvider.of<AppState>(context), newGroups);
+    } catch (e) {
+      Logger().e('Failed to set Groups: ${e.toString()}');
+    }
 
     clearForm();
     FocusScope.of(context).requestFocus(FocusNode());
@@ -271,6 +238,9 @@ class GroupCreateFormState extends State<GroupCreateForm> {
     setState(() {
       _isButtonTapped = false;
     });
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pushNamed(context, '/' + Constants.navGroups);
   }
 
   void clearForm() {

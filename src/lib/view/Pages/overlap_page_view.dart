@@ -1,5 +1,7 @@
 import 'package:uni/model/app_state.dart';
 import 'package:flutter/material.dart';
+import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/time_slot.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/free_time_slot.dart';
@@ -11,14 +13,12 @@ class OverlapPageView extends StatelessWidget {
       @required this.tabController,
       @required this.daysOfTheWeek,
       @required this.commonTimeSpaces,
-      @required this.scheduleStatus,//??
       this.scrollViewController});
 
   final List<String> daysOfTheWeek;
-  final List<List<List<String>>> commonTimeSpaces;//PAIRS
-  final RequestStatus scheduleStatus;
   final TabController tabController;
   final ScrollController scrollViewController;
+  final List<List<Lecture>> commonTimeSpaces;
 
   @override
   Widget build(BuildContext context) {

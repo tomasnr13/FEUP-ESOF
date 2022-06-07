@@ -6,12 +6,12 @@ import '../../model/app_state.dart';
 import '../../model/entities/time_slot.dart';
 import 'package:redux/redux.dart';
 
-class OverlapInput extends StatefulWidget {
+class InviteInput extends StatefulWidget {
   @override
-  OverlapInputState createState() => OverlapInputState();
+  InviteInputState createState() => InviteInputState();
 }
 
-class OverlapInputState extends State<OverlapInput> {
+class InviteInputState extends State<InviteInput> {
   final List<String> students = <String>[];
   bool validate = false;
   ScheduleFetcherApi scheduleFetcherApi;
@@ -101,7 +101,6 @@ class OverlapInputState extends State<OverlapInput> {
                 children: <Widget>[
                   Flexible(
                     child: TextField(
-                      key: const Key('overlap_input_up'),
                       cursorColor: Color(0xFF76171F),
                       controller: upController,
                       decoration: InputDecoration(
@@ -109,14 +108,14 @@ class OverlapInputState extends State<OverlapInput> {
                             ? 'Código inválido ou já submetido'
                             : null,
                         floatingLabelStyle:
-                            TextStyle(fontSize: 20.0, color: Colors.grey),
+                        TextStyle(fontSize: 20.0, color: Colors.grey),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.grey, width: 2.0),
+                          BorderSide(color: Colors.grey, width: 2.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Color(0xFF76171F), width: 2.0),
+                          BorderSide(color: Color(0xFF76171F), width: 2.0),
                         ),
                         prefixIcon: Icon(
                           Icons.person,
@@ -130,7 +129,6 @@ class OverlapInputState extends State<OverlapInput> {
                   ),
                   SizedBox(width: 15),
                   ElevatedButton(
-                    key: const Key('overlap_input_add'),
                     onPressed: addItemToList,
                     child: const Text('Adicionar',
                         style: TextStyle(
@@ -197,7 +195,6 @@ class OverlapInputState extends State<OverlapInput> {
             ),
           ),
           ElevatedButton(
-            key: const Key('overlap_input_send'),
             style: ElevatedButton.styleFrom(
               primary: Color(0xFF76171F),
               minimumSize: const Size.fromHeight(50),
