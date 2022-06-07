@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 
 import '../../model/entities/group.dart';
-import '../../model/entities/profile.dart';
 import '../Pages/group_page_view.dart';
-import '../Pages/home_page_view.dart';
 
 class GroupsSlot extends StatelessWidget {
   Group group;
@@ -19,7 +15,7 @@ class GroupsSlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
+        key: Key('group_slot_${group.name}'),
         onTap: () {
           Navigator.push(
               context,
